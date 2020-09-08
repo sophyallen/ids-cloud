@@ -3,22 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>com.opencloud</groupId>
-        <artifactId>parent</artifactId>
-        <version>3.0.0</version>
+        <groupId>com.kaikeba</groupId>
+        <artifactId>ids-cloud-parent</artifactId>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>platform</artifactId>
-   <version>3.0.0</version>
+   <version>1.0.0</version>
     <packaging>pom</packaging>
     <description>平台服务</description>
     <modules>
-        <module>open-cloud-api-zuul-server</module>
-        <module>open-cloud-api-spring-server</module>
-        <module>open-cloud-uaa-admin-server</module>
-        <module>open-cloud-uaa-portal-server</module>
-        <module>open-cloud-base-client</module>
-        <module>open-cloud-base-server</module>
-        <module>open-cloud-generator-server</module>
+        <module>ids-cloud-gateway-server</module>
+        <module>ids-cloud-uaa-admin-server</module>
+        <module>ids-cloud-uaa-portal-server</module>
+        <module>ids-cloud-base-api</module>
+        <module>ids-cloud-base-server</module>
+        <module>ids-cloud-generator-server</module>
     </modules>
 </project>

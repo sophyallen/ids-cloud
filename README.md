@@ -9,9 +9,9 @@
   <a><img src="https://img.shields.io/npm/l/express.svg" alt="License"></a>
 </p>  
 
-## SpringCloud微服务平台 3.0.0 
+## SpringCloud微服务平台 1.0.0 
 
-#### 专业版开源了,抢先体验！<a target="_blank" href="https://gitee.com/liuyadu/open-cloud-pro">专业版</a>
+#### 专业版开源了,抢先体验！<a target="_blank" href="https://gitee.com/zmc/ids-cloud-pro">专业版</a>
 
 #### 简介
 搭建基于OAuth2的开放平台、为APP端、应用服务提供统一接口管控平台、为第三方合作伙伴的业务对接提供授信可控的技术对接平台
@@ -30,24 +30,24 @@
 + SpringBootAdmin账号:sba 123456
 
 #### 源码
-+ <a target="_blank" href="https://gitee.com/liuyadu">gitee服务端源码</a>  
-+ <a target="_blank" href="https://github.com/liuyadu/">github服务端源码</a>  
-+ <a target="_blank" href="https://gitee.com/liuyadu/open-admin-ui">open-admin-ui源码</a>
-+ <a target="_blank" href="https://gitee.com/liuyadu_open/open-admin-pro">open-admin-pro-ui源码</a>
-+ <a target="_blank" href="https://gitee.com/liuyadu_open/open-portal-ui.git">官网UI源码</a>
++ <a target="_blank" href="https://gitee.com/zmc">gitee服务端源码</a>  
++ <a target="_blank" href="https://github.com/zmc/">github服务端源码</a>  
++ <a target="_blank" href="https://gitee.com/zmc/open-admin-ui">open-admin-ui源码</a>
++ <a target="_blank" href="https://gitee.com/zmc_open/open-admin-pro">open-admin-pro-ui源码</a>
++ <a target="_blank" href="https://gitee.com/zmc_open/open-portal-ui.git">官网UI源码</a>
 
 #### 使用手册
-<a target="_blank" href="https://gitee.com/liuyadu/open-cloud/wikis/pages">使用手册</a>  
+<a target="_blank" href="https://gitee.com/zmc/ids-cloud/wikis/pages">使用手册</a>  
 
 #### 交流群 
-学习交流(千人群):760809808 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=3c1017efeda485820c9eddee13a125d99261f7504746aa4824bc5c7c2b9a4234"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="open-cloud交流群" title="open-cloud交流群"></a>  
+学习交流(千人群):760809808 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=3c1017efeda485820c9eddee13a125d99261f7504746aa4824bc5c7c2b9a4234"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="ids-cloud交流群" title="ids-cloud交流群"></a>  
 
 #### 功能介绍
 ![功能介绍](/docs/功能介绍.png)  
 
 #### 代码结构
 ``` lua
-open-cloud
+ids-cloud
 ├── docs                               -- 文档及脚本
     ├── bin                            -- 执行脚本  
     ├── config                         -- 公共配置,用于导入到nacos配置中心   
@@ -55,29 +55,29 @@ open-cloud
       ├── data                         -- 增量数据
      
 ├── components                         -- 公共组件
-    ├── open-cloud-common-core         -- 提供微服务相关依赖包、工具类、全局异常解析等
-    ├── open-cloud-common-starter      -- SpringBoot自动配置扫描
-    ├── open-cloud-tenant-starter      -- 多租户模块,多数据源自动切换(完善中...)
-    ├── open-cloud-java-sdk            -- 开放平台api集成SDK(完善中...)
+    ├── ids-cloud-common-core         -- 提供微服务相关依赖包、工具类、全局异常解析等
+    ├── ids-cloud-common-starter      -- SpringBoot自动配置扫描
+    ├── ids-cloud-tenant-starter      -- 多租户模块,多数据源自动切换(完善中...)
+    ├── ids-cloud-java-sdk            -- 开放平台api集成SDK(完善中...)
        
 ├── platform                           -- 平台服务
-    ├── open-cloud-api-spring-server   -- API开放网关-基于SpringCloudGateway[port = 8888](推荐）  
-    ├── open-cloud-api-zuul-server     -- API开放网关-基于Zuul[port = 8888](功能完善）
-    ├── open-cloud-base-client         -- 平台基础服务接口
-    ├── open-cloud-base-server         -- 平台基础服务器[port=8233]
-    ├── open-cloud-uaa-admin-server    -- 平台用户认证服务器[port = 8211]
-    ├── open-cloud-uaa-portal-server   -- 门户开发者认证服务器[port = 7211]
-    ├── open-cloud-generator-server    -- 在线代码生成服务器[port = 5555]
+    ├── ids-cloud-api-spring-server   -- API开放网关-基于SpringCloudGateway[port = 8888](推荐）  
+    ├── ids-cloud-api-zuul-server     -- API开放网关-基于Zuul[port = 8888](功能完善）
+    ├── ids-cloud-base-api         -- 平台基础服务接口
+    ├── ids-cloud-base-server         -- 平台基础服务器[port=8233]
+    ├── ids-cloud-uaa-admin-server    -- 平台用户认证服务器[port = 8211]
+    ├── ids-cloud-uaa-portal-server   -- 门户开发者认证服务器[port = 7211]
+    ├── ids-cloud-generator-server    -- 在线代码生成服务器[port = 5555]
     
 ├── services                           -- 通用微服务
-    ├── open-cloud-msg-client          -- 消息服务接口
-    ├── open-cloud-msg-server          -- 消息服务器[port = 8266]
-    ├── open-cloud-task-client         -- 任务调度接口
-    ├── open-cloud-task-server         -- 调度服务器[port = 8501]
-    ├── open-cloud-bpm-client          -- 工作流接口
-    ├── open-cloud-bpm-server          -- 工作流服务器[port = 8255]
-    ├── open-cloud-sba-server          -- SpringBootAdmin监控服务[port = 8849]
-    ├── open-cloud-sso-ui-demo         -- SSO单点登录演示demo[port = 8849]
+    ├── ids-cloud-msg-client          -- 消息服务接口
+    ├── ids-cloud-msg-server          -- 消息服务器[port = 8266]
+    ├── ids-cloud-task-client         -- 任务调度接口
+    ├── ids-cloud-task-server         -- 调度服务器[port = 8501]
+    ├── ids-cloud-bpm-client          -- 工作流接口
+    ├── ids-cloud-bpm-server          -- 工作流服务器[port = 8255]
+    ├── ids-cloud-sba-server          -- SpringBootAdmin监控服务[port = 8849]
+    ├── ids-cloud-sso-ui-demo         -- SSO单点登录演示demo[port = 8849]
 ```
 
 #### 快速开始
@@ -154,9 +154,9 @@ open-cloud
    ```
     + 项目启动
     ```bush
-    ./docs/bin/startup.sh {start|stop|restart|status} open-cloud-base-server.jar
-    ./docs/bin/startup.sh {start|stop|restart|status} open-cloud-uaa-admin-server.jar
-    ./docs/bin/startup.sh {start|stop|restart|status} open-cloud-api-spring-server.jar
+    ./docs/bin/startup.sh {start|stop|restart|status} ids-cloud-base-server.jar
+    ./docs/bin/startup.sh {start|stop|restart|status} ids-cloud-uaa-admin-server.jar
+    ./docs/bin/startup.sh {start|stop|restart|status} ids-cloud-api-spring-server.jar
     ```
     
 8.docker部署   
@@ -169,13 +169,13 @@ open-cloud
  + 启动docker镜像   
   
       ```bush
-        docker run -d -e JAVA_OPTS="-Xms128m -Xmx256m" -p 8233:8233 --name base-server open.cloud/open-cloud-base-server:3.0.0
-        docker run -d -e JAVA_OPTS="-Xms128m -Xmx256m" -p 8211:8211 --name uaa-admin-server open.cloud/open-cloud-uaa-admin-server:3.0.0
-        docker run -d -e JAVA_OPTS="-Xms128m -Xmx256m" -p 8888:8888 --name api-spring-server open.cloud/open-cloud-api-spring-server:3.0.0
+        docker run -d -e JAVA_OPTS="-Xms128m -Xmx256m" -p 8233:8233 --name base-server ids.cloud/ids-cloud-base-server:1.0.0
+        docker run -d -e JAVA_OPTS="-Xms128m -Xmx256m" -p 8211:8211 --name uaa-admin-server ids.cloud/ids-cloud-uaa-admin-server:1.0.0
+        docker run -d -e JAVA_OPTS="-Xms128m -Xmx256m" -p 8888:8888 --name api-spring-server ids.cloud/ids-cloud-api-spring-server:1.0.0
       ```  
     
 #### 集成开发 
-<a target="_blank" href="https://gitee.com/liuyadu/open-cloud/wikis/pages?sort_id=1396933&doc_id=256893">集成开发</a>
+<a target="_blank" href="https://gitee.com/zmc/ids-cloud/wikis/pages?sort_id=1396933&doc_id=256893">集成开发</a>
 
 #### OAuth2使用说明
-<a target="_blank" href="https://gitee.com/liuyadu/open-cloud/wikis/pages?sort_id=1396294&doc_id=256893">OAuth2</a>
+<a target="_blank" href="https://gitee.com/zmc/ids-cloud/wikis/pages?sort_id=1396294&doc_id=256893">OAuth2</a>
