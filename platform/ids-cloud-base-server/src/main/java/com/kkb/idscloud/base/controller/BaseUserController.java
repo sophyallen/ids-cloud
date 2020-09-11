@@ -207,7 +207,6 @@ public class BaseUserController implements BaseUserApi {
      * @return
      */
     @ApiOperation(value = "注册第三方系统登录账号", notes = "仅限系统内部调用")
-    @PostMapping("/user/add/thirdParty")
     @Override
     public ResultBody addUserThirdParty(
             @RequestParam(value = "account") String account,

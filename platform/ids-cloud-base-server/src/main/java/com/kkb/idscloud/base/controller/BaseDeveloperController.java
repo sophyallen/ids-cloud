@@ -44,7 +44,6 @@ public class BaseDeveloperController implements BaseDeveloperApi {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", required = true, value = "登录名", paramType = "path"),
     })
-    @PostMapping("/developer/login")
     @Override
     public ResultBody<UserAccount> developerLogin(@RequestParam(value = "username") String username) {
         UserAccount account = baseDeveloperService.login(username);
@@ -180,7 +179,6 @@ public class BaseDeveloperController implements BaseDeveloperApi {
      * @return
      */
     @ApiOperation(value = "注册第三方系统登录账号", notes = "仅限系统内部调用")
-    @PostMapping("/developer/add/thirdParty")
     @Override
     public ResultBody addDeveloperThirdParty(
             @RequestParam(value = "account") String account,

@@ -54,7 +54,6 @@ public class BaseAppController implements BaseAppApi {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "appId", value = "应用ID", defaultValue = "1", required = true, paramType = "path"),
     })
-    @GetMapping("/app/{appId}/info")
     @Override
     public ResultBody<BaseApp> getApp(
             @PathVariable("appId") String appId
@@ -73,7 +72,6 @@ public class BaseAppController implements BaseAppApi {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "clientId", value = "应用ID", defaultValue = "1", required = true, paramType = "path"),
     })
-    @GetMapping("/app/client/{clientId}/info")
     @Override
     public ResultBody<OpenClientDetails> getAppClientInfo(
             @PathVariable("clientId") String clientId

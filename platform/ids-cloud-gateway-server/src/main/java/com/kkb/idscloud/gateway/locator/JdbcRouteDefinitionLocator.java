@@ -91,7 +91,6 @@ public class JdbcRouteDefinitionLocator implements ApplicationListener<RemoteRef
             routeList.forEach(route -> {
                 if (route.getServiceId() != null && route.getServiceId().equals(serviceId)) {
                     fullPath[0] = route.getPath().replace("/**", path.startsWith("/") ? path : "/" + path);
-                    return;
                 }
             });
         }

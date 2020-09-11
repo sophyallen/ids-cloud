@@ -13,7 +13,7 @@ public class GeneratorMain {
         config.setJdbcPassword("root");
         config.setJdbcDriver("com.mysql.cj.jdbc.Driver");
         config.setAuthor("zmc");
-        config.setParentPackage("com.kaikeba");
+        config.setParentPackage("com.kkb");
         config.setModuleName("base");
         config.setIncludeTables(new String[]{"base_tentant"});
         config.setTablePrefix(new String[]{"base_"});

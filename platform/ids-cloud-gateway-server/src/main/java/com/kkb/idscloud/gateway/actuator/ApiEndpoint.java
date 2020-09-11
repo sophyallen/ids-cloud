@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author zmc
  */
 @RestControllerEndpoint(
-        id = "open"
+        id = "ids"
 )
 public class ApiEndpoint extends AbstractBusEndpoint {
 

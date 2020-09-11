@@ -179,3 +179,5 @@ ids-cloud
 
 #### OAuth2使用说明
 <a target="_blank" href="https://gitee.com/zmc/ids-cloud/wikis/pages?sort_id=1396294&doc_id=256893">OAuth2</a>
+
+结果![WechatIMG6161.jpeg](1)

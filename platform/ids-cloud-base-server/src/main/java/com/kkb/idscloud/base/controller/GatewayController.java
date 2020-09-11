@@ -59,7 +59,6 @@ public class GatewayController implements GatewayApi {
      * @return
      */
     @ApiOperation(value = "获取接口黑名单列表", notes = "仅限内部调用")
-    @GetMapping("/gateway/api/blackList")
     @Override
     public ResultBody<List<IpLimitApi>> getApiBlackList() {
         return ResultBody.ok().data(gatewayIpLimitService.findBlackList());
@@ -71,7 +70,6 @@ public class GatewayController implements GatewayApi {
      * @return
      */
     @ApiOperation(value = "获取接口白名单列表", notes = "仅限内部调用")
-    @GetMapping("/gateway/api/whiteList")
     @Override
     public ResultBody<List<IpLimitApi>> getApiWhiteList() {
         return ResultBody.ok().data(gatewayIpLimitService.findWhiteList());
@@ -83,7 +81,6 @@ public class GatewayController implements GatewayApi {
      * @return
      */
     @ApiOperation(value = "获取限流列表", notes = "仅限内部调用")
-    @GetMapping("/gateway/api/rateLimit")
     @Override
     public ResultBody<List<RateLimitApi>> getApiRateLimitList() {
         return ResultBody.ok().data(gatewayRateLimitService.findRateLimitApiList());
@@ -95,7 +92,6 @@ public class GatewayController implements GatewayApi {
      * @return
      */
     @ApiOperation(value = "获取路由列表", notes = "仅限内部调用")
-    @GetMapping("/gateway/api/route")
     @Override
     public ResultBody<List<GatewayRoute>> getApiRouteList() {
         return ResultBody.ok().data(gatewayRouteService.findRouteList());
