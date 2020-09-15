@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.kkb.idscloud</groupId>
         <artifactId>ids-cloud-parent</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>platform</artifactId>
-   <version>1.0.0</version>
+   <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>平台服务</description>
     <modules>

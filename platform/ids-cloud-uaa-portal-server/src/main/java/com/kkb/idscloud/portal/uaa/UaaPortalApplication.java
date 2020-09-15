@@ -35,7 +35,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  *
  * @author zmc
  */
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.kkb.idscloud")
 @SpringBootApplication
 @EnableDiscoveryClient
 public class UaaPortalApplication {

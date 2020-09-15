@@ -60,7 +60,7 @@ management:
     web:
       exposure:
         # 开放部分端点和自定义端点
-        include: health,info,open
+        include: health,info,ids
 
 idscloud:
   # 开放api

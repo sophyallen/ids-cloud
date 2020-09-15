@@ -1,11 +1,11 @@
 package com.kkb.idscloud.portal.uaa.service.impl;
 
+import com.kkb.idscloud.base.api.BaseDeveloperApi;
 import com.kkb.idscloud.base.constants.BaseConstants;
 import com.kkb.idscloud.base.model.UserAccount;
 import com.kkb.idscloud.common.model.ResultBody;
 import com.kkb.idscloud.common.security.OpenUserDetails;
 import com.kkb.idscloud.common.security.oauth2.client.OpenOAuth2ClientProperties;
-import com.kkb.idscloud.portal.uaa.service.feign.BaseDeveloperClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,14 +23,14 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private BaseDeveloperClient baseDeveloperServiceClient;
+    private BaseDeveloperApi baseDeveloperApi;
     @Autowired
     private OpenOAuth2ClientProperties clientProperties;
 
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
-        ResultBody<UserAccount> resp = baseDeveloperServiceClient.developerLogin(username);
+        ResultBody<UserAccount> resp = baseDeveloperApi.developerLogin(username);
         UserAccount account = resp.getData();
         if (account == null || account.getAccountId()==null) {
             throw new UsernameNotFoundException("系统用户 " + username + " 不存在!");

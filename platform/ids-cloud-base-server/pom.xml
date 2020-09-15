@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.kkb.idscloud</groupId>
         <artifactId>platform</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>ids-cloud-base-server</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <description>平台基础服务器</description>
     <dependencies>
         <dependency>
@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.kkb.idscloud</groupId>
             <artifactId>ids-cloud-base-api</artifactId>
-            <version>${idscloud.base-client.version}</version>
+            <version>${idscloud.base-api.version}</version>
         </dependency>
         <dependency>
             <groupId>org.lionsoul</groupId>

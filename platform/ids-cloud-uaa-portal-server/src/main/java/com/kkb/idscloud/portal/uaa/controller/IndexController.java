@@ -2,9 +2,9 @@ package com.kkb.idscloud.portal.uaa.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.kkb.idscloud.base.api.BaseAppApi;
+import com.kkb.idscloud.base.api.BaseDeveloperApi;
 import com.kkb.idscloud.common.model.ResultBody;
-import com.kkb.idscloud.portal.uaa.service.feign.BaseAppClient;
-import com.kkb.idscloud.portal.uaa.service.feign.BaseDeveloperClient;
 import com.kkb.idscloud.portal.uaa.service.impl.GiteeAuthServiceImpl;
 import com.kkb.idscloud.portal.uaa.service.impl.QQAuthServiceImpl;
 import com.kkb.idscloud.portal.uaa.service.impl.WechatAuthServiceImpl;
@@ -30,9 +30,9 @@ import java.util.Map;
 @Controller
 public class IndexController {
     @Autowired
-    private BaseAppClient baseAppRemoteService;
+    private BaseAppApi baseAppApi;
     @Autowired
-    private BaseDeveloperClient baseDeveloperServiceClient;
+    private BaseDeveloperApi baseDeveloperApi;
     @Autowired
     private QQAuthServiceImpl qqAuthService;
     @Autowired
@@ -81,7 +81,7 @@ public class IndexController {
         if (auth != null) {
             try {
                 AuthorizationRequest authorizationRequest = (AuthorizationRequest) auth;
-                ClientDetails clientDetails = baseAppRemoteService.getAppClientInfo(authorizationRequest.getClientId()).getData();
+                ClientDetails clientDetails = baseAppApi.getAppClientInfo(authorizationRequest.getClientId()).getData();
                 model.put("app", clientDetails.getAdditionalInformation());
             } catch (Exception e) {
 
@@ -116,7 +116,7 @@ public class IndexController {
         if (accessToken != null) {
             String openId = qqAuthService.getOpenId(token);
             if (openId != null) {
-                baseDeveloperServiceClient.addDeveloperThirdParty(openId, openId, "qq","","");
+                baseDeveloperApi.addDeveloperThirdParty(openId, openId, "qq","","");
                 token =  loginController.getToken(openId, openId, "qq",headers).getString("access_token");
             }
         }
@@ -136,7 +136,7 @@ public class IndexController {
         if (accessToken != null) {
             String openId = wechatAuthService.getOpenId(token);
             if (openId != null) {
-                baseDeveloperServiceClient.addDeveloperThirdParty(openId, openId, "wechat","","");
+                baseDeveloperApi.addDeveloperThirdParty(openId, openId, "wechat","","");
                 token =  loginController.getToken(openId, openId, "wechat",headers).getString("access_token");
             }
         }
@@ -160,7 +160,7 @@ public class IndexController {
             String name = userInfo.getString("name");
             String avatar = userInfo.getString("avatar_url");
             if (openId != null) {
-                baseDeveloperServiceClient.addDeveloperThirdParty(openId, openId, "gitee",name,avatar);
+                baseDeveloperApi.addDeveloperThirdParty(openId, openId, "gitee",name,avatar);
                 token = loginController.getToken(openId, openId, "gitee",headers).getString("access_token");
             }
         }

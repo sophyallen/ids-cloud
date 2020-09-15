@@ -6,7 +6,7 @@
     <groupId>com.kkb.idscloud</groupId>
     <artifactId>ids-cloud-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>components</module>
         <module>platform</module>
@@ -42,27 +42,37 @@
 
         <!--自定义版本-->
         <idscloud.common.version>1.0.0-SNAPSHOT</idscloud.common.version>
-        <idscloud.base-client.version>1.0.0-SNAPSHOT</idscloud.base-client.version>
-        <idscloud.msg-client.version>1.0.0-SNAPSHOT</idscloud.msg-client.version>
-        <idscloud.bpm-client.version>1.0.0-SNAPSHOT</idscloud.bpm-client.version>
-        <idscloud.task-client.version>1.0.0-SNAPSHOT</idscloud.task-client.version>
+        <idscloud.base-api.version>1.0.0-SNAPSHOT</idscloud.base-api.version>
 
         <!--镜像前缀-->
         <docker.image.prefix>ids.cloud</docker.image.prefix>
     </properties>
 
-    <!--nexus 私有仓库发布地址 -->
-    <!--<distributionManagement>
-        &lt;!&ndash;maven的settings.xml文件中设置<server>标签&ndash;&gt;
+    <!--nexus 私有仓库发布地址-->
+    <distributionManagement>
+        <!--maven的settings.xml文件中设置<server>标签-->
         <repository>
             <id>ids-cloud-releases</id>
-            <url>http://39.106.187.125:8081/repository/maven-releases/</url>
+            <url>https://nexus.kaikeba.com/repository/ceg-xk-releases/</url>
         </repository>
         <snapshotRepository>
             <id>ids-cloud-snapshots</id>
-            <url>http://39.106.187.125:8081/repository/maven-snapshots/</url>
+            <url>https://nexus.kaikeba.com/repository/ceg-xk-snapshots/</url>
         </snapshotRepository>
-    </distributionManagement>-->
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>ceg-xk</id>
+            <url>https://nexus.kaikeba.com/repository/ceg-xk/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <!-- 环境 -->
     <profiles>
@@ -100,7 +110,7 @@
         </profile>
         <!-- 生产 -->
         <profile>
-            <id>online</id>
+            <id>prod</id>
             <properties>
                 <!--当前环境,生产环境为空-->
                 <profile.name></profile.name>

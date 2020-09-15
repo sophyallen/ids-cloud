@@ -5,11 +5,11 @@
     <parent>
         <groupId>com.kkb.idscloud</groupId>
         <artifactId>platform</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>ids-cloud-base-api</artifactId>
-    <version>${idscloud.base-client.version}</version>
+    <version>${idscloud.base-api.version}</version>
     <packaging>jar</packaging>
     <description>平台基础服务接口</description>
     <dependencies>
