@@ -19,13 +19,17 @@ spring:
           lowerCaseServiceId: true
     nacos:
       config:
-        namespace: ${config.namespace}
-        refreshable-dataids: common.properties
-        server-addr: ${config.server-addr}
-        shared-dataids: common.properties,db.properties,redis.properties,rabbitmq.properties
+        namespace: ${namespace}
+        refresh-enabled: true
+        server-addr: ${nacos-addr}
+        shared-configs:
+          - common.properties
+          - db.properties
+          - redis.properties
+          - rabbitmq.properties
       discovery:
-        namespace: ${config.namespace}
-        server-addr: ${discovery.server-addr}
+        namespace: ${namespace}
+        server-addr: ${nacos-addr}
   main:
     allow-bean-definition-overriding: true
   profiles:

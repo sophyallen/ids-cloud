@@ -120,11 +120,11 @@ ids-cloud
     本地启动,默认不用修改
     ``` xml
         <!--Nacos配置中心地址-->
-        <config.server-addr>127.0.0.1:8848</config.server-addr>
+        <nacos-addr>127.0.0.1:8848</nacos-addr>
         <!--Nacos配置中心命名空间,用于支持多环境.这里必须使用ID，不能使用名称,默认为空-->
-        <config.namespace></config.namespace>
+        <namespace></namespace>
         <!--Nacos服务发现地址-->
-        <discovery.server-addr>127.0.0.1:8848</discovery.server-addr>
+        <nacos-addr>127.0.0.1:8848</nacos-addr>
     ```
     
 5. 本地启动(按顺序启动)
