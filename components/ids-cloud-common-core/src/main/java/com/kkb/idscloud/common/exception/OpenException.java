@@ -11,7 +11,7 @@ public class OpenException extends RuntimeException {
 
     private static final long serialVersionUID = 3655050728585279326L;
 
-    private int code = ErrorCode.ERROR.getCode();
+    private String code = ErrorCode.ERROR.getCode();
 
     public OpenException() {
 
@@ -21,21 +21,21 @@ public class OpenException extends RuntimeException {
         super(msg);
     }
 
-    public OpenException(int code, String msg) {
+    public OpenException(String code, String msg) {
         super(msg);
         this.code = code;
     }
 
-    public OpenException(int code, String msg, Throwable cause) {
+    public OpenException(String code, String msg, Throwable cause) {
         super(msg, cause);
         this.code = code;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

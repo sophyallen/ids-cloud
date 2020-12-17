@@ -453,7 +453,7 @@ public class WebUtils {
      * @param request
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
-        return (request.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With").toString())) || (request.getHeader("Content-Type") != null && request.getHeader("Content-Type").startsWith("application/json"));
+        return (request.getHeader("X-Requested-With") != null && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) || (request.getHeader("Content-Type") != null && request.getHeader("Content-Type").startsWith("application/json"));
     }
 
     /**

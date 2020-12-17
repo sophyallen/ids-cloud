@@ -1,7 +1,6 @@
 package com.kkb.idscloud.autoconfigure;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.kkb.idscloud.common.annotation.RequestMappingScan;
 import com.kkb.idscloud.common.configuration.OpenScanProperties;
 import com.kkb.idscloud.common.configuration.OpenCommonProperties;
 import com.kkb.idscloud.common.configuration.OpenIdGenProperties;
@@ -11,16 +10,11 @@ import com.kkb.idscloud.common.filter.XFilter;
 import com.kkb.idscloud.common.gen.SnowflakeIdGenerator;
 import com.kkb.idscloud.common.health.DbHealthIndicator;
 import com.kkb.idscloud.common.mybatis.ModelMetaObjectHandler;
-import com.kkb.idscloud.common.security.http.OpenRestTemplate;
-import com.kkb.idscloud.common.security.oauth2.client.OpenOAuth2ClientProperties;
 import com.kkb.idscloud.common.utils.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.cloud.bus.BusProperties;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({OpenCommonProperties.class, OpenIdGenProperties.class, OpenOAuth2ClientProperties.class, OpenScanProperties.class})
+@EnableConfigurationProperties({OpenCommonProperties.class, OpenIdGenProperties.class,  OpenScanProperties.class})
 public class AutoConfiguration {
 
 
@@ -121,35 +115,6 @@ public class AutoConfiguration {
         return snowflakeIdGenerator;
     }
 
-
-    /**
-     * 自定义注解扫描
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(RequestMappingScan.class)
-    public RequestMappingScan resourceAnnotationScan(AmqpTemplate amqpTemplate, OpenScanProperties scanProperties) {
-        RequestMappingScan scan = new RequestMappingScan(amqpTemplate,scanProperties);
-        log.info("RequestMappingScan [{}]", scan);
-        return scan;
-    }
-
-    /**
-     * 自定义Oauth2请求类
-     *
-     * @param openCommonProperties
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(OpenRestTemplate.class)
-    public OpenRestTemplate openRestTemplate(OpenCommonProperties openCommonProperties, BusProperties busProperties, ApplicationEventPublisher publisher) {
-        OpenRestTemplate restTemplate = new OpenRestTemplate(openCommonProperties, busProperties, publisher);
-        //设置自定义ErrorHandler
-        restTemplate.setErrorHandler(new OpenRestResponseErrorHandler());
-        log.info("OpenRestTemplate [{}]", restTemplate);
-        return restTemplate;
-    }
 
     @Bean
     public RestTemplate restTemplate() {

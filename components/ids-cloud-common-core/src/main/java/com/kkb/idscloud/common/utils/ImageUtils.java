@@ -26,7 +26,7 @@ public final class ImageUtils {
         boolean bol = false;
         String pictype = "";
         if (!"".equals(org) && org != null) {
-            pictype = org.substring(org.lastIndexOf(".") + 1, org.length());
+            pictype = org.substring(org.lastIndexOf(".") + 1);
         }
         // 缩放比例
         double ratio = 0;
@@ -57,7 +57,7 @@ public final class ImageUtils {
     public static void resizeWidth(String org, String dest, int height, int width) {
         String pictype = "";
         if (!"".equals(org) && org != null) {
-            pictype = org.substring(org.lastIndexOf(".") + 1, org.length());
+            pictype = org.substring(org.lastIndexOf(".") + 1);
         }
         double ratio = 0; // 缩放比例
         File o = new File(org);

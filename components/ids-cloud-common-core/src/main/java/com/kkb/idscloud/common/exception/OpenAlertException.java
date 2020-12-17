@@ -15,11 +15,11 @@ public class OpenAlertException extends OpenException {
         super(msg);
     }
 
-    public OpenAlertException(int code, String msg) {
+    public OpenAlertException(String code, String msg) {
         super(code, msg);
     }
 
-    public OpenAlertException(int code, String msg, Throwable cause) {
+    public OpenAlertException(String code, String msg, Throwable cause) {
         super(code, msg, cause);
     }
 }

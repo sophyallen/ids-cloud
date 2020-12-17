@@ -24,8 +24,6 @@
  */
 package com.kkb.idscloud.gateway;
 
-import com.kkb.idscloud.gateway.locator.ResourceLocator;
-import com.kkb.idscloud.gateway.locator.JdbcRouteDefinitionLocator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -46,10 +44,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 @RemoteApplicationEventScan(basePackages = "com.kkb.idscloud")
 public class GatewaySpringApplication implements CommandLineRunner {
-    @Autowired
-    public ResourceLocator resourceLocator;
-    @Autowired
-    private JdbcRouteDefinitionLocator jdbcRouteDefinitionLocator;
 
     public static void main(String[] args) {
         SpringApplication.run(GatewaySpringApplication.class, args);
@@ -57,7 +51,5 @@ public class GatewaySpringApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        jdbcRouteDefinitionLocator.refresh();
-        resourceLocator.refresh();
     }
 }

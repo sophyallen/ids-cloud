@@ -5,35 +5,24 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.kkb.idscloud.base.api.BaseAuthorityApi;
-import com.kkb.idscloud.base.api.GatewayApi;
 import com.kkb.idscloud.common.configuration.OpenCommonProperties;
 import com.kkb.idscloud.common.utils.SpringContextHolder;
 import com.kkb.idscloud.gateway.filter.GatewayContextFilter;
-import com.kkb.idscloud.gateway.actuator.ApiEndpoint;
 import com.kkb.idscloud.gateway.exception.JsonExceptionHandler;
 import com.kkb.idscloud.gateway.filter.RemoveGatewayContextFilter;
-import com.kkb.idscloud.gateway.locator.ResourceLocator;
-import com.kkb.idscloud.gateway.locator.JdbcRouteDefinitionLocator;
 import com.kkb.idscloud.gateway.service.AccessLogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
-import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
-import org.springframework.cloud.bus.BusProperties;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.route.InMemoryRouteDefinitionRepository;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -138,47 +127,6 @@ public class ApiConfiguration {
     @Primary
     public SwaggerProvider swaggerProvider(RouteDefinitionLocator routeDefinitionLocator) {
         return new SwaggerProvider(routeDefinitionLocator);
-    }
-
-    /**
-     * 动态路由加载
-     *
-     * @return
-     */
-    @Bean
-    public JdbcRouteDefinitionLocator jdbcRouteDefinitionLocator(JdbcTemplate jdbcTemplate, InMemoryRouteDefinitionRepository repository) {
-        JdbcRouteDefinitionLocator jdbcRouteDefinitionLocator =  new JdbcRouteDefinitionLocator(jdbcTemplate,repository);
-        log.info("JdbcRouteDefinitionLocator [{}]", jdbcRouteDefinitionLocator);
-        return  jdbcRouteDefinitionLocator;
-    }
-
-    /**
-     * 动态路由加载
-     *
-     * @return
-     */
-    @Bean
-    @Lazy
-    public ResourceLocator resourceLocator(RouteDefinitionLocator routeDefinitionLocator, BaseAuthorityApi baseAuthorityApi, GatewayApi gatewayApi) {
-        ResourceLocator resourceLocator =  new ResourceLocator(routeDefinitionLocator, baseAuthorityApi, gatewayApi);
-        log.info("ResourceLocator [{}]", resourceLocator);
-        return resourceLocator;
-    }
-
-    /**
-     * 网关bus端点
-     *
-     * @param context
-     * @param bus
-     * @return
-     */
-    @Bean
-    @ConditionalOnEnabledEndpoint
-    @ConditionalOnClass({Endpoint.class})
-    public ApiEndpoint apiEndpoint(ApplicationContext context, BusProperties bus) {
-        ApiEndpoint endpoint = new ApiEndpoint(context, bus.getId());
-        log.info("ApiEndpoint [{}]", endpoint);
-        return endpoint;
     }
 
     @Bean

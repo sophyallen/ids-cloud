@@ -190,7 +190,7 @@ public class QRCodeUtils {
             Graphics2D g = (Graphics2D) combined.getGraphics();
             g.drawImage(qrcode, 0, 0, null);
             g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-            g.drawImage(logo, (int) Math.round(deltaWidth / 2), (int) Math.round(deltaHeight / 2), null);
+            g.drawImage(logo, Math.round(deltaWidth / 2), Math.round(deltaHeight / 2), null);
 
             return combined;
         } catch (IOException e) {

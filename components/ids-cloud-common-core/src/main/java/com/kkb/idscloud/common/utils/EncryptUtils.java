@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -67,10 +68,10 @@ public class EncryptUtils extends DigestUtils {
             byte[] enCodeFormat = secretKey.getEncoded();
             SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
             Cipher cipher = Cipher.getInstance("AES");
-            byte[] byteContent = plainText.getBytes("utf-8");
+            byte[] byteContent = plainText.getBytes(StandardCharsets.UTF_8);
             cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
             byte[] byteRresult = cipher.doFinal(byteContent);
-            String sb = new String("");
+            String sb = "";
 
             for (int i = 0; i < byteRresult.length; i++) {
                 String hex = Integer.toHexString(byteRresult[i] & 0xFF);
@@ -138,10 +139,10 @@ public class EncryptUtils extends DigestUtils {
 
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] cipherBytes = cipher.doFinal(plainText.getBytes("utf-8"));
+            byte[] cipherBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
             byte[] plainTextBytes = Base64.getEncoder().encode(cipherBytes);
 
-            return new String(plainTextBytes, "utf-8");
+            return new String(plainTextBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -167,10 +168,10 @@ public class EncryptUtils extends DigestUtils {
             Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-            byte[] cipherTextBytes = Base64.getDecoder().decode(cipherText.getBytes("utf-8"));
+            byte[] cipherTextBytes = Base64.getDecoder().decode(cipherText.getBytes(StandardCharsets.UTF_8));
             byte[] cipherBytes = cipher.doFinal(cipherTextBytes);
 
-            return new String(cipherBytes, "utf-8");
+            return new String(cipherBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -273,11 +274,11 @@ public class EncryptUtils extends DigestUtils {
      *
      * @return
      */
-    private static String bufferToHex(byte bytes[]) {
+    private static String bufferToHex(byte[] bytes) {
         return bufferToHex(bytes, 0, bytes.length);
     }
 
-    private static String bufferToHex(byte bytes[], int m, int n) {
+    private static String bufferToHex(byte[] bytes, int m, int n) {
         StringBuffer stringbuffer = new StringBuffer(2 * n);
         int k = m + n;
         for (int l = m; l < k; l++) {

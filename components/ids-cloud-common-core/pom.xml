@@ -27,16 +27,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <!--spring security-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-        </dependency>
-        <!-- spring oauth2 -->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-oauth2</artifactId>
-        </dependency>
         <!--Redis-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -46,6 +36,7 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!--监控-->
         <dependency>
@@ -77,6 +68,12 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${apache.commons-io.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -88,11 +85,6 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-      <!--  <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>ojdbc14</artifactId>
-            <version>${oracle.version}</version>
-        </dependency>-->
         <!--fastjson -->
         <dependency>
             <groupId>com.alibaba</groupId>

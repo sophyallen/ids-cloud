@@ -14,10 +14,5 @@
     <description>平台服务</description>
     <modules>
         <module>ids-cloud-gateway-server</module>
-        <module>ids-cloud-uaa-admin-server</module>
-        <module>ids-cloud-uaa-portal-server</module>
-        <module>ids-cloud-base-api</module>
-        <module>ids-cloud-base-server</module>
-        <module>ids-cloud-generator-server</module>
     </modules>
 </project>

@@ -19,9 +19,8 @@
             <version>${idscloud.common.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.kkb.idscloud</groupId>
-            <artifactId>ids-cloud-base-api</artifactId>
-            <version>${idscloud.base-api.version}</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>
         <!--阿里巴巴 nacos 服务发现-->
         <dependency>

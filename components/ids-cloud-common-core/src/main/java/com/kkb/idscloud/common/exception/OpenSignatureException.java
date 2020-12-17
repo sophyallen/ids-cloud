@@ -15,11 +15,11 @@ public class OpenSignatureException extends OpenException {
         super(msg);
     }
 
-    public OpenSignatureException(int code, String msg) {
+    public OpenSignatureException(String code, String msg) {
         super(code, msg);
     }
 
-    public OpenSignatureException(int code, String msg, Throwable cause) {
+    public OpenSignatureException(String code, String msg, Throwable cause) {
         super(code, msg, cause);
     }
 }

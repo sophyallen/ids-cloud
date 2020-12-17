@@ -3,23 +3,17 @@ package com.kkb.idscloud.gateway.service;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
-import com.kkb.idscloud.common.constants.QueueConstants;
-import com.kkb.idscloud.common.security.OpenUserDetails;
 import com.kkb.idscloud.gateway.util.ReactiveWebUtils;
 import com.kkb.idscloud.gateway.filter.context.GatewayContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -34,21 +28,15 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
 @Component
 public class AccessLogService {
 
-    @Autowired
-    private AmqpTemplate amqpTemplate;
-
     @Value("${spring.application.name}")
     private String defaultServiceId;
 
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @JsonIgnore
-    private Set<String> ignores = new HashSet<>(Arrays.asList(new String[]{
-            "/**/oauth/check_token/**",
+    private Set<String> ignores = new HashSet<>(Arrays.asList("/**/oauth/check_token/**",
             "/**/gateway/access/logs/**",
-            "/webjars/**"
-
-    }));
+            "/webjars/**"));
 
     /**
      * 不记录日志
@@ -108,14 +96,7 @@ public class AccessLogService {
             map.put("userAgent", userAgent);
             map.put("responseTime", new Date());
             map.put("error", error);
-            Mono<Authentication>  authenticationMono = exchange.getPrincipal();
-            Mono<OpenUserDetails> authentication = authenticationMono
-                    .map(Authentication::getPrincipal)
-                    .cast(OpenUserDetails.class);
-            authentication.subscribe(user ->
-                    map.put("authentication", JSONObject.toJSONString(user))
-            );
-            amqpTemplate.convertAndSend(QueueConstants.QUEUE_ACCESS_LOGS, map);
+            log.info("gateway log: {}", map);
         } catch (Exception e) {
             log.error("access logs save error:{}", e);
         }

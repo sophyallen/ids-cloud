@@ -95,7 +95,7 @@ public abstract class BaseServiceImpl<M extends SuperMapper<T>, T> extends Servi
     public String getMapperName() {
         String mapperName = "";
         Class cl = baseMapper.getClass();
-        Class<?> interfaces[] = cl.getInterfaces();
+        Class<?>[] interfaces = cl.getInterfaces();
         for (Class<?> anInterface : interfaces) {
             mapperName = anInterface.getName();
         }

@@ -4,9 +4,6 @@ import com.kkb.idscloud.common.constants.ErrorCode;
 import com.kkb.idscloud.common.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
-import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -27,37 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class OpenGlobalExceptionHandler {
 
-
-    /**
-     * 统一异常处理
-     * AuthenticationException
-     *
-     * @param ex
-     * @param request
-     * @param response
-     * @return
-     */
-    @ExceptionHandler({AuthenticationException.class})
-    public static ResultBody authenticationException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
-        ResultBody resultBody = resolveException(ex, request.getRequestURI());
-        response.setStatus(resultBody.getHttpStatus());
-        return resultBody;
-    }
-
-    /**
-     * OAuth2Exception
-     *
-     * @param ex
-     * @param request
-     * @param response
-     * @return
-     */
-    @ExceptionHandler({OAuth2Exception.class, InvalidTokenException.class})
-    public static ResultBody oauth2Exception(Exception ex, HttpServletRequest request, HttpServletResponse response) {
-        ResultBody resultBody = resolveException(ex, request.getRequestURI());
-        response.setStatus(resultBody.getHttpStatus());
-        return resultBody;
-    }
 
     /**
      * 自定义异常
@@ -119,40 +85,7 @@ public class OpenGlobalExceptionHandler {
         } else if (className.contains("CredentialsExpiredException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCode.CREDENTIALS_EXPIRED;
-        } else if (className.contains("InvalidClientException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.INVALID_CLIENT;
-        } else if (className.contains("UnauthorizedClientException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.UNAUTHORIZED_CLIENT;
-        }else if (className.contains("InsufficientAuthenticationException") || className.contains("AuthenticationCredentialsNotFoundException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.UNAUTHORIZED;
-        } else if (className.contains("InvalidGrantException")) {
-            code = ErrorCode.ALERT;
-            if ("Bad credentials".contains(message)) {
-                code = ErrorCode.BAD_CREDENTIALS;
-            } else if ("User is disabled".contains(message)) {
-                code = ErrorCode.ACCOUNT_DISABLED;
-            } else if ("User account is locked".contains(message)) {
-                code = ErrorCode.ACCOUNT_LOCKED;
-            }
-        } else if (className.contains("InvalidScopeException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.INVALID_SCOPE;
-        } else if (className.contains("InvalidTokenException")) {
-            httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.INVALID_TOKEN;
-        } else if (className.contains("InvalidRequestException")) {
-            httpStatus = HttpStatus.BAD_REQUEST.value();
-            code = ErrorCode.INVALID_REQUEST;
-        } else if (className.contains("RedirectMismatchException")) {
-            code = ErrorCode.REDIRECT_URI_MISMATCH;
-        } else if (className.contains("UnsupportedGrantTypeException")) {
-            code = ErrorCode.UNSUPPORTED_GRANT_TYPE;
-        } else if (className.contains("UnsupportedResponseTypeException")) {
-            code = ErrorCode.UNSUPPORTED_RESPONSE_TYPE;
-        } else if (className.contains("UserDeniedAuthorizationException")) {
+        }   else if (className.contains("UserDeniedAuthorizationException")) {
             code = ErrorCode.ACCESS_DENIED;
         } else if (className.contains("AccessDeniedException")) {
             code = ErrorCode.ACCESS_DENIED;
@@ -184,20 +117,7 @@ public class OpenGlobalExceptionHandler {
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
             httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ErrorCode.MEDIA_TYPE_NOT_ACCEPTABLE;
-        } else if (className.contains("MethodArgumentNotValidException")) {
-            BindingResult bindingResult = ((MethodArgumentNotValidException) ex).getBindingResult();
-            code = ErrorCode.ALERT;
-            return ResultBody.failed().code(code.getCode()).msg(bindingResult.getFieldError().getDefaultMessage());
-        } else if (className.contains("IllegalArgumentException")) {
-            //参数错误
-            code = ErrorCode.ALERT;
-            httpStatus = HttpStatus.BAD_REQUEST.value();
-        } else if (className.contains("OpenAlertException")) {
-            code = ErrorCode.ALERT;
-        } else if (className.contains("OpenSignatureException")) {
-            httpStatus = HttpStatus.BAD_REQUEST.value();
-            code = ErrorCode.SIGNATURE_DENIED;
-        }else if(message.equalsIgnoreCase(ErrorCode.TOO_MANY_REQUESTS.name())){
+        } else if(message.equalsIgnoreCase(ErrorCode.TOO_MANY_REQUESTS.name())){
             code = ErrorCode.TOO_MANY_REQUESTS;
         }
         return buildBody(ex, code, path, httpStatus);

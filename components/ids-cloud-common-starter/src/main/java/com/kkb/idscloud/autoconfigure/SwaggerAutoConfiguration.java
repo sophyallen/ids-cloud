@@ -96,7 +96,7 @@ public class SwaggerAutoConfiguration {
         pars.add(builder.build());
         builder.name("signType").description("公共参数:签名方式:MD5(默认)、SHA256.")
                 .modelRef(new ModelRef("string")).parameterType("form")
-                .allowableValues(new AllowableListValues(Lists.newArrayList(new String[]{"MD5", "SHA256"}), "string"))
+                .allowableValues(new AllowableListValues(Lists.newArrayList("MD5", "SHA256"), "string"))
                 .required(true);
         pars.add(builder.build());
         builder = new ParameterBuilder();

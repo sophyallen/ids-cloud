@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import com.kkb.idscloud.common.constants.ErrorCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
  * @author admin
  */
 @ApiModel(value = "响应结果")
+@Data
 public class ResultBody<T> implements Serializable {
     private static final long serialVersionUID = -6190689122701100762L;
 
@@ -23,7 +25,7 @@ public class ResultBody<T> implements Serializable {
      * 响应编码
      */
     @ApiModelProperty(value = "响应编码:0-请求处理成功")
-    private int code = 0;
+    private String code;
     /**
      * 提示消息
      */
@@ -63,7 +65,7 @@ public class ResultBody<T> implements Serializable {
         super();
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
@@ -105,10 +107,10 @@ public class ResultBody<T> implements Serializable {
     }
 
     public static ResultBody failed() {
-        return new ResultBody().code(ErrorCode.FAIL.getCode()).msg(ErrorCode.FAIL.getMessage());
+        return new ResultBody().code(ErrorCode.SERVER_ERROR.getCode()).msg(ErrorCode.SERVER_ERROR.getMessage());
     }
 
-    public ResultBody code(int code) {
+    public ResultBody code(String code) {
         this.code = code;
         return this;
     }

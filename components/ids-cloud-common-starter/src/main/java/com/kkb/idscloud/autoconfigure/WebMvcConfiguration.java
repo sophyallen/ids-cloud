@@ -2,8 +2,6 @@ package com.kkb.idscloud.autoconfigure;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,25 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
-
-    /**
-     * 多个WebSecurityConfigurerAdapter
-     */
-    @Configuration
-    @Order(101)
-    public static class ApiWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-        @Override
-        public void configure(WebSecurity web) throws Exception {
-            web.ignoring().antMatchers(
-                    "/error",
-                    "/static/**",
-                    "/v2/api-docs/**",
-                    "/swagger-resources/**",
-                    "/webjars/**",
-                    "/favicon.ico");
-        }
-    }
-
 
     /**
      * 资源处理器
