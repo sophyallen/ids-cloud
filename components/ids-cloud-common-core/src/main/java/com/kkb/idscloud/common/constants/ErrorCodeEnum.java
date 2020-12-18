@@ -10,7 +10,7 @@ public enum ErrorCodeEnum {
     /**
      * 客户端错误
      */
-    CLIENT_ERROR_0001("A0001", "用户端错误"),
+    CLIENT_ERROR_A0001("A0001", "用户端错误"),
     CLIENT_ERROR_A0100("A0100", "用户注册错误"),
     CLIENT_ERROR_A0101("A0101", "用户未同意隐私协议"),
     CLIENT_ERROR_A0102("A0102", "注册国家或地区受限"),
