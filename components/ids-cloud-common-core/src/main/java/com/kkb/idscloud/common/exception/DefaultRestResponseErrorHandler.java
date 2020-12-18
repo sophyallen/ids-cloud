@@ -9,7 +9,7 @@ import java.io.IOException;
  * 自定RestTemplate异常处理
  * @author zmc
  */
-public class OpenRestResponseErrorHandler implements ResponseErrorHandler {
+public class DefaultRestResponseErrorHandler implements ResponseErrorHandler {
     @Override
     public boolean hasError(ClientHttpResponse clientHttpResponse) throws IOException {
         // false表示不管response的status是多少都返回没有错

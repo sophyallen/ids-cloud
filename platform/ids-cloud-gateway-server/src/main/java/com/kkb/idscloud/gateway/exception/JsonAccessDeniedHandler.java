@@ -2,7 +2,7 @@ package com.kkb.idscloud.gateway.exception;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kkb.idscloud.gateway.service.AccessLogService;
-import com.kkb.idscloud.common.exception.OpenGlobalExceptionHandler;
+import com.kkb.idscloud.common.exception.GlobalExceptionHandler;
 import com.kkb.idscloud.common.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -31,7 +31,7 @@ public class JsonAccessDeniedHandler implements ServerAccessDeniedHandler {
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, AccessDeniedException e) {
-        ResultBody resultBody = OpenGlobalExceptionHandler.resolveException(e,exchange.getRequest().getURI().getPath());
+        ResultBody resultBody = GlobalExceptionHandler.resolveException(e,exchange.getRequest().getURI().getPath());
         return Mono.defer(() -> {
             return Mono.just(exchange.getResponse());
         }).flatMap((response) -> {

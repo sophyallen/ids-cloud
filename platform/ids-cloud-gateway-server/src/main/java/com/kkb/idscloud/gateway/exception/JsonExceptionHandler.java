@@ -1,8 +1,8 @@
 package com.kkb.idscloud.gateway.exception;
 
 import com.kkb.idscloud.gateway.service.AccessLogService;
-import com.kkb.idscloud.common.constants.ErrorCode;
-import com.kkb.idscloud.common.exception.OpenGlobalExceptionHandler;
+import com.kkb.idscloud.common.constants.ErrorCodeEnum;
+import com.kkb.idscloud.common.exception.GlobalExceptionHandler;
 import com.kkb.idscloud.common.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -98,10 +98,11 @@ public class JsonExceptionHandler implements ErrorWebExceptionHandler {
             return Mono.empty();
         }
         if (ex instanceof NotFoundException) {
-            resultBody = ResultBody.failed().code(ErrorCode.SERVICE_UNAVAILABLE.getCode()).msg(ErrorCode.SERVICE_UNAVAILABLE.getMessage()).httpStatus(HttpStatus.SERVICE_UNAVAILABLE.value()).path(request.getURI().getPath());
+            resultBody =
+                    ResultBody.failed().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).msg(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage()).httpStatus(HttpStatus.SERVICE_UNAVAILABLE.value()).path(request.getURI().getPath());
             log.error("==> 错误解析:{}", resultBody);
         } else {
-            resultBody = OpenGlobalExceptionHandler.resolveException((Exception) ex, exchange.getRequest().getURI().getPath());
+            resultBody = GlobalExceptionHandler.resolveException((Exception) ex, exchange.getRequest().getURI().getPath());
         }
         /**
          * 参考AbstractErrorWebExceptionHandler

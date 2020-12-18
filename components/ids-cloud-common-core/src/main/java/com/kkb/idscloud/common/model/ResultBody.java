@@ -4,7 +4,7 @@ package com.kkb.idscloud.common.model;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Maps;
-import com.kkb.idscloud.common.constants.ErrorCode;
+import com.kkb.idscloud.common.constants.ErrorCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -98,16 +98,16 @@ public class ResultBody<T> implements Serializable {
     @JSONField(serialize = false, deserialize = false)
     @JsonIgnore
     public boolean isOk() {
-        return this.code == ErrorCode.OK.getCode();
+        return this.code == ErrorCodeEnum.OK.getCode();
     }
 
 
     public static ResultBody ok() {
-        return new ResultBody().code(ErrorCode.OK.getCode()).msg(ErrorCode.OK.getMessage());
+        return new ResultBody().code(ErrorCodeEnum.OK.getCode()).msg(ErrorCodeEnum.OK.getMessage());
     }
 
     public static ResultBody failed() {
-        return new ResultBody().code(ErrorCode.SERVER_ERROR.getCode()).msg(ErrorCode.SERVER_ERROR.getMessage());
+        return new ResultBody().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).msg(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage());
     }
 
     public ResultBody code(String code) {
@@ -116,7 +116,7 @@ public class ResultBody<T> implements Serializable {
     }
 
     public ResultBody msg(String message) {
-        this.message = i18n(ErrorCode.getResultEnum(this.code).getMessage(), message);
+        this.message = message;
         return this;
     }
 

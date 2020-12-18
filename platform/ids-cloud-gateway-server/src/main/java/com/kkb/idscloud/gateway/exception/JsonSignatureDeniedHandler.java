@@ -1,8 +1,8 @@
 package com.kkb.idscloud.gateway.exception;
 
 import com.alibaba.fastjson.JSONObject;
-import com.kkb.idscloud.common.exception.OpenGlobalExceptionHandler;
-import com.kkb.idscloud.common.exception.OpenSignatureException;
+import com.kkb.idscloud.common.exception.GlobalExceptionHandler;
+import com.kkb.idscloud.common.exception.ThirdServerException;
 import com.kkb.idscloud.common.model.ResultBody;
 import com.kkb.idscloud.gateway.service.AccessLogService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +30,8 @@ public class JsonSignatureDeniedHandler implements ServerSignatureDeniedHandler 
     }
 
     @Override
-    public Mono<Void> handle(ServerWebExchange exchange, OpenSignatureException e) {
-        ResultBody resultBody = OpenGlobalExceptionHandler.resolveException(e, exchange.getRequest().getURI().getPath());
+    public Mono<Void> handle(ServerWebExchange exchange, ThirdServerException e) {
+        ResultBody resultBody = GlobalExceptionHandler.resolveException(e, exchange.getRequest().getURI().getPath());
         return Mono.defer(() -> {
             return Mono.just(exchange.getResponse());
         }).flatMap((response) -> {

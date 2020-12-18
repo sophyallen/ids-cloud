@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.kkb.idscloud.common.configuration.OpenScanProperties;
 import com.kkb.idscloud.common.configuration.OpenCommonProperties;
 import com.kkb.idscloud.common.configuration.OpenIdGenProperties;
-import com.kkb.idscloud.common.exception.OpenGlobalExceptionHandler;
-import com.kkb.idscloud.common.exception.OpenRestResponseErrorHandler;
+import com.kkb.idscloud.common.exception.GlobalExceptionHandler;
+import com.kkb.idscloud.common.exception.DefaultRestResponseErrorHandler;
 import com.kkb.idscloud.common.filter.XFilter;
 import com.kkb.idscloud.common.gen.SnowflakeIdGenerator;
 import com.kkb.idscloud.common.health.DbHealthIndicator;
@@ -94,9 +94,9 @@ public class AutoConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(OpenGlobalExceptionHandler.class)
-    public OpenGlobalExceptionHandler exceptionHandler() {
-        OpenGlobalExceptionHandler exceptionHandler = new OpenGlobalExceptionHandler();
+    @ConditionalOnMissingBean(GlobalExceptionHandler.class)
+    public GlobalExceptionHandler exceptionHandler() {
+        GlobalExceptionHandler exceptionHandler = new GlobalExceptionHandler();
         log.info("OpenGlobalExceptionHandler [{}]", exceptionHandler);
         return exceptionHandler;
     }
@@ -120,7 +120,7 @@ public class AutoConfiguration {
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         //设置自定义ErrorHandler
-        restTemplate.setErrorHandler(new OpenRestResponseErrorHandler());
+        restTemplate.setErrorHandler(new DefaultRestResponseErrorHandler());
         log.info("RestTemplate [{}]", restTemplate);
         return restTemplate;
     }

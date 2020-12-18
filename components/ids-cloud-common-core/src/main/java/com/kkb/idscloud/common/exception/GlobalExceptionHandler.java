@@ -1,11 +1,9 @@
 package com.kkb.idscloud.common.exception;
 
-import com.kkb.idscloud.common.constants.ErrorCode;
+import com.kkb.idscloud.common.constants.ErrorCodeEnum;
 import com.kkb.idscloud.common.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 @ResponseBody
 @Slf4j
-public class OpenGlobalExceptionHandler {
+public class GlobalExceptionHandler {
 
 
     /**
@@ -33,7 +31,7 @@ public class OpenGlobalExceptionHandler {
      * @param response
      * @return
      */
-    @ExceptionHandler({OpenException.class})
+    @ExceptionHandler({IdsClientException.class})
     public static ResultBody openException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
         ResultBody resultBody = resolveException(ex, request.getRequestURI());
         response.setStatus(resultBody.getHttpStatus());
@@ -62,63 +60,50 @@ public class OpenGlobalExceptionHandler {
      * @return
      */
     public static ResultBody resolveException(Exception ex, String path) {
-        ErrorCode code = ErrorCode.ERROR;
+        ErrorCodeEnum code = ErrorCodeEnum.SERVER_ERROR_B0001;
         int httpStatus = HttpStatus.INTERNAL_SERVER_ERROR.value();
         String message = ex.getMessage();
-        String superClassName = ex.getClass().getSuperclass().getName();
+//        String superClassName = ex.getClass().getSuperclass().getName();
         String className = ex.getClass().getName();
         if (className.contains("UsernameNotFoundException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.USERNAME_NOT_FOUND;
+            code = ErrorCodeEnum.USER_ERROR_A0201;
         } else if (className.contains("BadCredentialsException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.BAD_CREDENTIALS;
+            code = ErrorCodeEnum.USER_ERROR_A0300;
         } else if (className.contains("AccountExpiredException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.ACCOUNT_EXPIRED;
+            code = ErrorCodeEnum.USER_ERROR_A0203;
         } else if (className.contains("LockedException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.ACCOUNT_LOCKED;
+            code = ErrorCodeEnum.USER_ERROR_A0202;
         } else if (className.contains("DisabledException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.ACCOUNT_DISABLED;
+            code = ErrorCodeEnum.USER_ERROR_A0203;
         } else if (className.contains("CredentialsExpiredException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCode.CREDENTIALS_EXPIRED;
+            code = ErrorCodeEnum.USER_ERROR_A0311;
         }   else if (className.contains("UserDeniedAuthorizationException")) {
-            code = ErrorCode.ACCESS_DENIED;
+            code = ErrorCodeEnum.USER_ERROR_A0303;
         } else if (className.contains("AccessDeniedException")) {
-            code = ErrorCode.ACCESS_DENIED;
+            code = ErrorCodeEnum.USER_ERROR_A0312;
             httpStatus = HttpStatus.FORBIDDEN.value();
-            if (ErrorCode.ACCESS_DENIED_BLACK_LIMITED.getMessage().contains(message)) {
-                code = ErrorCode.ACCESS_DENIED_BLACK_LIMITED;
-            } else if (ErrorCode.ACCESS_DENIED_WHITE_LIMITED.getMessage().contains(message)) {
-                code = ErrorCode.ACCESS_DENIED_WHITE_LIMITED;
-            } else if (ErrorCode.ACCESS_DENIED_AUTHORITY_EXPIRED.getMessage().contains(message)) {
-                code = ErrorCode.ACCESS_DENIED_AUTHORITY_EXPIRED;
-            }else if (ErrorCode.ACCESS_DENIED_UPDATING.getMessage().contains(message)) {
-                code = ErrorCode.ACCESS_DENIED_UPDATING;
-            }else if (ErrorCode.ACCESS_DENIED_DISABLED.getMessage().contains(message)) {
-                code = ErrorCode.ACCESS_DENIED_DISABLED;
-            } else if (ErrorCode.ACCESS_DENIED_NOT_OPEN.getMessage().contains(message)) {
-                code = ErrorCode.ACCESS_DENIED_NOT_OPEN;
-            }
         } else if (className.contains("HttpMessageNotReadableException")
                 || className.contains("TypeMismatchException")
                 || className.contains("MissingServletRequestParameterException")) {
             httpStatus = HttpStatus.BAD_REQUEST.value();
-            code = ErrorCode.BAD_REQUEST;
+            code = ErrorCodeEnum.USER_ERROR_A0400;
         } else if (className.contains("NoHandlerFoundException")) {
             httpStatus = HttpStatus.NOT_FOUND.value();
-            code = ErrorCode.NOT_FOUND;
+            code = ErrorCodeEnum.USER_ERROR_A0404;
         } else if (className.contains("HttpRequestMethodNotSupportedException")) {
             httpStatus = HttpStatus.METHOD_NOT_ALLOWED.value();
-            code = ErrorCode.METHOD_NOT_ALLOWED;
+            code = ErrorCodeEnum.USER_ERROR_A0405;
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
             httpStatus = HttpStatus.BAD_REQUEST.value();
-            code = ErrorCode.MEDIA_TYPE_NOT_ACCEPTABLE;
-        } else if(message.equalsIgnoreCase(ErrorCode.TOO_MANY_REQUESTS.name())){
-            code = ErrorCode.TOO_MANY_REQUESTS;
+            code = ErrorCodeEnum.USER_ERROR_A0400;
+        } else if(message.equalsIgnoreCase(ErrorCodeEnum.USER_ERROR_A0501.name())){
+            code = ErrorCodeEnum.USER_ERROR_A0501;
         }
         return buildBody(ex, code, path, httpStatus);
     }
@@ -129,9 +114,9 @@ public class OpenGlobalExceptionHandler {
      * @param exception
      * @return
      */
-    private static ResultBody buildBody(Exception exception, ErrorCode resultCode, String path, int httpStatus) {
+    private static ResultBody buildBody(Exception exception, ErrorCodeEnum resultCode, String path, int httpStatus) {
         if (resultCode == null) {
-            resultCode = ErrorCode.ERROR;
+            resultCode = ErrorCodeEnum.SERVER_ERROR_B0001;
         }
         ResultBody resultBody = ResultBody.failed().code(resultCode.getCode()).msg(exception.getMessage()).path(path).httpStatus(httpStatus);
         log.error("==> error:{} exception: {}",resultBody, exception.getMessage(), exception);
