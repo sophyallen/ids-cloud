@@ -11,25 +11,15 @@ public class IdsClientException extends IdsException {
 
     private static final long serialVersionUID = 3655050728585279326L;
 
-    private String code;
-
     public IdsClientException(ErrorCodeEnum errorCodeEnum) {
         this(errorCodeEnum, errorCodeEnum.getMessage());
     }
 
     public IdsClientException(ErrorCodeEnum errorCodeEnum, String msg) {
-        super(msg);
-        this.code = errorCodeEnum.getCode();
+        super(errorCodeEnum, msg);
     }
 
     public IdsClientException(ErrorCodeEnum errorCodeEnum, String msg, Throwable cause) {
-        super(msg, cause);
-        this.code = errorCodeEnum.getCode();
+        super(errorCodeEnum, msg, cause);
     }
-
-    @Override
-    public String getCode() {
-        return code;
-    }
-
 }

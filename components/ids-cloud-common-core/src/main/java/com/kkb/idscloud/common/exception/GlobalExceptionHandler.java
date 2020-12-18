@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
      * @param response
      * @return
      */
-    @ExceptionHandler({IdsClientException.class})
+    @ExceptionHandler({IdsException.class})
     public static ResultBody openException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
         ResultBody resultBody = resolveException(ex, request.getRequestURI());
         response.setStatus(resultBody.getHttpStatus());
@@ -67,43 +67,43 @@ public class GlobalExceptionHandler {
         String className = ex.getClass().getName();
         if (className.contains("UsernameNotFoundException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0201;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0201;
         } else if (className.contains("BadCredentialsException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0300;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0300;
         } else if (className.contains("AccountExpiredException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0203;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0203;
         } else if (className.contains("LockedException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0202;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0202;
         } else if (className.contains("DisabledException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0203;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0203;
         } else if (className.contains("CredentialsExpiredException")) {
             httpStatus = HttpStatus.UNAUTHORIZED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0311;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0311;
         }   else if (className.contains("UserDeniedAuthorizationException")) {
-            code = ErrorCodeEnum.USER_ERROR_A0303;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0303;
         } else if (className.contains("AccessDeniedException")) {
-            code = ErrorCodeEnum.USER_ERROR_A0312;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0312;
             httpStatus = HttpStatus.FORBIDDEN.value();
         } else if (className.contains("HttpMessageNotReadableException")
                 || className.contains("TypeMismatchException")
                 || className.contains("MissingServletRequestParameterException")) {
             httpStatus = HttpStatus.BAD_REQUEST.value();
-            code = ErrorCodeEnum.USER_ERROR_A0400;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0400;
         } else if (className.contains("NoHandlerFoundException")) {
             httpStatus = HttpStatus.NOT_FOUND.value();
-            code = ErrorCodeEnum.USER_ERROR_A0404;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0404;
         } else if (className.contains("HttpRequestMethodNotSupportedException")) {
             httpStatus = HttpStatus.METHOD_NOT_ALLOWED.value();
-            code = ErrorCodeEnum.USER_ERROR_A0405;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0405;
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
             httpStatus = HttpStatus.BAD_REQUEST.value();
-            code = ErrorCodeEnum.USER_ERROR_A0400;
-        } else if(message.equalsIgnoreCase(ErrorCodeEnum.USER_ERROR_A0501.name())){
-            code = ErrorCodeEnum.USER_ERROR_A0501;
+            code = ErrorCodeEnum.CLIENT_ERROR_A0400;
+        } else if(message.equalsIgnoreCase(ErrorCodeEnum.CLIENT_ERROR_A0501.name())){
+            code = ErrorCodeEnum.CLIENT_ERROR_A0501;
         }
         return buildBody(ex, code, path, httpStatus);
     }

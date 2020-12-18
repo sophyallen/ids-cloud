@@ -1,5 +1,7 @@
 package com.kkb.idscloud.common.exception;
 
+import com.kkb.idscloud.common.constants.ErrorCodeEnum;
+
 /**
  * @author: zmc
  * @date: 2020-12-18 17:09
@@ -7,13 +9,18 @@ package com.kkb.idscloud.common.exception;
  */
 public abstract class IdsException extends RuntimeException {
 
-    public IdsException(String msg) {
+    private ErrorCodeEnum errorCodeEnum;
+
+    public IdsException(ErrorCodeEnum errorCodeEnum, String msg) {
         super(msg);
+        this.errorCodeEnum = errorCodeEnum;
     }
 
-    public IdsException(String msg, Throwable cause) {
+    public IdsException(ErrorCodeEnum errorCodeEnum, String msg, Throwable cause) {
         super(msg, cause);
     }
 
-    public abstract String getCode();
+    public ErrorCodeEnum getErrorCodeEnum() {
+        return errorCodeEnum;
+    }
 }
