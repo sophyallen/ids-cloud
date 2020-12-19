@@ -1,9 +1,9 @@
 package com.kkb.idscloud.gateway.exception;
 
 import com.kkb.idscloud.gateway.service.AccessLogService;
-import com.kkb.idscloud.common.constants.ErrorCodeEnum;
-import com.kkb.idscloud.common.exception.GlobalExceptionHandler;
-import com.kkb.idscloud.common.model.ResultBody;
+import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
+import com.kkb.idscloud.common.core.exception.GlobalExceptionHandler;
+import com.kkb.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.cloud.gateway.support.NotFoundException;

@@ -1,6 +1,6 @@
 package com.kkb.idscloud.gateway.exception;
 
-import com.kkb.idscloud.common.exception.ThirdServerException;
+import com.kkb.idscloud.common.core.exception.ThirdServerException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 

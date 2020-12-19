@@ -1,7 +1,7 @@
 package com.kkb.idscloud.gateway.fallback;
 
-import com.kkb.idscloud.common.constants.ErrorCodeEnum;
-import com.kkb.idscloud.common.model.ResultBody;
+import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
+import com.kkb.idscloud.common.core.model.ResultBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;

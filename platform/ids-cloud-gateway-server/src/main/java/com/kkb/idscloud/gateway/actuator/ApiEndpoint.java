@@ -1,7 +1,7 @@
 package com.kkb.idscloud.gateway.actuator;
 
 import com.kkb.idscloud.common.event.RemoteRefreshRouteEvent;
-import com.kkb.idscloud.common.model.ResultBody;
+import com.kkb.idscloud.common.core.model.ResultBody;
 import org.springframework.boot.actuate.endpoint.web.annotation.RestControllerEndpoint;
 import org.springframework.cloud.bus.endpoint.AbstractBusEndpoint;
 import org.springframework.context.ApplicationEventPublisher;

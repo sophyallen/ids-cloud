@@ -2,8 +2,8 @@ package com.kkb.idscloud.gateway.exception;
 
 import com.alibaba.fastjson.JSONObject;
 import com.kkb.idscloud.gateway.service.AccessLogService;
-import com.kkb.idscloud.common.exception.GlobalExceptionHandler;
-import com.kkb.idscloud.common.model.ResultBody;
+import com.kkb.idscloud.common.core.exception.GlobalExceptionHandler;
+import com.kkb.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferFactory;
