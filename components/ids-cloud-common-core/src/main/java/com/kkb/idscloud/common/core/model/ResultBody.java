@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * @author admin
+ * @author zmc
  */
 @ApiModel(value = "响应结果")
 @Data

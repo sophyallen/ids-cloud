@@ -12,8 +12,6 @@ public class EntityMap extends HashMap<String, Object> {
 
     private static final long serialVersionUID = 1L;
     public static EnumConvertInterceptor interceptors = null;
-   // private RedisUtils redisUtils = SpringContextHolder.getBean("redisUtils");
-    //private Map<Object, Object> dataMaps = redisUtils.getMap("DICTDATA_MAPS");
 
     public EntityMap() {
 
@@ -35,14 +33,8 @@ public class EntityMap extends HashMap<String, Object> {
     }
 
 
+    @Override
     public EntityMap put(String key, Object value) {
-       /* List<Object> dictKeys = redisUtils.getList("DICT_KEYS");
-        *//*判断字段是否是字典类型*//*
-        if (dictKeys.contains(key) && ObjectUtils.isNotEmpty(value)) {
-            Object dictValue = dataMaps.get(key + "_" + value.toString());
-            *//*返回数据中添加字典显示值*//*
-            super.put(key + "Title", dictValue);
-        }*/
         if (ObjectUtils.isNotEmpty(interceptors)) {
             interceptors.convert(this, key, value);
         }

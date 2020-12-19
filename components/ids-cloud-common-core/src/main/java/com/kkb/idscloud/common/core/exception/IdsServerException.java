@@ -5,7 +5,7 @@ import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 /**
  * 提示消息异常
  *
- * @author admin
+ * @author zmc
  */
 public class IdsServerException extends IdsException {
     private static final long serialVersionUID = 4908906410210213271L;

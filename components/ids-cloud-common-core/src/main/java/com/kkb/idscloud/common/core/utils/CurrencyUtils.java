@@ -7,7 +7,7 @@ import java.text.NumberFormat;
 /**
  * 货币转换工具类
  *
- * @author: admin
+ * @author zmc
  * @date: 2018/7/31 14:50
  * @description:
  */
@@ -67,8 +67,7 @@ public class CurrencyUtils extends org.apache.commons.lang3.math.NumberUtils {
      * @param decimal  保留的小数点数
      * @param rounding 是否四舍五入
      * @return
-     * @author
-     * @version 1.00.00
+     * @author zmc 1.00.00
      * @date 2018年1月18日
      */
     public static double formatNumber(double number, int decimal, boolean rounding) {
@@ -84,8 +83,7 @@ public class CurrencyUtils extends org.apache.commons.lang3.math.NumberUtils {
      * 对四舍五入的数据进行补0显示，即显示.00
      *
      * @return
-     * @author
-     * @version 1.00.00
+     * @author zmc 1.00.00
      * @date 2018年1月23日
      */
     public static String zeroFill(double number) {
@@ -161,8 +159,7 @@ public class CurrencyUtils extends org.apache.commons.lang3.math.NumberUtils {
      * 测试方法入口
      *
      * @param args
-     * @author
-     * @version 1.00.00
+     * @author zmc 1.00.00
      * @date 2018年1月18日
      */
     public static void main(String[] args) throws Exception {

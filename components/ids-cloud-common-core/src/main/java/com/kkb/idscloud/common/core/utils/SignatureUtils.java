@@ -110,7 +110,7 @@ public class SignatureUtils {
         StringBuilder sb = new StringBuilder();
         String signType = paramMap.get(CommonConstants.SIGN_SIGN_TYPE_KEY);
         SignType type = null;
-        if (StringUtils.isNotBlank(signType)) {
+        if (IdsStringUtils.isNotBlank(signType)) {
             type = SignType.valueOf(signType);
         }
         if (type == null) {

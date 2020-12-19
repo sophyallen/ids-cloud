@@ -5,7 +5,7 @@ import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 /**
  * 基础错误异常
  *
- * @author admin
+ * @author zmc
  */
 public class IdsClientException extends IdsException {
 

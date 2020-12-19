@@ -15,7 +15,6 @@
     <modules>
         <module>ids-cloud-common-core</module>
         <module>ids-cloud-common-starter</module>
-        <module>ids-cloud-mybatis-stater</module>
         <module>ids-cloud-mybatis-starter</module>
     </modules>
 </project>

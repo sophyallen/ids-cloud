@@ -1,7 +1,7 @@
 package com.kkb.idscloud.common.core.utils;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 

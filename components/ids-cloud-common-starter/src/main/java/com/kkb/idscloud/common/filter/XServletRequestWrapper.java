@@ -1,7 +1,7 @@
 package com.kkb.idscloud.common.filter;
 
 
-import com.kkb.idscloud.common.core.utils.StringUtils;
+import com.kkb.idscloud.common.core.utils.IdsStringUtils;
 import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ReadListener;
@@ -67,8 +67,8 @@ public class XServletRequestWrapper extends HttpServletRequestWrapper {
     @Override
     public String getParameter(String name) {
         String value = request.getParameter(name);
-        if (!StringUtils.isEmpty(value)) {
-            value = StringUtils.trim(value);
+        if (!IdsStringUtils.isEmpty(value)) {
+            value = IdsStringUtils.trim(value);
         }
         return value;
     }
@@ -82,7 +82,7 @@ public class XServletRequestWrapper extends HttpServletRequestWrapper {
         }
         for (int i = 0; i < parameterValues.length; i++) {
             String value = parameterValues[i];
-            parameterValues[i] = StringUtils.trim(value);
+            parameterValues[i] = IdsStringUtils.trim(value);
         }
         return parameterValues;
     }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 自定义swagger配置
  *
- * @author LYD
+ * @author zmc
  * @date 2018/7/29
  */
 @ConfigurationProperties(prefix = "idscloud.swagger2")

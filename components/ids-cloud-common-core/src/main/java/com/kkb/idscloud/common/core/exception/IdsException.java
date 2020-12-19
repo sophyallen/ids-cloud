@@ -3,7 +3,7 @@ package com.kkb.idscloud.common.core.exception;
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 
 /**
- * @author: zmc
+ * @author zmc
  * @date: 2020-12-18 17:09
  * @description:
  */

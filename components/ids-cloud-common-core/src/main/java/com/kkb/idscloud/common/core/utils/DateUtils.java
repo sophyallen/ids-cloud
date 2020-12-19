@@ -13,7 +13,7 @@ import java.util.Locale;
  * 日期工具类,
  * 继承org.apache.commons.lang.time.DateUtils类
  *
- * @author Liuyadu
+ * @author zmc
  * @version 2014-4-15
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
@@ -419,7 +419,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return 返回结果 如："2016-09-05 16:06:42";
      */
     public static String unixTimeStamp2Date(String timestampString, String pattern) {
-        if (StringUtils.isBlank(pattern)) {
+        if (IdsStringUtils.isBlank(pattern)) {
             pattern = "yyyy-MM-dd HH:mm:ss";
         }
         Long timestamp = Long.parseLong(timestampString) * ONE_MINUTE;

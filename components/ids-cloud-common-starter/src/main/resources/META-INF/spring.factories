@@ -1,7 +1,7 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.common.autoconfigure.AutoConfiguration,\
-  com.kkb.idscloud.common.autoconfigure.FeignAutoConfiguration,\
-  com.kkb.idscloud.common.autoconfigure.MqAutoConfiguration,\
-  com.kkb.idscloud.common.autoconfigure.SwaggerAutoConfiguration,\
-  com.kkb.idscloud.common.autoconfigure.WebMvcConfiguration,\
-  com.kkb.idscloud.common.autoconfigure.RedisCacheAutoConfiguration,\
-  com.kkb.idscloud.common.autoconfigure.JacksonAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.common.AutoConfiguration,\
+  com.kkb.idscloud.common.FeignAutoConfiguration,\
+  com.kkb.idscloud.common.MqAutoConfiguration,\
+  com.kkb.idscloud.common.SwaggerAutoConfiguration,\
+  com.kkb.idscloud.common.WebMvcConfiguration,\
+  com.kkb.idscloud.common.RedisCacheAutoConfiguration,\
+  com.kkb.idscloud.common.JacksonAutoConfiguration

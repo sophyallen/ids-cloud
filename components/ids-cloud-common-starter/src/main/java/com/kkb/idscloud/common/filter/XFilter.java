@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * @author Loger
+ * @author zmc
  */
 public class XFilter implements Filter {
 

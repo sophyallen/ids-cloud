@@ -45,7 +45,7 @@ public class QRCodeUtils {
      *
      * @param data
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCode(String data) {
         return createQRCode(data, QRCODE_DEFAULT_WIDTH, QRCODE_DEFAULT_HEIGHT);
@@ -58,7 +58,7 @@ public class QRCodeUtils {
      * @param width
      * @param height
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCode(String data, int width, int height) {
         return createQRCode(data, QRCODE_DEFAULT_CHARSET, width, height);
@@ -72,7 +72,7 @@ public class QRCodeUtils {
      * @param width
      * @param height
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCode(String data, String charset, int width, int height) {
         Map hint = new HashMap(16);
@@ -91,7 +91,7 @@ public class QRCodeUtils {
      * @param width
      * @param height
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCode(String data, String charset, Map<EncodeHintType, ?> hint, int width,
                                              int height) {
@@ -126,7 +126,7 @@ public class QRCodeUtils {
      * @param data
      * @param logoFile
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCodeWithLogo(String data, File logoFile) {
         return createQRCodeWithLogo(data, QRCODE_DEFAULT_WIDTH, QRCODE_DEFAULT_HEIGHT, logoFile);
@@ -140,7 +140,7 @@ public class QRCodeUtils {
      * @param height
      * @param logoFile
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCodeWithLogo(String data, int width, int height, File logoFile) {
         return createQRCodeWithLogo(data, QRCODE_DEFAULT_CHARSET, width, height, logoFile);
@@ -155,7 +155,7 @@ public class QRCodeUtils {
      * @param height
      * @param logoFile
      * @return
-     * @author stefli
+     * @author zmc
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static BufferedImage createQRCodeWithLogo(String data, String charset, int width, int height, File logoFile) {
@@ -176,7 +176,7 @@ public class QRCodeUtils {
      * @param height
      * @param logoFile
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static BufferedImage createQRCodeWithLogo(String data, String charset, Map<EncodeHintType, ?> hint,
                                                      int width, int height, File logoFile) {
@@ -205,7 +205,7 @@ public class QRCodeUtils {
      *
      * @param image
      * @return
-     * @author stefli
+     * @author zmc
      */
     public static String getImageBase64String(BufferedImage image) {
         String result = null;
@@ -227,7 +227,7 @@ public class QRCodeUtils {
      *
      * @param base64ImageString
      * @param file
-     * @author stefli
+     * @author zmc
      */
     public static void convertBase64StringToImage(String base64ImageString, File file) {
         FileOutputStream os;

@@ -4,18 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.enums.SqlKeyword;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
-import com.google.common.collect.Lists;
 import com.kkb.idscloud.common.core.annotation.TableAlias;
-import com.kkb.idscloud.common.core.model.PageParams;
-import com.kkb.idscloud.common.core.utils.StringUtils;
+import com.kkb.idscloud.mybatis.entity.PageParams;
+import com.kkb.idscloud.common.core.utils.IdsStringUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author: zyf
+ * @author zmc
  * @date: 2018/9/4 8:42
  * @@desc: 自定义查询构造器
  */
@@ -29,7 +29,7 @@ public class CriteriaQuery<T> extends QueryWrapper<T> {
     /**
      * 查询字段
      */
-    protected List<String> select = Lists.newArrayList();
+    protected List<String> select = new ArrayList<>();
     /**
      * 分页对象
      */
@@ -47,8 +47,8 @@ public class CriteriaQuery<T> extends QueryWrapper<T> {
         if (ObjectUtils.isNotEmpty(sort)) {
             //自动添加ordery by
             String order = pageParams.getOrder();
-            Boolean isAsc = StringUtils.equalsIgnoreCase(SqlKeyword.ASC.name(), order);
-            sort = StringUtils.camelToUnderline(sort);
+            Boolean isAsc = IdsStringUtils.equalsIgnoreCase(SqlKeyword.ASC.name(), order);
+            sort = IdsStringUtils.camelToUnderline(sort);
             orderBy(true, isAsc, sort);
         }
     }

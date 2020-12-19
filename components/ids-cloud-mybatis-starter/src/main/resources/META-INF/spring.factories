@@ -1,7 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.mybatis.MybatisAutoConfiguration,\
-  com.kkb.idscloud.autoconfigure.FeignAutoConfiguration,\
-  com.kkb.idscloud.autoconfigure.MqAutoConfiguration,\
-  com.kkb.idscloud.autoconfigure.SwaggerAutoConfiguration,\
-  com.kkb.idscloud.autoconfigure.WebMvcConfiguration,\
-  com.kkb.idscloud.autoconfigure.RedisCacheAutoConfiguration,\
-  com.kkb.idscloud.autoconfigure.JacksonAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.mybatis.MybatisAutoConfiguration
+

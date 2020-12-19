@@ -5,7 +5,7 @@ import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 /**
  * 签名异常
  *
- * @author admin
+ * @author zmc
  */
 public class ThirdServerException extends IdsException {
     private static final long serialVersionUID = 3655050728585279326L;

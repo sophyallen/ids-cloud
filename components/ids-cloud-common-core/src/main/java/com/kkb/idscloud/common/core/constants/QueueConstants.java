@@ -1,7 +1,7 @@
 package com.kkb.idscloud.common.core.constants;
 
 /**
- * @author: zmc
+ * @author zmc
  * @date: 2019/2/21 17:46
  * @description:
  */
