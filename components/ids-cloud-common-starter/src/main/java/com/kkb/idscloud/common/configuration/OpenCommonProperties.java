@@ -148,21 +148,4 @@ public class OpenCommonProperties {
         this.jwtSigningKey = jwtSigningKey;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("OpenCommonProperties{");
-        sb.append("clientId='").append(clientId).append('\'');
-        sb.append(", clientSecret='").append(clientSecret).append('\'');
-        sb.append(", apiServerAddr='").append(apiServerAddr).append('\'');
-        sb.append(", authServerAddr='").append(authServerAddr).append('\'');
-        sb.append(", adminServerAddr='").append(adminServerAddr).append('\'');
-        sb.append(", scope='").append(scope).append('\'');
-        sb.append(", accessTokenUri='").append(accessTokenUri).append('\'');
-        sb.append(", userAuthorizationUri='").append(userAuthorizationUri).append('\'');
-        sb.append(", tokenInfoUri='").append(tokenInfoUri).append('\'');
-        sb.append(", userInfoUri='").append(userInfoUri).append('\'');
-        sb.append(", jwtSigningKey='").append(jwtSigningKey).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
 }
