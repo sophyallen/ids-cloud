@@ -1,5 +1,6 @@
 package com.kkb.idscloud.common.configuration;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -8,8 +9,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author zmc
  * @date 2018/7/29
  */
+@Data
 @ConfigurationProperties(prefix = "idscloud.scan")
-public class OpenScanProperties {
+public class IdsScanProperties {
 
     /**
      * 请求资源注册到API列表

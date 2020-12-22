@@ -1,7 +1,7 @@
 package com.kkb.idscloud.common;
 
 import com.google.common.collect.Lists;
-import com.kkb.idscloud.common.swagger.OpenSwaggerProperties;
+import com.kkb.idscloud.common.swagger.IdsSwaggerProperties;
 import com.kkb.idscloud.common.core.utils.DateUtils;
 import com.kkb.idscloud.common.core.utils.RandomValueUtils;
 import io.swagger.annotations.Api;
@@ -38,19 +38,19 @@ import java.util.Locale;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({OpenSwaggerProperties.class})
+@EnableConfigurationProperties({IdsSwaggerProperties.class})
 @ConditionalOnProperty(prefix = "idscloud.swagger2", name = "enabled", havingValue = "true")
 @Import({Swagger2DocumentationConfiguration.class})
 public class SwaggerAutoConfiguration {
-    private OpenSwaggerProperties openSwaggerProperties;
+    private IdsSwaggerProperties idsSwaggerProperties;
     private static final String SCOPE_PREFIX = "scope.";
     private Locale locale = LocaleContextHolder.getLocale();
     private MessageSource messageSource;
 
-    public SwaggerAutoConfiguration(OpenSwaggerProperties openSwaggerProperties, MessageSource messageSource) {
-        this.openSwaggerProperties = openSwaggerProperties;
+    public SwaggerAutoConfiguration(IdsSwaggerProperties idsSwaggerProperties, MessageSource messageSource) {
+        this.idsSwaggerProperties = idsSwaggerProperties;
         this.messageSource = messageSource;
-        log.info("SwaggerProperties [{}]", openSwaggerProperties);
+        log.info("SwaggerProperties [{}]", idsSwaggerProperties);
     }
 
 
@@ -110,8 +110,8 @@ public class SwaggerAutoConfiguration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title(openSwaggerProperties.getTitle())
-                .description(openSwaggerProperties.getDescription())
+                .title(idsSwaggerProperties.getTitle())
+                .description(idsSwaggerProperties.getDescription())
                 .version("1.0")
                 .build();
     }
@@ -137,8 +137,8 @@ public class SwaggerAutoConfiguration {
     private List<AuthorizationScope> scopes() {
         List<String> scopes = Lists.newArrayList();
         List list = Lists.newArrayList();
-        if (openSwaggerProperties.getScope() != null) {
-            scopes.addAll(Lists.newArrayList(openSwaggerProperties.getScope().split(",")));
+        if (idsSwaggerProperties.getScope() != null) {
+            scopes.addAll(Lists.newArrayList(idsSwaggerProperties.getScope().split(",")));
         }
         scopes.forEach(s -> {
             list.add(new AuthorizationScope(s, messageSource.getMessage(SCOPE_PREFIX + s, null, s, locale)));
@@ -148,9 +148,9 @@ public class SwaggerAutoConfiguration {
 
     @Bean
     public SecurityConfiguration security() {
-        return new SecurityConfiguration(openSwaggerProperties.getClientId(),
-                openSwaggerProperties.getClientSecret(),
-                "realm", openSwaggerProperties.getClientId(),
+        return new SecurityConfiguration(idsSwaggerProperties.getClientId(),
+                idsSwaggerProperties.getClientSecret(),
+                "realm", idsSwaggerProperties.getClientId(),
                 "", ApiKeyVehicle.HEADER, "", ",");
     }
 
@@ -158,9 +158,9 @@ public class SwaggerAutoConfiguration {
     List<GrantType> grantTypes() {
         List<GrantType> grantTypes = new ArrayList<>();
         TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(
-                openSwaggerProperties.getUserAuthorizationUri(),
-                openSwaggerProperties.getClientId(), openSwaggerProperties.getClientSecret());
-        TokenEndpoint tokenEndpoint = new TokenEndpoint(openSwaggerProperties.getAccessTokenUri(), "access_token");
+                idsSwaggerProperties.getUserAuthorizationUri(),
+                idsSwaggerProperties.getClientId(), idsSwaggerProperties.getClientSecret());
+        TokenEndpoint tokenEndpoint = new TokenEndpoint(idsSwaggerProperties.getAccessTokenUri(), "access_token");
         grantTypes.add(new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint));
         return grantTypes;
     }

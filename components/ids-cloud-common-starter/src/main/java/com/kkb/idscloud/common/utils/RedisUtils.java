@@ -1,4 +1,4 @@
-package com.kkb.idscloud.common.Utils;
+package com.kkb.idscloud.common.utils;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;

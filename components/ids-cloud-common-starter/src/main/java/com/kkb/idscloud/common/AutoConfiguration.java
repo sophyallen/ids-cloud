@@ -1,19 +1,20 @@
 package com.kkb.idscloud.common;
 
-import com.kkb.idscloud.common.configuration.OpenScanProperties;
-import com.kkb.idscloud.common.configuration.OpenCommonProperties;
-import com.kkb.idscloud.common.configuration.OpenIdGenProperties;
+import com.kkb.idscloud.common.configuration.IdsScanProperties;
+import com.kkb.idscloud.common.configuration.IdsCommonProperties;
+import com.kkb.idscloud.common.configuration.SnowflakeProperties;
 import com.kkb.idscloud.common.exception.handler.GlobalExceptionHandler;
 import com.kkb.idscloud.common.exception.handler.DefaultRestResponseErrorHandler;
 import com.kkb.idscloud.common.filter.XFilter;
 import com.kkb.idscloud.common.core.gen.SnowflakeIdGenerator;
-import com.kkb.idscloud.common.core.utils.SpringContextHolder;
+import com.kkb.idscloud.common.utils.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,14 +25,14 @@ import org.springframework.web.client.RestTemplate;
  */
 @Slf4j
 @Configuration
-@EnableConfigurationProperties({OpenCommonProperties.class, OpenIdGenProperties.class,  OpenScanProperties.class})
+@EnableConfigurationProperties({IdsCommonProperties.class, SnowflakeProperties.class,  IdsScanProperties.class})
 public class AutoConfiguration {
 
 
     @Bean
-    @ConditionalOnMissingBean(OpenScanProperties.class)
-     public  OpenScanProperties scanProperties(){
-         return  new OpenScanProperties();
+    @ConditionalOnMissingBean(IdsScanProperties.class)
+     public IdsScanProperties scanProperties(){
+         return  new IdsScanProperties();
      }
 
     /**
@@ -67,6 +68,7 @@ public class AutoConfiguration {
      * @return
      */
     @Bean
+    @Primary
     @ConditionalOnMissingBean(SpringContextHolder.class)
     public SpringContextHolder springContextHolder() {
         SpringContextHolder holder = new SpringContextHolder();
@@ -94,8 +96,8 @@ public class AutoConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(OpenIdGenProperties.class)
-    public SnowflakeIdGenerator snowflakeIdWorker(OpenIdGenProperties properties) {
+    @ConditionalOnMissingBean(SnowflakeProperties.class)
+    public SnowflakeIdGenerator snowflakeIdWorker(SnowflakeProperties properties) {
         SnowflakeIdGenerator snowflakeIdGenerator = new SnowflakeIdGenerator(properties.getWorkId(), properties.getCenterId());
         log.info("SnowflakeIdGenerator [{}]", snowflakeIdGenerator);
         return snowflakeIdGenerator;

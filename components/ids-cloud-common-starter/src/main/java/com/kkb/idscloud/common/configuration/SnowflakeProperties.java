@@ -1,5 +1,6 @@
 package com.kkb.idscloud.common.configuration;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -7,8 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author zmc
  * @date 2018/7/29
  */
+@Data
 @ConfigurationProperties(prefix = "idscloud.id")
-public class OpenIdGenProperties {
+public class SnowflakeProperties {
     /**
      * 工作ID (0~31)
      */
@@ -34,12 +36,4 @@ public class OpenIdGenProperties {
         this.centerId = centerId;
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("OpenIdGenProperties{");
-        sb.append("workId=").append(workId);
-        sb.append(", centerId=").append(centerId);
-        sb.append('}');
-        return sb.toString();
-    }
 }

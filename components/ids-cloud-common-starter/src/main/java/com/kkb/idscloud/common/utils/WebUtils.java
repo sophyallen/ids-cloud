@@ -1,10 +1,9 @@
-package com.kkb.idscloud.common.Utils;
+package com.kkb.idscloud.common.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.net.HttpHeaders;
 import com.kkb.idscloud.common.core.utils.EncodeUtils;
-import com.kkb.idscloud.common.core.utils.SpringContextHolder;
 import com.kkb.idscloud.common.core.utils.IdsStringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
