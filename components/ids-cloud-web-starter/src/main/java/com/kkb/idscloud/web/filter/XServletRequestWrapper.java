@@ -1,4 +1,4 @@
-package com.kkb.idscloud.common.filter;
+package com.kkb.idscloud.web.filter;
 
 
 import com.kkb.idscloud.common.core.utils.IdsStringUtils;

@@ -1,4 +1,4 @@
-package com.kkb.idscloud.common.utils;
+package com.kkb.idscloud.web.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -352,42 +352,6 @@ public class WebUtils {
         }
         InputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
         return byteArrayInputStream;
-    }
-
-    /**
-     * 从request中获得参数，并返回可读的Map
-     * application/x-www-form-urlencode
-     * application/json
-     * application/json;charset=UTF-8
-     * multipart/form-data
-     *
-     * @param request
-     * @return
-     */
-    public static Map<String, String> getParameterMap(HttpServletRequest request) {
-        String contentType = request.getHeader(org.springframework.http.HttpHeaders.CONTENT_TYPE);
-        Map<String, String> returnMap = new HashMap();
-        if (contentType != null && contentType.contains(MediaType.MULTIPART_FORM_DATA_VALUE)) {
-            // form-data表单
-            MultipartResolver multipartResolver = SpringContextHolder.getBean(MultipartResolver.class);
-            MultipartHttpServletRequest multiReq = multipartResolver.resolveMultipart(request);
-            returnMap = conventMap(multiReq.getParameterMap());
-        } else if (MediaType.APPLICATION_JSON_VALUE.equals(contentType) || MediaType.APPLICATION_JSON_UTF8_VALUE.equals(contentType)) {
-            // json表单
-            String body = getBodyString(request);
-            if (IdsStringUtils.isNotBlank(body)) {
-                try {
-                    returnMap = JSONObject.parseObject(body, Map.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            // 普通表单
-            returnMap = conventMap(request.getParameterMap());
-        }
-        // 参数Map
-        return returnMap;
     }
 
     private static Map conventMap(Map map) {

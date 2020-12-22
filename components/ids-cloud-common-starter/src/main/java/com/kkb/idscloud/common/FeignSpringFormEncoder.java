@@ -35,7 +35,7 @@ public class FeignSpringFormEncoder extends SpringFormEncoder {
                 return;
             }
             Map data = Collections.singletonMap(file.length == 0 ? "" : file[0].getName(), object);
-            super.encode(data, MAP_STRING_WILDCARD, template);
+            super.encode(data, Encoder.MAP_STRING_WILDCARD, template);
             return;
         }
         super.encode(object, bodyType, template);

@@ -1,4 +1,4 @@
-package com.kkb.idscloud.common.exception.handler;
+package com.kkb.idscloud.common.handler;
 
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;

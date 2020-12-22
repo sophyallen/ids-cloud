@@ -12,7 +12,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
-import org.springframework.web.context.ContextLoader;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,10 +27,6 @@ public abstract class BaseServiceImpl<M extends SuperMapper<T>, T> extends Servi
     public ApplicationContext applicationContext;
     @Resource
     public SqlSessionTemplate sqlSession;
-
-    public void pushEvent(ApplicationEvent applicationEvent) {
-        ContextLoader.getCurrentWebApplicationContext().publishEvent(applicationEvent);
-    }
 
     public IPage pageList(CriteriaQuery<?> wrapper) {
         PageParams page = wrapper.getPagerInfo();

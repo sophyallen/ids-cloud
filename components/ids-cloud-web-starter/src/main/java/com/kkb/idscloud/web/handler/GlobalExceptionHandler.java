@@ -1,4 +1,4 @@
-package com.kkb.idscloud.common.exception.handler;
+package com.kkb.idscloud.web.handler;
 
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 import com.kkb.idscloud.common.core.exception.IdsException;

@@ -41,7 +41,6 @@
 
         <!--自定义版本-->
         <idscloud.common.version>1.0.0-SNAPSHOT</idscloud.common.version>
-        <idscloud.base-api.version>1.0.0-SNAPSHOT</idscloud.base-api.version>
 
         <!--镜像前缀-->
         <docker.image.prefix>ids.cloud</docker.image.prefix>
@@ -155,7 +154,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <build>
         <resources>
             <!-- 先指定 src/main/resources下所有文件及文件夹为资源文件 -->
@@ -193,20 +191,6 @@
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
-            </plugin>
-            <!-- 打包源码 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-resources-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
