@@ -1,4 +1,4 @@
-package com.kkb.idscloud.web.filter;
+package com.kkb.idscloud.common.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

@@ -3,12 +3,15 @@ package com.kkb.idscloud.common;
 import com.kkb.idscloud.common.configuration.IdsScanProperties;
 import com.kkb.idscloud.common.configuration.IdsCommonProperties;
 import com.kkb.idscloud.common.configuration.SnowflakeProperties;
+import com.kkb.idscloud.common.filter.XFilter;
 import com.kkb.idscloud.common.handler.DefaultRestResponseErrorHandler;
 import com.kkb.idscloud.common.core.gen.SnowflakeIdGenerator;
+import com.kkb.idscloud.common.handler.GlobalExceptionHandler;
 import com.kkb.idscloud.common.utils.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -82,6 +85,32 @@ public class CommonAutoConfiguration {
         restTemplate.setErrorHandler(new DefaultRestResponseErrorHandler());
         log.info("RestTemplate [{}]", restTemplate);
         return restTemplate;
+    }
+
+    /**
+     * 统一异常处理配置
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(GlobalExceptionHandler.class)
+    public GlobalExceptionHandler exceptionHandler() {
+        GlobalExceptionHandler exceptionHandler = new GlobalExceptionHandler();
+        log.info("OpenGlobalExceptionHandler [{}]", exceptionHandler);
+        return exceptionHandler;
+    }
+
+    /**
+     * xss过滤
+     * body缓存
+     *
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean XssFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new XFilter());
+        log.info("XFilter [{}]", filterRegistrationBean);
+        return filterRegistrationBean;
     }
 
 }

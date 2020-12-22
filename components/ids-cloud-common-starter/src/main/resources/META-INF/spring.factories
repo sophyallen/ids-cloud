@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.common.CommonAutoConfiguration,\
+  com.kkb.idscloud.common.FeignAutoConfiguration,\
   com.kkb.idscloud.common.MqAutoConfiguration,\
   com.kkb.idscloud.common.SwaggerAutoConfiguration,\
   com.kkb.idscloud.common.RedisCacheAutoConfiguration,\

@@ -1,7 +1,5 @@
 package com.kkb.idscloud.web;
 
-import com.kkb.idscloud.web.filter.XFilter;
-import com.kkb.idscloud.web.handler.GlobalExceptionHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -31,29 +29,4 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
-    /**
-     * xss过滤
-     * body缓存
-     *
-     * @return
-     */
-    @Bean
-    public FilterRegistrationBean XssFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new XFilter());
-        log.info("XFilter [{}]", filterRegistrationBean);
-        return filterRegistrationBean;
-    }
-
-    /**
-     * 统一异常处理配置
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(GlobalExceptionHandler.class)
-    public GlobalExceptionHandler exceptionHandler() {
-        GlobalExceptionHandler exceptionHandler = new GlobalExceptionHandler();
-        log.info("OpenGlobalExceptionHandler [{}]", exceptionHandler);
-        return exceptionHandler;
-    }
 }
