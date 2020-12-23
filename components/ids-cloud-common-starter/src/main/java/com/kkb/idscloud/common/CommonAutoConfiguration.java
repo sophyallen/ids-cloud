@@ -55,8 +55,7 @@ public class CommonAutoConfiguration {
      * @return
      */
     @Bean
-    @Primary
-    @ConditionalOnMissingBean(SpringContextHolder.class)
+    @ConditionalOnMissingBean(name = "springContextHolder")
     public SpringContextHolder springContextHolder() {
         SpringContextHolder holder = new SpringContextHolder();
         log.info("SpringContextHolder [{}]", holder);
