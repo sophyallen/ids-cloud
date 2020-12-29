@@ -38,6 +38,7 @@
         <swagger2.version>2.9.2</swagger2.version>
         <swagger-bootstrap-ui.version>1.9.5</swagger-bootstrap-ui.version>
         <oracle.version>10.2.0.4.0</oracle.version>
+        <skywalking.amp.version>8.3.0</skywalking.amp.version>
 
         <!--自定义版本-->
         <idscloud.common.version>1.0.0-SNAPSHOT</idscloud.common.version>
@@ -151,6 +152,11 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-logback-1.x</artifactId>
+                <version>${skywalking.amp.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

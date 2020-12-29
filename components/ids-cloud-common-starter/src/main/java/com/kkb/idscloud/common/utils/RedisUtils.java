@@ -20,6 +20,10 @@ public class RedisUtils<T> {
 
     private RedisTemplate<String, T> redisTemplate;
 
+    public RedisTemplate<String, T> getRedisTemplate() {
+        return redisTemplate;
+    }
+
     /**
      * 指定缓存失效时间
      *
