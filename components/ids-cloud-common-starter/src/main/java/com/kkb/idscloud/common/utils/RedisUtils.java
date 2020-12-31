@@ -1,5 +1,6 @@
 package com.kkb.idscloud.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.CollectionUtils;
 
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Redis工具类
  */
+@Slf4j
 public class RedisUtils<T> {
 
     public RedisUtils(RedisTemplate<String, T> redisTemplate) {
@@ -38,7 +40,7 @@ public class RedisUtils<T> {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -63,7 +65,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -121,7 +123,7 @@ public class RedisUtils<T> {
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -143,7 +145,7 @@ public class RedisUtils<T> {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -210,7 +212,7 @@ public class RedisUtils<T> {
             redisTemplate.opsForHash().putAll(key, map);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -231,7 +233,7 @@ public class RedisUtils<T> {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -249,7 +251,7 @@ public class RedisUtils<T> {
             redisTemplate.opsForHash().put(key, item, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -271,7 +273,7 @@ public class RedisUtils<T> {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -332,7 +334,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return null;
         }
     }
@@ -348,7 +350,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForSet().isMember(key, value);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -364,7 +366,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForSet().add(key, values);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return 0;
         }
     }
@@ -385,7 +387,7 @@ public class RedisUtils<T> {
             }
             return count;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return 0;
         }
     }
@@ -400,7 +402,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForSet().size(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return 0;
         }
     }
@@ -417,7 +419,7 @@ public class RedisUtils<T> {
             Long count = redisTemplate.opsForSet().remove(key, values);
             return count;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return 0;
         }
     }
@@ -435,7 +437,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return null;
         }
     }
@@ -451,7 +453,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForList().range(key, 0, -1);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return null;
         }
     }
@@ -466,7 +468,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return 0;
         }
     }
@@ -482,7 +484,7 @@ public class RedisUtils<T> {
         try {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return null;
         }
     }
@@ -499,7 +501,7 @@ public class RedisUtils<T> {
             redisTemplate.opsForList().rightPush(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -520,7 +522,7 @@ public class RedisUtils<T> {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -537,7 +539,7 @@ public class RedisUtils<T> {
             redisTemplate.opsForList().rightPushAll(key, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -558,7 +560,7 @@ public class RedisUtils<T> {
             }
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -576,7 +578,7 @@ public class RedisUtils<T> {
             redisTemplate.opsForList().set(key, index, value);
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return false;
         }
     }
@@ -594,7 +596,7 @@ public class RedisUtils<T> {
             Long remove = redisTemplate.opsForList().remove(key, count, value);
             return remove;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("redis operation occur error", e);
             return 0;
         }
     }

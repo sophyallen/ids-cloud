@@ -95,8 +95,8 @@ public class RedisCacheAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(RedisUtils.class)
-    @ConditionalOnBean(StringRedisTemplate.class)
-    public RedisUtils redisUtils(StringRedisTemplate stringRedisTemplate) {
+    @ConditionalOnBean(name = "stringObjectRedisTemplate")
+    public RedisUtils redisUtils(RedisTemplate stringRedisTemplate) {
         RedisUtils redisUtils =   new RedisUtils(stringRedisTemplate);
         log.info("RedisUtils [{}]", redisUtils);
         return redisUtils;
