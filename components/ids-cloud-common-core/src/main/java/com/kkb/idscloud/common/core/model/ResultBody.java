@@ -8,6 +8,8 @@ import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -17,7 +19,8 @@ import java.util.ResourceBundle;
  * @author zmc
  */
 @ApiModel(value = "响应结果")
-@Data
+@Getter
+@ToString
 public class ResultBody<T> implements Serializable {
     private static final long serialVersionUID = -6190689122701100762L;
 
@@ -53,7 +56,7 @@ public class ResultBody<T> implements Serializable {
      * 附加数据
      */
     @ApiModelProperty(value = "附加数据")
-    private Map<String, Object> extra;
+    private String subMessage;
 
     /**
      * 响应时间
@@ -63,30 +66,6 @@ public class ResultBody<T> implements Serializable {
 
     public ResultBody() {
         super();
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public Map<String, Object> getExtra() {
-        return extra;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
     }
 
     @JSONField(serialize = false, deserialize = false)
@@ -114,6 +93,11 @@ public class ResultBody<T> implements Serializable {
         return new ResultBody().code(errorCodeEnum.getCode()).msg(errorCodeEnum.getMessage());
     }
 
+    public static ResultBody failed(ErrorCodeEnum errorCodeEnum, String subMessage) {
+        return new ResultBody().code(errorCodeEnum.getCode()).msg(errorCodeEnum.getMessage())
+                .subMessage(subMessage);
+    }
+
     public ResultBody code(String code) {
         this.code = code;
         return this;
@@ -139,26 +123,11 @@ public class ResultBody<T> implements Serializable {
         return this;
     }
 
-    public ResultBody put(String key, Object value) {
-        if (this.extra == null) {
-            this.extra = Maps.newHashMap();
-        }
-        this.extra.put(key, value);
+    public ResultBody subMessage(String subMessage) {
+        this.subMessage = subMessage;
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "ResultBody{" +
-                "code=" + code +
-                ", message='" + message + '\'' +
-                ", path='" + path + '\'' +
-                ", data=" + data +
-                ", httpStatus=" + httpStatus +
-                ", extra=" + extra +
-                ", timestamp=" + timestamp +
-                '}';
-    }
 
     /**
      * 错误信息配置
