@@ -82,6 +82,12 @@ public class ResultBody<T> implements Serializable {
         return new ResultBody().code(ErrorCodeEnum.OK.getCode()).message(ErrorCodeEnum.OK.getMessage());
     }
 
+    public static <T> ResultBody ok(T data) {
+        return new ResultBody<T>()
+                .code(ErrorCodeEnum.OK.getCode()).msg(ErrorCodeEnum.OK.getMessage())
+                .data(data);
+    }
+
     public static ResultBody failed() {
         return new ResultBody().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).message(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage());
     }
