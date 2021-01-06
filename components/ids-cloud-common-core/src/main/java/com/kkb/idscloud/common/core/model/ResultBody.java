@@ -84,7 +84,7 @@ public class ResultBody<T> implements Serializable {
 
     public static <T> ResultBody ok(T data) {
         return new ResultBody<T>()
-                .code(ErrorCodeEnum.OK.getCode()).msg(ErrorCodeEnum.OK.getMessage())
+                .code(ErrorCodeEnum.OK.getCode()).message(ErrorCodeEnum.OK.getMessage())
                 .data(data);
     }
 
