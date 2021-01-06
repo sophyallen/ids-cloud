@@ -3,16 +3,13 @@ package com.kkb.idscloud.common.core.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.collect.Maps;
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -82,19 +79,19 @@ public class ResultBody<T> implements Serializable {
 
 
     public static ResultBody ok() {
-        return new ResultBody().code(ErrorCodeEnum.OK.getCode()).msg(ErrorCodeEnum.OK.getMessage());
+        return new ResultBody().code(ErrorCodeEnum.OK.getCode()).message(ErrorCodeEnum.OK.getMessage());
     }
 
     public static ResultBody failed() {
-        return new ResultBody().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).msg(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage());
+        return new ResultBody().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).message(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage());
     }
 
     public static ResultBody failed(ErrorCodeEnum errorCodeEnum) {
-        return new ResultBody().code(errorCodeEnum.getCode()).msg(errorCodeEnum.getMessage());
+        return new ResultBody().code(errorCodeEnum.getCode()).message(errorCodeEnum.getMessage());
     }
 
     public static ResultBody failed(ErrorCodeEnum errorCodeEnum, String subMessage) {
-        return new ResultBody().code(errorCodeEnum.getCode()).msg(errorCodeEnum.getMessage())
+        return new ResultBody().code(errorCodeEnum.getCode()).message(errorCodeEnum.getMessage())
                 .subMessage(subMessage);
     }
 
@@ -103,7 +100,7 @@ public class ResultBody<T> implements Serializable {
         return this;
     }
 
-    public ResultBody msg(String message) {
+    public ResultBody message(String message) {
         this.message = message;
         return this;
     }

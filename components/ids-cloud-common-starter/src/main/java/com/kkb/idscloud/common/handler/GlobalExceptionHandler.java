@@ -117,9 +117,15 @@ public class GlobalExceptionHandler {
      */
     private static ResultBody buildBody(Exception exception, ErrorCodeEnum resultCode, String path, int httpStatus) {
         if (resultCode == null) {
-            resultCode = ErrorCodeEnum.SERVER_ERROR_B0001;
+            if (exception instanceof IdsException) {
+                resultCode = ((IdsException)exception).getErrorCodeEnum();
+            } else {
+                resultCode = ErrorCodeEnum.SERVER_ERROR_B0001;
+            }
         }
-        ResultBody resultBody = ResultBody.failed().code(resultCode.getCode()).msg(exception.getMessage()).path(path).httpStatus(httpStatus);
+        ResultBody resultBody = ResultBody.failed().code(resultCode.getCode())
+                .message(resultCode.getMessage())
+                .subMessage(exception.getMessage()).path(path).httpStatus(httpStatus);
         log.error("==> error:{} exception: {}",resultBody, exception.getMessage(), exception);
         return resultBody;
     }
