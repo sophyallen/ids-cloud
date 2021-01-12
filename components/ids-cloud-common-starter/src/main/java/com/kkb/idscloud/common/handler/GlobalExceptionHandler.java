@@ -1,10 +1,16 @@
 package com.kkb.idscloud.common.handler;
 
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
+import com.kkb.idscloud.common.core.exception.IdsClientException;
 import com.kkb.idscloud.common.core.exception.IdsException;
 import com.kkb.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -32,7 +38,7 @@ public class GlobalExceptionHandler {
      * @param response
      * @return
      */
-    @ExceptionHandler({IdsException.class})
+    @ExceptionHandler({IdsClientException.class})
     public static ResultBody openException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
         ResultBody resultBody = resolveException(ex, request.getRequestURI());
         response.setStatus(resultBody.getHttpStatus());
@@ -53,6 +59,53 @@ public class GlobalExceptionHandler {
         response.setStatus(resultBody.getHttpStatus());
         return resultBody;
     }
+
+    /**
+     * 参数绑定异常
+     *
+     * @param e 异常
+     * @return 异常结果
+     */
+    @ExceptionHandler(value = BindException.class)
+    @ResponseBody
+    public ResultBody handleBindException(BindException e, HttpServletResponse response) {
+        log.error("参数绑定校验异常", e);
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return wrapperBindingResult(e.getBindingResult());
+    }
+
+    /**
+     * 参数校验异常，将校验失败的所有异常组合成一条错误信息
+     *
+     * @param e 异常
+     * @return 异常结果
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ResultBody handleValidException(MethodArgumentNotValidException e, HttpServletResponse response) {
+        log.error("参数绑定校验异常", e);
+        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        return wrapperBindingResult(e.getBindingResult());
+    }
+
+    /**
+     * 包装绑定异常结果
+     *
+     * @param bindingResult 绑定结果
+     * @return 异常结果
+     */
+    private ResultBody wrapperBindingResult(BindingResult bindingResult) {
+        StringBuilder msg = new StringBuilder();
+        for (ObjectError error : bindingResult.getAllErrors()) {
+            msg.append(", ");
+            if (error instanceof FieldError) {
+                msg.append(((FieldError) error).getField()).append(": ");
+            }
+            msg.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
+        }
+        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, msg.substring(2));
+    }
+
 
     /**
      * 静态解析异常。可以直接调用
