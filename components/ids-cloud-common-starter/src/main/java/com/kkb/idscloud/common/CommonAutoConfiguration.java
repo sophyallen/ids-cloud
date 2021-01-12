@@ -56,7 +56,7 @@ public class CommonAutoConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnMissingBean(name = "springContextHolder")
+    @ConditionalOnMissingBean
     public SpringContextHolder springContextHolder() {
         SpringContextHolder holder = new SpringContextHolder();
         log.info("SpringContextHolder [{}]", holder);
@@ -80,6 +80,7 @@ public class CommonAutoConfiguration {
 
     @Bean
     @LoadBalanced
+    @ConditionalOnMissingBean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         //设置自定义ErrorHandler

@@ -50,12 +50,6 @@ public class ResultBody<T> implements Serializable {
     private int httpStatus;
 
     /**
-     * 附加数据
-     */
-    @ApiModelProperty(value = "附加数据")
-    private String subMessage;
-
-    /**
      * 响应时间
      */
     @ApiModelProperty(value = "响应时间")
@@ -96,9 +90,8 @@ public class ResultBody<T> implements Serializable {
         return new ResultBody().code(errorCodeEnum.getCode()).message(errorCodeEnum.getMessage());
     }
 
-    public static ResultBody failed(ErrorCodeEnum errorCodeEnum, String subMessage) {
-        return new ResultBody().code(errorCodeEnum.getCode()).message(errorCodeEnum.getMessage())
-                .subMessage(subMessage);
+    public static ResultBody failed(ErrorCodeEnum errorCodeEnum, String message) {
+        return new ResultBody().code(errorCodeEnum.getCode()).message(message);
     }
 
     public ResultBody code(String code) {
@@ -125,12 +118,6 @@ public class ResultBody<T> implements Serializable {
         this.httpStatus = httpStatus;
         return this;
     }
-
-    public ResultBody subMessage(String subMessage) {
-        this.subMessage = subMessage;
-        return this;
-    }
-
 
     /**
      * 错误信息配置

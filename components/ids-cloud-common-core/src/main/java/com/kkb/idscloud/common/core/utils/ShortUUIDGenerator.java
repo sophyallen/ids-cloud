@@ -71,4 +71,13 @@ public class ShortUUIDGenerator {
 
         return new String(buf, charPos, (size - charPos));
     }
+
+    /**
+     * long 型转 数字和小写字母
+     * @param num
+     * @return
+     */
+    public static String toLowerString(long num) {
+        return toString(num, 36);
+    }
 }
