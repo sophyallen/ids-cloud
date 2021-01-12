@@ -49,7 +49,7 @@ public class ValidatorUtil {
         String subMessage = errorMap.entrySet().parallelStream()
                 .map(e -> e.getKey() + StrUtil.COLON + e.getValue())
                 .collect(Collectors.joining(StrUtil.COMMA));
-        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400).message(subMessage);
+        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, subMessage);
     }
 
 
