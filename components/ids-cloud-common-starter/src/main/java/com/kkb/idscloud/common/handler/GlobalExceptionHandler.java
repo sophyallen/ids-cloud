@@ -125,7 +125,7 @@ public class GlobalExceptionHandler {
         }
         ResultBody resultBody = ResultBody.failed().code(resultCode.getCode())
                 .message(resultCode.getMessage())
-                .subMessage(exception.getMessage()).path(path).httpStatus(httpStatus);
+                .path(path).httpStatus(httpStatus);
         log.error("==> error:{} exception: {}",resultBody, exception.getMessage(), exception);
         return resultBody;
     }
