@@ -5,6 +5,7 @@ import com.kkb.idscloud.common.core.exception.IdsClientException;
 import com.kkb.idscloud.common.core.exception.IdsException;
 import com.kkb.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -103,7 +104,8 @@ public class GlobalExceptionHandler {
             }
             msg.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
         }
-        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, msg.substring(2));
+        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, msg.substring(2))
+                .traceId(TraceContext.traceId());
     }
 
 

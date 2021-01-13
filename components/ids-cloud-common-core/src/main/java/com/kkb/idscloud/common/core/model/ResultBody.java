@@ -50,6 +50,11 @@ public class ResultBody<T> implements Serializable {
     private int httpStatus;
 
     /**
+     * traceId
+     */
+    private String traceId;
+
+    /**
      * 响应时间
      */
     @ApiModelProperty(value = "响应时间")
@@ -116,6 +121,11 @@ public class ResultBody<T> implements Serializable {
 
     public ResultBody httpStatus(int httpStatus) {
         this.httpStatus = httpStatus;
+        return this;
+    }
+
+    public ResultBody traceId(String traceId) {
+        this.traceId = traceId;
         return this;
     }
 

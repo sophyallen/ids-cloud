@@ -158,6 +158,11 @@
                 <artifactId>apm-toolkit-logback-1.x</artifactId>
                 <version>${skywalking.amp.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.skywalking</groupId>
+                <artifactId>apm-toolkit-trace</artifactId>
+                <version>${skywalking.amp.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <build>
