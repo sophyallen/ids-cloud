@@ -24,7 +24,7 @@ public class ResultBody<T> implements Serializable {
     /**
      * 响应编码
      */
-    @ApiModelProperty(value = "响应编码:0-请求处理成功")
+    @ApiModelProperty(value = "响应编码:00000-请求处理成功")
     private String code;
     /**
      * 提示消息
