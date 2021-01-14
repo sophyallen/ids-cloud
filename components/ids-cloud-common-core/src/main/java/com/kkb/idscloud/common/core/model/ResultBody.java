@@ -45,11 +45,6 @@ public class ResultBody<T> implements Serializable {
     private T data;
 
     /**
-     * http状态码
-     */
-    private int httpStatus;
-
-    /**
      * traceId
      */
     private String traceId;
@@ -62,12 +57,6 @@ public class ResultBody<T> implements Serializable {
 
     public ResultBody() {
         super();
-    }
-
-    @JSONField(serialize = false, deserialize = false)
-    @JsonIgnore
-    public int getHttpStatus() {
-        return httpStatus;
     }
 
     @JSONField(serialize = false, deserialize = false)
@@ -116,11 +105,6 @@ public class ResultBody<T> implements Serializable {
 
     public ResultBody path(String path) {
         this.path = path;
-        return this;
-    }
-
-    public ResultBody httpStatus(int httpStatus) {
-        this.httpStatus = httpStatus;
         return this;
     }
 
