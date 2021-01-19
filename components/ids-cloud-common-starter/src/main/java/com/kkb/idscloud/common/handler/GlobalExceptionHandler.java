@@ -147,19 +147,15 @@ public class GlobalExceptionHandler {
         } else if (className.contains("HttpMessageNotReadableException")
                 || className.contains("TypeMismatchException")
                 || className.contains("MissingServletRequestParameterException")) {
-//            httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0400;
         } else if (className.contains("NoHandlerFoundException")) {
-//            httpStatus = HttpStatus.NOT_FOUND.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0404;
         } else if (className.contains("HttpRequestMethodNotSupportedException")) {
-//            httpStatus = HttpStatus.METHOD_NOT_ALLOWED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0405;
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
-//            httpStatus = HttpStatus.BAD_REQUEST.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0400;
-        } else if(message.equalsIgnoreCase(ErrorCodeEnum.CLIENT_ERROR_A0501.name())){
-            code = ErrorCodeEnum.CLIENT_ERROR_A0501;
+        } else {
+            code = ErrorCodeEnum.CLIENT_ERROR_A0500;
         }
         return buildBody(ex, code, path);
     }
