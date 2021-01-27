@@ -44,7 +44,7 @@ public enum ErrorCodeEnum {
     CLIENT_ERROR_A0221("A0221", "用户指纹识别失败"),
     CLIENT_ERROR_A0222("A0222", "用户面容识别失败"),
     CLIENT_ERROR_A0223("A0223", "用户未获得第三方登陆授权"),
-    CLIENT_ERROR_A0230("A0230", "用户登陆已过期"),
+    CLIENT_ERROR_A0230("A0230", "未登录或登录已过期, 请重新登录"),
     CLIENT_ERROR_A0240("A0240", "用户验证码错误"),
     CLIENT_ERROR_A0241("A0241", "用户验证码尝试次数超限"),
     CLIENT_ERROR_A0300("A0300", "访问权限异常"),

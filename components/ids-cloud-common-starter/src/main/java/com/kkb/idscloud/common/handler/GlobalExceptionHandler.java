@@ -154,8 +154,6 @@ public class GlobalExceptionHandler {
             code = ErrorCodeEnum.CLIENT_ERROR_A0405;
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0400;
-        } else {
-            code = ErrorCodeEnum.CLIENT_ERROR_A0500;
         }
         return buildBody(ex, code, path);
     }
