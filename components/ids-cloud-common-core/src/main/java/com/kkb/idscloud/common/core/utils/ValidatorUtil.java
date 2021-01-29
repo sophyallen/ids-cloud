@@ -39,7 +39,11 @@ public class ValidatorUtil {
         return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, subMessage);
     }
 
-    public static <T> void assertValidate(T obj, Class<T>... clazzes) {
+    public static <T> void assertValidate(T obj) {
+        assertValidate(obj, Default.class);
+    }
+
+    public static <T> void assertValidate(T obj, Class<?>... clazzes) {
         Set<ConstraintViolation<T>> set = validator.validate(obj, clazzes);
         ErrorCodeEnum.CLIENT_ERROR_A0400.isEmpty(set, tipsMsg(set));
     }
