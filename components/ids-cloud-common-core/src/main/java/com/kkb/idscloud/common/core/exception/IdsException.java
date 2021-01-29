@@ -1,6 +1,7 @@
 package com.kkb.idscloud.common.core.exception;
 
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author zmc
@@ -12,12 +13,12 @@ public abstract class IdsException extends RuntimeException {
     private ErrorCodeEnum errorCodeEnum;
 
     public IdsException(ErrorCodeEnum errorCodeEnum, String msg) {
-        super(msg);
-        this.errorCodeEnum = errorCodeEnum;
+        this(errorCodeEnum, msg, null);
     }
 
     public IdsException(ErrorCodeEnum errorCodeEnum, String msg, Throwable cause) {
-        super(msg, cause);
+        super(StringUtils.isBlank(msg) ? errorCodeEnum.getMessage() : msg, cause);
+        this.errorCodeEnum = errorCodeEnum;
     }
 
     public ErrorCodeEnum getErrorCodeEnum() {

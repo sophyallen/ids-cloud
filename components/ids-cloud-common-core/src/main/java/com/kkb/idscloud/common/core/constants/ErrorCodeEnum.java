@@ -1,11 +1,16 @@
 package com.kkb.idscloud.common.core.constants;
 
+import com.kkb.idscloud.common.core.exception.IdsClientException;
+import com.kkb.idscloud.common.core.exception.IdsException;
+import com.kkb.idscloud.common.core.exception.IdsServerException;
+import com.kkb.idscloud.common.core.exception.ThirdServerException;
+
 /**
  * @description 阿里巴巴Java编码规范，错误码
  * @author zmc
  * @date 20201218
  */
-public enum ErrorCodeEnum {
+public enum ErrorCodeEnum implements IdsAssert {
     OK("00000", "成功"),
     /**
      * 客户端错误
@@ -208,5 +213,15 @@ public enum ErrorCodeEnum {
 
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public IdsException newException(String msg) {
+        char c = getMessage().charAt(0);
+        switch (c) {
+            case 'A': return new IdsClientException(this, msg);
+            case 'B': return new IdsServerException(this, msg);
+            default: return new ThirdServerException(this, msg);
+        }
     }
 }
