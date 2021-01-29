@@ -4,11 +4,15 @@ package com.kkb.idscloud.common.core.utils;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
+import com.kkb.idscloud.common.core.exception.IdsClientException;
+import com.kkb.idscloud.common.core.exception.IdsException;
 import com.kkb.idscloud.common.core.model.ResultBody;
+import sun.jvm.hotspot.utilities.Assert;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.groups.Default;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +37,22 @@ public class ValidatorUtil {
         if (set.isEmpty()) {
             return ResultBody.ok();
         }
+
+        String subMessage = tipsMsg(set);
+        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, subMessage);
+    }
+
+    public static <T> boolean assertValidate(T obj, Class<T>... clazzes) {
+        Set<ConstraintViolation<T>> set = validator.validate(obj, clazzes);
+        if (set.isEmpty()) {
+            return Boolean.TRUE;
+        } else {
+            String subMessage = tipsMsg(set);
+            throw new IdsClientException(ErrorCodeEnum.CLIENT_ERROR_A0400, subMessage);
+        }
+    }
+
+    private static <T> String tipsMsg(Set<ConstraintViolation<T>> set) {
         Map<String, StringBuffer> errorMap = new HashMap<String, StringBuffer>();
         String property = null;
         for (ConstraintViolation<T> cv : set) {
@@ -49,8 +69,7 @@ public class ValidatorUtil {
         String subMessage = errorMap.entrySet().parallelStream()
                 .map(e -> e.getKey() + StrUtil.COLON + e.getValue())
                 .collect(Collectors.joining(StrUtil.COMMA));
-        return ResultBody.failed(ErrorCodeEnum.CLIENT_ERROR_A0400, subMessage);
+        return subMessage;
     }
-
 
 }  
