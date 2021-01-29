@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 /**
  * @author zmc
  * @description hibernate validation 自动校验工具
+ *
  */
 public class ValidatorUtil {
     private static Validator validator = Validation.buildDefaultValidatorFactory()
