@@ -175,12 +175,14 @@ public class GlobalExceptionHandler {
         ResultBody resultBody = ResultBody.failed().code(resultCode.getCode())
                 .message(resultCode.getMessage())
                 .path(path);
-        log.error("==> error:{} exception: {}",resultBody, exception.getMessage(), exception);
+        log.error("GlobalExceptionHandler handle error: {}",resultBody, exception.getMessage(), exception);
         return resultBody;
     }
 
     private static ResultBody convertToResultBody(IdsException e) {
-        return ResultBody.failed(e.getErrorCodeEnum(), e.getMessage()).traceId(TraceContext.traceId());
+        ResultBody resultBody = ResultBody.failed(e.getErrorCodeEnum(), e.getMessage()).traceId(TraceContext.traceId());
+        log.error("GlobalExceptionHandler handle error: {}", resultBody, e);
+        return resultBody;
     }
 
 }
