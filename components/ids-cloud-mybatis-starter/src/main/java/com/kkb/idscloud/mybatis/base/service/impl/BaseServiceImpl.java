@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, E> implements BaseService<E> {
     @Override
     public <D, P> PageInfo<D> page(PageParam<P> pageParam, BaseConverter<D, E> converter) {
-        ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter);
+        ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter, "converter must not be null");
         Page<E> page = new Page<>(pageParam.getPageNum(), pageParam.getPageSize());
         P condition = pageParam.getCondition();
         List<Field> allFields = getConditionFields(condition.getClass(), new ArrayList<>());
@@ -49,7 +49,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
 
     @Override
     public <D> List<D> listByConditionParam(Object param, BaseConverter<D, E> converter) {
-        ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter);
+        ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter, "converter must not be null");
         List<Field> allFields = getConditionFields(param.getClass(), new ArrayList<>());
         Wrapper<E> wrapper = generateQueryWrapper(allFields, param);
         List<E> list = super.list(wrapper);
