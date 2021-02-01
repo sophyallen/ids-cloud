@@ -18,6 +18,12 @@
             <version>${idscloud.common.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.kkb.idscloud</groupId>
+            <artifactId>ids-cloud-common-starter</artifactId>
+            <version>${idscloud.common.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <!--mybatis-plus-->
         <dependency>
             <groupId>com.baomidou</groupId>

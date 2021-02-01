@@ -18,22 +18,22 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         Date now = new Date();
-        Object createTime = this.getFieldValByName("createTime", metaObject);
-        if (null == createTime) {
-            this.setFieldValByName("createTime", now, metaObject);
+        Object createdAt = this.getFieldValByName("createdAt", metaObject);
+        if (null == createdAt) {
+            this.setFieldValByName("createdAt", now, metaObject);
         }
-        Object updateTime = this.getFieldValByName("updateTime", metaObject);
-        if (null == updateTime) {
-            this.setFieldValByName("updateTime", now, metaObject);
+        Object updatedAt = this.getFieldValByName("updatedAt", metaObject);
+        if (null == updatedAt) {
+            this.setFieldValByName("updatedAt", now, metaObject);
         }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         Date now = new Date();
-        Object updateTime = this.getFieldValByName("updateTime", metaObject);
-        if (null == updateTime) {
-            this.setFieldValByName("updateTime", now, metaObject);
+        Object updatedAt = this.getFieldValByName("updatedAt", metaObject);
+        if (null == updatedAt) {
+            this.setFieldValByName("updatedAt", now, metaObject);
         }
     }
 }
