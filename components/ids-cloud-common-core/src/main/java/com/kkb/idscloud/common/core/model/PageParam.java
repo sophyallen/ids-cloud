@@ -1,6 +1,9 @@
 package com.kkb.idscloud.common.core.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -13,13 +16,16 @@ import java.io.Serializable;
  * @description:
  */
 @Data
+@ApiModel(description = "分页请求对象")
 public class PageParam<P> implements Serializable {
     @NotNull
     @Min(1)
+    @ApiModelProperty("当前页码")
     private Long pageNum;
     @NotNull
-    @Min(1)
-    @Max(500)
+    @Range(min = 1, max = 500)
+    @ApiModelProperty("每页条数")
     private Long pageSize;
+    @ApiModelProperty("查询条件封装类")
     private P condition;
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kkb.idscloud.common.core.constants.ErrorCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -15,9 +16,8 @@ import java.util.ResourceBundle;
 /**
  * @author zmc
  */
-@ApiModel(value = "响应结果")
-@Getter
-@ToString
+@ApiModel(description = "响应结果")
+@Data
 public class ResultBody<T> implements Serializable {
     private static final long serialVersionUID = -6190689122701100762L;
 

@@ -28,6 +28,10 @@ public class IdsSwaggerProperties {
      */
     private String description;
     /**
+     * 接口请求地址，默认从游览器获取，不走网关
+     */
+    private String host;
+    /**
      * 客户端ID
      */
     private String clientId;
@@ -35,10 +39,6 @@ public class IdsSwaggerProperties {
      * 客户端密钥
      */
     private String clientSecret;
-    /**
-     * 客户端授权范围
-     */
-    private String scope;
     /**
      * 获取token
      */

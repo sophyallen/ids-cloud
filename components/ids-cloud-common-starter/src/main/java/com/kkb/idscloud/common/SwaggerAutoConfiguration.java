@@ -1,5 +1,6 @@
 package com.kkb.idscloud.common;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.kkb.idscloud.common.swagger.IdsSwaggerProperties;
 import com.kkb.idscloud.common.core.utils.DateUtils;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -58,12 +60,14 @@ public class SwaggerAutoConfiguration {
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
+                .enable(idsSwaggerProperties.isEnabled())
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.withClassAnnotation(RestController.class))
-                .paths(PathSelectors.any())
+                .apis(RequestHandlerSelectors.any())
+                .paths(Predicates.not(PathSelectors.regex("/error.*")))
                 .build()
-                .securitySchemes(Collections.singletonList(securityScheme()));
+                .host(idsSwaggerProperties.getHost())
+                .globalOperationParameters(parameters());
     }
 
     /**
@@ -77,35 +81,26 @@ public class SwaggerAutoConfiguration {
     private List<Parameter> parameters() {
         ParameterBuilder builder = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
-        builder.name("Authorization").description("公共参数:认证token")
+        builder.name("Authorization").description("公共参数: 认证token")
                 .modelRef(new ModelRef("string")).parameterType("header")
-                .required(false);
-        pars.add(builder.build());
-        builder.name("clientId").description("公共参数:客户端Id")
-                .modelRef(new ModelRef("string")).parameterType("form")
-                .required(false);
-        pars.add(builder.build());
-        builder.name("nonce").description("公共参数:随机字符串")
-                .defaultValue(RandomValueUtils.uuid())
-                .modelRef(new ModelRef("string")).parameterType("form")
-                .required(false);
-        pars.add(builder.build());
-        builder.name("timestamp").description("公共参数:请求的时间,格式:yyyyMMddHHmmss")
-                .defaultValue(DateUtils.getCurrentTimestampStr())
-                .modelRef(new ModelRef("string")).parameterType("form")
-                .required(false);
-        pars.add(builder.build());
-        builder.name("signType").description("公共参数:签名方式:MD5(默认)、SHA256.")
-                .modelRef(new ModelRef("string")).parameterType("form")
-                .allowableValues(new AllowableListValues(Lists.newArrayList("MD5", "SHA256"), "string"))
                 .required(true);
         pars.add(builder.build());
-        builder = new ParameterBuilder();
-        builder.name("sign").description("公共参数:数字签名")
-                .modelRef(new ModelRef("string")).parameterType("form")
-                .defaultValue("")
-                .required(false);
+        builder.name("appId").description("公共参数: corgi appId")
+                .allowableValues(new AllowableListValues(Lists.newArrayList("12358", "12350"), "string"))
+                .modelRef(new ModelRef("string")).parameterType("header")
+                .required(true);
         pars.add(builder.build());
+        builder.name("tenantId").description("公共参数: corgi 租户id")
+                .modelRef(new ModelRef("string")).parameterType("header")
+                .defaultValue("6XWFVymtaB68REyRBuf")
+                .required(true);
+        pars.add(builder.build());
+        builder.name("Cookie").description("公共参数: 学习中心上课平台")
+                .allowableValues(new AllowableListValues(Lists.newArrayList("passport_platform=pc;",
+                        "passport_platform=mobile;"),
+                        "string"))
+                .modelRef(new ModelRef("string")).parameterType("header")
+                .required(true);
         return pars;
     }
 
@@ -121,49 +116,6 @@ public class SwaggerAutoConfiguration {
     UiConfiguration uiConfig() {
         return new UiConfiguration(null, "list", "alpha", "schema",
                 UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
-    }
-
-
-    /***
-     * oauth2配置
-     * 需要增加swagger授权回调地址
-     * http://localhost:8888/webjars/springfox-swagger-ui/o2c.html
-     * @return
-     */
-    @Bean
-    SecurityScheme securityScheme() {
-        return new ApiKey("BearerToken", "Authorization", "header");
-    }
-
-    private List<AuthorizationScope> scopes() {
-        List<String> scopes = Lists.newArrayList();
-        List list = Lists.newArrayList();
-        if (idsSwaggerProperties.getScope() != null) {
-            scopes.addAll(Lists.newArrayList(idsSwaggerProperties.getScope().split(",")));
-        }
-        scopes.forEach(s -> {
-            list.add(new AuthorizationScope(s, messageSource.getMessage(SCOPE_PREFIX + s, null, s, locale)));
-        });
-        return list;
-    }
-
-    @Bean
-    public SecurityConfiguration security() {
-        return new SecurityConfiguration(idsSwaggerProperties.getClientId(),
-                idsSwaggerProperties.getClientSecret(),
-                "realm", idsSwaggerProperties.getClientId(),
-                "", ApiKeyVehicle.HEADER, "", ",");
-    }
-
-    @Bean
-    List<GrantType> grantTypes() {
-        List<GrantType> grantTypes = new ArrayList<>();
-        TokenRequestEndpoint tokenRequestEndpoint = new TokenRequestEndpoint(
-                idsSwaggerProperties.getUserAuthorizationUri(),
-                idsSwaggerProperties.getClientId(), idsSwaggerProperties.getClientSecret());
-        TokenEndpoint tokenEndpoint = new TokenEndpoint(idsSwaggerProperties.getAccessTokenUri(), "access_token");
-        grantTypes.add(new AuthorizationCodeGrant(tokenRequestEndpoint, tokenEndpoint));
-        return grantTypes;
     }
 
 
