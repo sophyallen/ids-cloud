@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -36,11 +37,16 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
     @Override
     public <D, P> PageInfo<D> page(PageParam<P> pageParam, BaseConverter<D, E> converter) {
         ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter, "converter must not be null");
-        Page<E> page = new Page<>(pageParam.getPageNum(), pageParam.getPageSize());
         P condition = pageParam.getCondition();
         List<Field> allFields = getConditionFields(condition.getClass(), new ArrayList<>());
-        Wrapper<E> wrapper = generateQueryWrapper(allFields, condition);
-        super.page(page, wrapper);
+        QueryWrapper<E> wrapper = generateQueryWrapper(allFields, condition);
+        return page(pageParam, wrapper, converter);
+    }
+
+    @Override
+    public <D, P> PageInfo<D> page(PageParam<P> pageParam, @Nullable QueryWrapper<E> queryWrapper, @NotNull BaseConverter<D, E> converter) {
+        Page<E> page = new Page<>(pageParam.getPageNum(), pageParam.getPageSize());
+        super.page(page, queryWrapper);
         List<D> result = converter.toDto(page.getRecords());
         PageInfo<D> pageInfo = PageInfo.<D>builder().pageNum(page.getCurrent()).pageSize(page.getSize())
                 .pages(page.getPages()).total(page.getTotal()).result(result).build();
@@ -56,7 +62,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
         return converter.toDto(list);
     }
 
-    private Wrapper<E> generateQueryWrapper(List<Field> allFields, Object instance) {
+    private QueryWrapper<E> generateQueryWrapper(List<Field> allFields, Object instance) {
         QueryWrapper<E> wrapper = new QueryWrapper<>();
         for (Field f : allFields) {
             Object val = null;
