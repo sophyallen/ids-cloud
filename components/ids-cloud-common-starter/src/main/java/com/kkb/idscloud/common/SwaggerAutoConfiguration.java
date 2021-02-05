@@ -81,26 +81,30 @@ public class SwaggerAutoConfiguration {
     private List<Parameter> parameters() {
         ParameterBuilder builder = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
-        builder.name("Authorization").description("公共参数: 认证token")
+        builder.name("Authorization").description("公共参数: 认证token, C端： Bearer xxx, B端：Bearer pc|mobile:xxx")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(true);
         pars.add(builder.build());
-        builder.name("appId").description("公共参数: corgi appId")
+        builder = new ParameterBuilder();
+        builder.name("appId").description("公共参数: corgi appId, B端必填")
                 .allowableValues(new AllowableListValues(Lists.newArrayList("12358", "12350"), "string"))
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(true);
         pars.add(builder.build());
-        builder.name("tenantId").description("公共参数: corgi 租户id")
-                .modelRef(new ModelRef("string")).parameterType("header")
-                .defaultValue("6XWFVymtaB68REyRBuf")
-                .required(true);
-        pars.add(builder.build());
-        builder.name("Cookie").description("公共参数: 学习中心上课平台")
-                .allowableValues(new AllowableListValues(Lists.newArrayList("passport_platform=pc;",
-                        "passport_platform=mobile;"),
-                        "string"))
-                .modelRef(new ModelRef("string")).parameterType("header")
-                .required(true);
+//        builder = new ParameterBuilder();
+//        builder.name("tenantId").description("公共参数: corgi 租户id, B段必填")
+//                .modelRef(new ModelRef("string")).parameterType("header")
+//                .defaultValue("6XWFVymtaB68REyRBuf")
+//                .required(true);
+//        pars.add(builder.build());
+//        builder = new ParameterBuilder();
+//        builder.name("Cookie").description("公共参数: 学习中心上课平台, C端必填")
+//                .allowableValues(new AllowableListValues(Lists.newArrayList("passport_platform=pc;",
+//                        "passport_platform=mobile;"),
+//                        "string"))
+//                .modelRef(new ModelRef("string")).parameterType("header")
+//                .required(true);
+//        pars.add(builder.build());
         return pars;
     }
 

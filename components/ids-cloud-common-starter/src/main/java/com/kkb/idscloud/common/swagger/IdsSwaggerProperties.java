@@ -3,6 +3,7 @@ package com.kkb.idscloud.common.swagger;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @date 2018/7/29
  */
 @Data
+@RefreshScope
 @ConfigurationProperties(prefix = "idscloud.swagger2")
 public class IdsSwaggerProperties {
     /**
@@ -28,7 +30,8 @@ public class IdsSwaggerProperties {
      */
     private String description;
     /**
-     * 接口请求地址，默认从游览器获取，不走网关
+     * 接口请求地址，默认Request获取，由于网关rewrite为127.0.0.1
+     * 服务器上获取不到真正域名
      */
     private String host;
     /**
