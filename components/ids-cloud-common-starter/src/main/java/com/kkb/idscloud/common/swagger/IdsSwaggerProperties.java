@@ -3,7 +3,6 @@ package com.kkb.idscloud.common.swagger;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 import java.util.List;
 
@@ -14,7 +13,6 @@ import java.util.List;
  * @date 2018/7/29
  */
 @Data
-@RefreshScope
 @ConfigurationProperties(prefix = "idscloud.swagger2")
 public class IdsSwaggerProperties {
     /**
