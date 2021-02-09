@@ -93,20 +93,6 @@ public class SwaggerAutoConfiguration {
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(true);
         pars.add(builder.build());
-//        builder = new ParameterBuilder();
-//        builder.name("tenantId").description("公共参数: corgi 租户id, B段必填")
-//                .modelRef(new ModelRef("string")).parameterType("header")
-//                .defaultValue("6XWFVymtaB68REyRBuf")
-//                .required(true);
-//        pars.add(builder.build());
-//        builder = new ParameterBuilder();
-//        builder.name("Cookie").description("公共参数: 学习中心上课平台, C端必填")
-//                .allowableValues(new AllowableListValues(Lists.newArrayList("passport_platform=pc;",
-//                        "passport_platform=mobile;"),
-//                        "string"))
-//                .modelRef(new ModelRef("string")).parameterType("header")
-//                .required(true);
-//        pars.add(builder.build());
         return pars;
     }
 
