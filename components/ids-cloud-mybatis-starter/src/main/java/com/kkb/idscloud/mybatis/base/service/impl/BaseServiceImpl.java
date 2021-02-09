@@ -107,7 +107,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
             case GT:
                 wrapper.gt(Objects.nonNull(val), fieldName, val);
                 break;
-            case INNER_LIKE:
+            case LIKE:
                 wrapper.like(Objects.nonNull(val), fieldName, val);
                 break;
             case IN:

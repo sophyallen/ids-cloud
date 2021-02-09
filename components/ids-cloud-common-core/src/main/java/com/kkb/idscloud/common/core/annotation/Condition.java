@@ -44,7 +44,7 @@ public @interface Condition {
         /**
          * like %colums%
          */
-        INNER_LIKE,
+        LIKE,
         /**
          * like %colums
          */

@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,7 @@ public class SwaggerAutoConfiguration {
 
 
     @Bean
+    @RefreshScope
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .enable(idsSwaggerProperties.isEnabled())
