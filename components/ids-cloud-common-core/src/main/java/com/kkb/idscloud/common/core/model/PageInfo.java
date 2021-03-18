@@ -1,5 +1,6 @@
 package com.kkb.idscloud.common.core.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +18,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageInfo<D> implements Serializable {
-    private Long pageNum;
-    private Long pageSize;
-    private List<D> result;
+    @ApiModelProperty("当前页数，从1开始")
+    private Long page;
+    @ApiModelProperty("每页大小， (0,500]")
+    private Long size;
+    @ApiModelProperty("当前页返回数据集合")
+    private List<D> records;
+    @ApiModelProperty("总页数")
     private Long pages;
+    @ApiModelProperty("总条数")
     private long total;
 }

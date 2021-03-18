@@ -45,11 +45,11 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
 
     @Override
     public <D, P> PageInfo<D> page(PageParam<P> pageParam, @Nullable Wrapper<E> queryWrapper, @NotNull BaseConverter<D, E> converter) {
-        Page<E> page = new Page<>(pageParam.getPageNum(), pageParam.getPageSize());
+        Page<E> page = new Page<>(pageParam.getPage(), pageParam.getSize());
         super.page(page, queryWrapper);
         List<D> result = converter.toDto(page.getRecords());
-        PageInfo<D> pageInfo = PageInfo.<D>builder().pageNum(page.getCurrent()).pageSize(page.getSize())
-                .pages(page.getPages()).total(page.getTotal()).result(result).build();
+        PageInfo<D> pageInfo = PageInfo.<D>builder().page(page.getCurrent()).size(page.getSize())
+                .pages(page.getPages()).total(page.getTotal()).records(result).build();
         return pageInfo;
     }
 

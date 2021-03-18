@@ -21,11 +21,11 @@ public class PageParam<P> implements Serializable {
     @NotNull
     @Min(1)
     @ApiModelProperty("当前页码")
-    private Long pageNum;
+    private Long page;
     @NotNull
     @Range(min = 1, max = 500)
     @ApiModelProperty("每页条数")
-    private Long pageSize;
+    private Long size;
     @ApiModelProperty("查询条件封装类")
     private P condition;
 }
