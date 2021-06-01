@@ -83,7 +83,7 @@ public class SwaggerAutoConfiguration {
     private List<Parameter> parameters() {
         ParameterBuilder builder = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
-        builder.name("Authorization").description("公共参数: 认证token, B端： Bearer xxx, C端：Bearer pc|mobile:xxx")
+        builder.name("Authorization").description("公共参数: 认证token, B端： Bearer xxx; C端：Bearer pc|mobile:xxx")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(true);
         pars.add(builder.build());
