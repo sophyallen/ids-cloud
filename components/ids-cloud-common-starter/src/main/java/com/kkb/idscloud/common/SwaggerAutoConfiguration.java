@@ -83,13 +83,7 @@ public class SwaggerAutoConfiguration {
     private List<Parameter> parameters() {
         ParameterBuilder builder = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<Parameter>();
-        builder.name("Authorization").description("公共参数: 认证token, C端： Bearer xxx, B端：Bearer pc|mobile:xxx")
-                .modelRef(new ModelRef("string")).parameterType("header")
-                .required(true);
-        pars.add(builder.build());
-        builder = new ParameterBuilder();
-        builder.name("appId").description("公共参数: corgi appId, B端必填")
-                .allowableValues(new AllowableListValues(Lists.newArrayList("12358", "12350"), "string"))
+        builder.name("Authorization").description("公共参数: 认证token, B端： Bearer xxx, C端：Bearer pc|mobile:xxx")
                 .modelRef(new ModelRef("string")).parameterType("header")
                 .required(true);
         pars.add(builder.build());
