@@ -20,10 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -111,7 +108,14 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
                 wrapper.like(Objects.nonNull(val), fieldName, val);
                 break;
             case IN:
-                wrapper.in(Objects.nonNull(val), fieldName, val);
+                if (Objects.isNull(val)) {
+                    break;
+                }
+                ErrorCodeEnum.CLIENT_ERROR_A0400.assertTrue((t) -> {
+                    return val instanceof Collection;
+                }, val);
+                Collection value = (Collection)val;
+                wrapper.in(!value.isEmpty(), fieldName, value);
                 break;
             case LT:
                 wrapper.lt(Objects.nonNull(val), fieldName, val);
@@ -126,7 +130,9 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
                 wrapper.ne(Objects.nonNull(val), fieldName, val);
                 break;
             case BETWEEN: {
-                Object finalVal = val;
+                if (Objects.isNull(val)) {
+                    break;
+                }
                 ErrorCodeEnum.SERVER_ERROR_B0001
                         .assertTrue(o -> o instanceof List, val,
                                 "query condition 'between' value type must be list");
