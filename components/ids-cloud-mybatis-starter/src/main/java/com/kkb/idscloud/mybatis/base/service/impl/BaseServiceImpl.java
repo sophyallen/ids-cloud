@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -110,6 +111,10 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
             case IN:
                 if (Objects.isNull(val)) {
                     break;
+                }
+                if (val.getClass().isArray()) {
+                    Object[] objs = (Object[]) val;
+                    wrapper.in(objs.length > 0, fieldName, objs);
                 }
                 ErrorCodeEnum.CLIENT_ERROR_A0400.assertTrue((t) -> {
                     return val instanceof Collection;

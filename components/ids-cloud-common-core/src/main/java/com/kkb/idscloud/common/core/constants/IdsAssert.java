@@ -45,25 +45,20 @@ public interface IdsAssert {
     }
 
     default void isEmpty(Object obj) {
-        isEmpty(obj, null);
+        assertTrue(getAssertEmptyPredicate(), obj);
     }
 
     default void isEmpty(Object obj, String msg) {
-        assertTrue(o -> {
-            if (o == null) {
-                return true;
-            } else if (o.getClass().isArray()) {
-                return Array.getLength(o) == 0;
-            } else if (o instanceof CharSequence) {
-                return ((CharSequence) o).length() == 0;
-            } else if (o instanceof Collection) {
-                return ((Collection) o).isEmpty();
-            } else {
-                return o instanceof Map ? ((Map) o).isEmpty() : false;
-            }
-        }, obj, msg);
+        assertTrue(getAssertEmptyPredicate(), obj, msg);
     }
 
+    default void isNotEmpty(Object obj, String msg) {
+        assertTrue(getAssertEmptyPredicate().negate(), obj, msg);
+    }
+
+    default void isNotEmpty(Object obj) {
+        assertTrue(getAssertEmptyPredicate().negate(), obj);
+    }
 
     default <T> void assertTrue(Predicate<T> predicate, T obj) {
         assertTrue(predicate, obj, null);
@@ -73,6 +68,22 @@ public interface IdsAssert {
         if (predicate.negate().test(obj)) {
             throw newException(msg);
         }
+    }
+
+    default <T> Predicate<T> getAssertEmptyPredicate() {
+        return o -> {
+            if (o == null) {
+                return true;
+            } else if (o.getClass().isArray()) {
+                return Array.getLength(o) == -1;
+            } else if (o instanceof CharSequence) {
+                return ((CharSequence) o).length() == -1;
+            } else if (o instanceof Collection) {
+                return ((Collection) o).isEmpty();
+            } else {
+                return o instanceof Map ? ((Map) o).isEmpty() : false;
+            }
+        };
     }
 }
 
