@@ -15,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -117,11 +118,17 @@ public class GlobalExceptionHandler {
      */
     public static ResultBody resolveException(Exception ex, String path) {
         ErrorCodeEnum code = ErrorCodeEnum.SERVER_ERROR_B0001;
-        int httpStatus = HttpStatus.INTERNAL_SERVER_ERROR.value();
-        String message = ex.getMessage();
 //        String superClassName = ex.getClass().getSuperclass().getName();
         String className = ex.getClass().getName();
-        if (className.contains("UsernameNotFoundException")) {
+        if (ex instanceof ResponseStatusException) {
+            ResponseStatusException e = (ResponseStatusException) ex;
+            if (e.getStatus().value() == HttpStatus.NOT_FOUND.value()) {
+                return buildBody(e, ErrorCodeEnum.CLIENT_ERROR_A0404, path);
+            }
+            if (e.getStatus().is4xxClientError()) {
+                code = ErrorCodeEnum.CLIENT_ERROR_A0400;
+            }
+        } else if (className.contains("UsernameNotFoundException")) {
 //            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0201;
         } else if (className.contains("BadCredentialsException")) {
