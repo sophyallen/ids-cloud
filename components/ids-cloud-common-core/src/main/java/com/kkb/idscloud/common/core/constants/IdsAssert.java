@@ -70,6 +70,16 @@ public interface IdsAssert {
         }
     }
 
+    default <T> void assertFalse(Predicate<T> predicate, T obj) {
+        assertFalse(predicate, obj, null);
+    }
+
+    default <T> void assertFalse(Predicate<T> predicate, T obj, String msg) {
+        if (predicate.test(obj)) {
+            throw newException(msg);
+        }
+    }
+
     default <T> Predicate<T> getAssertEmptyPredicate() {
         return o -> {
             if (o == null) {
