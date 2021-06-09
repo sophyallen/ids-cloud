@@ -19,7 +19,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,7 +33,7 @@ import java.util.stream.Collectors;
 public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, E> implements BaseService<E> {
     @Override
     public <D, P> PageInfo<D> page(PageParam<P> pageParam, BaseConverter<D, E> converter) {
-        ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter, "converter must not be null");
+        ErrorCodeEnum.SERVER_ERROR_B0001.assertNotNull(converter, "converter must not be null");
         P condition = pageParam.getCondition();
         List<Field> allFields = getConditionFields(condition.getClass(), new ArrayList<>());
         Wrapper<E> wrapper = generateQueryWrapper(allFields, condition);
@@ -53,7 +52,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
 
     @Override
     public <D> List<D> listByConditionParam(Object param, BaseConverter<D, E> converter) {
-        ErrorCodeEnum.SERVER_ERROR_B0001.isNotNull(converter, "converter must not be null");
+        ErrorCodeEnum.SERVER_ERROR_B0001.assertNotNull(converter, "converter must not be null");
         List<Field> allFields = getConditionFields(param.getClass(), new ArrayList<>());
         Wrapper<E> wrapper = generateQueryWrapper(allFields, param);
         List<E> list = super.list(wrapper);

@@ -21,8 +21,8 @@ public interface IdsAssert {
      *
      * @param obj 待判断对象
      */
-    default void isNotNull(Object obj) {
-        isNotNull(obj, null);
+    default void assertNotNull(Object obj) {
+        assertNotNull(obj, null);
     }
 
     /**
@@ -32,31 +32,36 @@ public interface IdsAssert {
      * @param obj 待判断对象
      * @param msg message占位符对应的参数列表
      */
-    default void isNotNull(Object obj, String msg) {
+    default void assertNotNull(Object obj, String msg) {
         assertTrue(t -> t != null, obj, msg);
     }
 
-    default void isNull(Object obj) {
-        isNull(obj, null);
+    default void assertIsNull(Object obj) {
+        assertIsNull(obj, null);
     }
 
-    default void isNull(Object obj, String msg) {
+    default void assertIsNull(Object obj, String msg) {
         assertTrue(t -> t == null, obj, msg);
     }
 
-    default void isEmpty(Object obj) {
+    default void assertEmpty(Object obj) {
         assertTrue(getAssertEmptyPredicate(), obj);
     }
 
-    default void isEmpty(Object obj, String msg) {
+    /**
+     * null "" 空数组、集合都为true
+     * @param obj
+     * @param msg
+     */
+    default void assertEmpty(Object obj, String msg) {
         assertTrue(getAssertEmptyPredicate(), obj, msg);
     }
 
-    default void isNotEmpty(Object obj, String msg) {
+    default void assertNotEmpty(Object obj, String msg) {
         assertTrue(getAssertEmptyPredicate().negate(), obj, msg);
     }
 
-    default void isNotEmpty(Object obj) {
+    default void assertNotEmpty(Object obj) {
         assertTrue(getAssertEmptyPredicate().negate(), obj);
     }
 
@@ -85,9 +90,9 @@ public interface IdsAssert {
             if (o == null) {
                 return true;
             } else if (o.getClass().isArray()) {
-                return Array.getLength(o) == -1;
+                return Array.getLength(o) == 0;
             } else if (o instanceof CharSequence) {
-                return ((CharSequence) o).length() == -1;
+                return ((CharSequence) o).length() == 0;
             } else if (o instanceof Collection) {
                 return ((Collection) o).isEmpty();
             } else {
@@ -95,5 +100,6 @@ public interface IdsAssert {
             }
         };
     }
+
 }
 

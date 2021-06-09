@@ -45,7 +45,7 @@ public class ValidatorUtil {
 
     public static <T> void assertValidate(T obj, Class<?>... clazzes) {
         Set<ConstraintViolation<T>> set = validator.validate(obj, clazzes);
-        ErrorCodeEnum.CLIENT_ERROR_A0400.isEmpty(set, tipsMsg(set));
+        ErrorCodeEnum.CLIENT_ERROR_A0400.assertEmpty(set, tipsMsg(set));
     }
 
     private static <T> String tipsMsg(Set<ConstraintViolation<T>> set) {
