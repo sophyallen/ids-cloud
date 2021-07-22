@@ -22,8 +22,11 @@ import javax.validation.constraints.NotNull;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
+ * M mapper
+ * E entity
  * @param <M> Mapper
  * @param <E> Entity
  */
@@ -31,11 +34,12 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, E> implements BaseService<E> {
+
     @Override
     public <D, P> PageInfo<D> page(PageParam<P> pageParam, BaseConverter<D, E> converter) {
         ErrorCodeEnum.SERVER_ERROR_B0001.assertNotNull(converter, "converter must not be null");
         P condition = pageParam.getCondition();
-        List<Field> allFields = getConditionFields(condition.getClass(), new ArrayList<>());
+        List<Field> allFields = getConditionFields(condition.getClass());
         Wrapper<E> wrapper = generateQueryWrapper(allFields, condition);
         return page(pageParam, wrapper, converter);
     }
@@ -53,7 +57,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
     @Override
     public <D> List<D> listByConditionParam(Object param, BaseConverter<D, E> converter) {
         ErrorCodeEnum.SERVER_ERROR_B0001.assertNotNull(converter, "converter must not be null");
-        List<Field> allFields = getConditionFields(param.getClass(), new ArrayList<>());
+        List<Field> allFields = getConditionFields(param.getClass());
         Wrapper<E> wrapper = generateQueryWrapper(allFields, param);
         List<E> list = super.list(wrapper);
         return converter.toDto(list);
@@ -79,19 +83,34 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
         return wrapper;
     }
 
-    private static List<Field> getConditionFields(Class clazz, List<Field> fields) {
-        if (clazz != null) {
-            Field[] fieldArray = clazz.getDeclaredFields();
-            List<Field> conditionFileds = Arrays.stream(fieldArray).parallel()
-                    .filter(f -> f.isAnnotationPresent(Condition.class))
-                    .collect(Collectors.toList());
-            fields.addAll(conditionFileds);
-            getConditionFields(clazz.getSuperclass(), fields);
+    private static List<Field> getConditionFields(Class clazz) {
+        List<Field> conditionFields = new ArrayList<>();
+        getConditionFields(clazz, conditionFields);
+        return conditionFields;
+    }
+
+    /**
+     * @return
+     * @Author
+     * @Description 获取该类及所有父类里的Field 集合
+     * @Date 11:56 2021-07-22
+     * @Param
+     **/
+    private static void getConditionFields(Class clazz, List<Field> fields) {
+        if (clazz == null) {
+            return;
         }
-        fields.forEach(f -> {
+        Field[] fieldArray = clazz.getDeclaredFields();
+        List<Field> conditionFileds = Arrays.stream(fieldArray)
+                .parallel()
+                .filter(f -> f.isAnnotationPresent(Condition.class))
+                .collect(Collectors.toList());
+        conditionFileds.forEach(f -> {
             f.setAccessible(true);
         });
-        return fields;
+        fields.addAll(conditionFileds);
+        // 递归获取父类field
+        getConditionFields(clazz.getSuperclass(), fields);
     }
 
     protected void jointConditon(QueryWrapper<E> wrapper, Condition.CompareEnum compare,
@@ -118,7 +137,7 @@ public class BaseServiceImpl<M extends BaseMapper<E>, E> extends ServiceImpl<M, 
                 ErrorCodeEnum.CLIENT_ERROR_A0400.assertTrue((t) -> {
                     return val instanceof Collection;
                 }, val);
-                Collection value = (Collection)val;
+                Collection value = (Collection) val;
                 wrapper.in(!value.isEmpty(), fieldName, value);
                 break;
             case LT:
