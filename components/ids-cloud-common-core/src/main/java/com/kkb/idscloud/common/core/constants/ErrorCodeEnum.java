@@ -217,7 +217,7 @@ public enum ErrorCodeEnum implements IdsAssert {
 
     @Override
     public IdsException newException(String msg) {
-        char c = getMessage().charAt(0);
+        char c = getCode().charAt(0);
         switch (c) {
             case 'A': return new IdsClientException(this, msg);
             case 'B': return new IdsServerException(this, msg);
