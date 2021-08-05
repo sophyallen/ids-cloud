@@ -117,6 +117,9 @@ public class GlobalExceptionHandler {
      * @return
      */
     public static ResultBody resolveException(Exception ex, String path) {
+        if (ex instanceof IdsException) {
+            return buildBody(ex, ((IdsException)ex).getErrorCodeEnum(), path);
+        }
         ErrorCodeEnum code = ErrorCodeEnum.SERVER_ERROR_B0001;
 //        String superClassName = ex.getClass().getSuperclass().getName();
         String className = ex.getClass().getName();
@@ -124,6 +127,9 @@ public class GlobalExceptionHandler {
             ResponseStatusException e = (ResponseStatusException) ex;
             if (e.getStatus().value() == HttpStatus.NOT_FOUND.value()) {
                 return buildBody(e, ErrorCodeEnum.CLIENT_ERROR_A0404, path);
+            }
+            if (e.getStatus().value() == HttpStatus.SERVICE_UNAVAILABLE.value()) {
+                return buildBody(e, ErrorCodeEnum.THIRD_PARTY_ERROR_C0111, path);
             }
             if (e.getStatus().is4xxClientError()) {
                 code = ErrorCodeEnum.CLIENT_ERROR_A0400;
