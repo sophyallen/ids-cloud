@@ -1,11 +1,7 @@
 package com.kkb.idscloud.common;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
 import com.kkb.idscloud.common.swagger.IdsSwaggerProperties;
-import com.kkb.idscloud.common.core.utils.DateUtils;
-import com.kkb.idscloud.common.core.utils.RandomValueUtils;
-import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,23 +11,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.schema.ModelRef;
-import springfox.documentation.service.*;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.ApiKeyVehicle;
-import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -94,7 +86,7 @@ public class SwaggerAutoConfiguration {
         return new ApiInfoBuilder()
                 .title(idsSwaggerProperties.getTitle())
                 .description(idsSwaggerProperties.getDescription())
-                .version("1.0")
+                .version("2.0")
                 .build();
     }
 

@@ -106,38 +106,7 @@
             <groupId>org.apache.skywalking</groupId>
             <artifactId>apm-toolkit-trace</artifactId>
         </dependency>
-        <!-- swagger2 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-            <version>${swagger2.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>mapstruct</artifactId>
-                    <groupId>org.mapstruct</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>swagger-bootstrap-ui</artifactId>
-            <version>${swagger-bootstrap-ui.version}</version>
-        </dependency>
+
         <!-- mapstruct 对象转化 -->
         <dependency>
             <groupId>org.mapstruct</groupId>

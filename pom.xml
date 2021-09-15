@@ -35,8 +35,7 @@
         <mybatis-plus.version>3.1.1</mybatis-plus.version>
         <hutool.version>4.1.19</hutool.version>
         <com.google.zxing.version>3.1.0</com.google.zxing.version>
-        <swagger2.version>2.9.2</swagger2.version>
-        <swagger-bootstrap-ui.version>1.9.5</swagger-bootstrap-ui.version>
+        <knife.version>2.0.5</knife.version>
         <oracle.version>10.2.0.4.0</oracle.version>
         <skywalking.amp.version>8.3.0</skywalking.amp.version>
 
@@ -162,6 +161,16 @@
                 <groupId>org.apache.skywalking</groupId>
                 <artifactId>apm-toolkit-trace</artifactId>
                 <version>${skywalking.amp.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

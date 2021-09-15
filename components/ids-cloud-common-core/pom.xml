@@ -55,16 +55,10 @@
             <version>${com.google.zxing.version}</version>
         </dependency>
         <!--swagger-->
+        <!-- swagger2 -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${swagger2.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-micro-spring-boot-starter</artifactId>
         </dependency>
         <!--工具类-->
         <dependency>
