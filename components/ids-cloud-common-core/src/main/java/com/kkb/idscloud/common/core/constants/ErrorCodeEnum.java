@@ -1,13 +1,14 @@
 package com.kkb.idscloud.common.core.constants;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.kkb.idscloud.common.core.exception.IdsClientException;
 import com.kkb.idscloud.common.core.exception.IdsException;
 import com.kkb.idscloud.common.core.exception.IdsServerException;
 import com.kkb.idscloud.common.core.exception.ThirdServerException;
 
 /**
- * @description 阿里巴巴Java编码规范，错误码
  * @author zmc
+ * @description 阿里巴巴Java编码规范，错误码
  * @date 20201218
  */
 public enum ErrorCodeEnum implements IdsAssert {
@@ -219,9 +220,12 @@ public enum ErrorCodeEnum implements IdsAssert {
     public IdsException newException(String msg) {
         char c = getCode().charAt(0);
         switch (c) {
-            case 'A': return new IdsClientException(this, msg);
-            case 'B': return new IdsServerException(this, msg);
-            default: return new ThirdServerException(this, msg);
+            case 'A':
+                return new IdsClientException(this, msg);
+            case 'B':
+                return new IdsServerException(this, msg);
+            default:
+                return new ThirdServerException(this, msg);
         }
     }
 
@@ -229,10 +233,18 @@ public enum ErrorCodeEnum implements IdsAssert {
     public IdsException newException(String msg, Throwable cause) {
         char c = getCode().charAt(0);
         switch (c) {
-            case 'A': return new IdsClientException(this, msg, cause);
-            case 'B': return new IdsServerException(this, msg, cause);
-            default: return new ThirdServerException(this, msg, cause);
+            case 'A':
+                return new IdsClientException(this, msg, cause);
+            case 'B':
+                return new IdsServerException(this, msg, cause);
+            default:
+                return new ThirdServerException(this, msg, cause);
         }
+    }
+
+    @Override
+    public void throwException(String msg, Throwable... cause) {
+        throw ArrayUtil.isEmpty(cause) ? newException(msg) : newException(msg, cause[cause.length - 1]);
     }
 
 
