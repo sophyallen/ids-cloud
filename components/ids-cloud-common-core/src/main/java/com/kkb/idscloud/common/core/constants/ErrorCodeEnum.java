@@ -224,4 +224,16 @@ public enum ErrorCodeEnum implements IdsAssert {
             default: return new ThirdServerException(this, msg);
         }
     }
+
+    @Override
+    public IdsException newException(String msg, Throwable cause) {
+        char c = getCode().charAt(0);
+        switch (c) {
+            case 'A': return new IdsClientException(this, msg, cause);
+            case 'B': return new IdsServerException(this, msg, cause);
+            default: return new ThirdServerException(this, msg, cause);
+        }
+    }
+
+
 }

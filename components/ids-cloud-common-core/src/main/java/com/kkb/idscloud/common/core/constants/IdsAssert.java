@@ -16,6 +16,15 @@ public interface IdsAssert {
      */
     IdsException newException(String msg);
 
+
+    /**
+     * 创建异常
+     *
+     * @param msg
+     * @return
+     */
+    IdsException newException(String msg, Throwable cause);
+
     /**
      * <p>断言对象<code>obj</code>非空。如果对象<code>obj</code>为空，则抛出异常
      *
