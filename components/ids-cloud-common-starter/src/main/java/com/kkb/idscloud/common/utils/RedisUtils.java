@@ -2,12 +2,11 @@ package com.kkb.idscloud.common.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -599,5 +598,45 @@ public class RedisUtils<T> {
             log.warn("redis operation occur error", e);
             return 0;
         }
+    }
+
+    /***
+     * 加锁
+     * @param lockKey
+     * @param value
+     * @param expireTime
+     * @return
+     */
+    public boolean getLock(String lockKey, String value, int expireTime) {
+        boolean ret = false;
+        Long SUCCESS = 1L;
+        try {
+            String script = "if redis.call('setNx',KEYS[1],ARGV[1]) then if redis.call('get',KEYS[1])==ARGV[1] then return redis.call('expire',KEYS[1],ARGV[2]) else return 0 end end";
+            RedisScript<Long> redisScript = new DefaultRedisScript<>(script, Long.class);
+            Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey), value, expireTime);
+            if (SUCCESS.equals(result)) {
+                return true;
+            }
+        } catch (Exception e) {
+            log.error("获取加锁失败，key为：{}, 异常信息为：{}", lockKey, e.getMessage(), e);
+        }
+        return ret;
+    }
+    /**
+     * 释放锁
+     *
+     * @param lockKey
+     * @param value
+     * @return
+     */
+    public boolean releaseLock(String lockKey, String value) {
+        Long SUCCESS = 1L;
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        RedisScript<Long> redisScript = new DefaultRedisScript<>(script, Long.class);
+        Object result = redisTemplate.execute(redisScript, Collections.singletonList(lockKey), value);
+        if (SUCCESS.equals(result)) {
+            return true;
+        }
+        return false;
     }
 }
