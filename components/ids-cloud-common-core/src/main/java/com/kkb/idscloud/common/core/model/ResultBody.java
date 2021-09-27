@@ -59,7 +59,7 @@ public class ResultBody<T> implements Serializable {
         super();
     }
 
-    @JSONField(serialize = false)
+//    @JSONField(serialize = false)
     public boolean isOk() {
         return this.code == ErrorCodeEnum.OK.getCode();
     }
