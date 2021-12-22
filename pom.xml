@@ -6,9 +6,12 @@
     <groupId>com.kkb.idscloud</groupId>
     <artifactId>ids-cloud-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
     <modules>
-        <module>components</module>
+        <module>ids-cloud-common-core</module>
+        <module>ids-cloud-common-starter</module>
+        <module>ids-cloud-mybatis-starter</module>
+        <module>ids-cloud-web-starter</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
@@ -40,7 +43,7 @@
         <skywalking.amp.version>8.3.0</skywalking.amp.version>
 
         <!--自定义版本-->
-        <idscloud.common.version>1.0.0-SNAPSHOT</idscloud.common.version>
+        <idscloud.common.version>1.0.1-SNAPSHOT</idscloud.common.version>
 
         <!--镜像前缀-->
         <docker.image.prefix>ids.cloud</docker.image.prefix>
