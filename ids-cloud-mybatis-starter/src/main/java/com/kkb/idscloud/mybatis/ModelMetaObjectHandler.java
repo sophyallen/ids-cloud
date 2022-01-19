@@ -28,11 +28,11 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
         }
 
         Object createdAt = this.getFieldValByName("createdAt", metaObject);
-        if (null == createTime) {
+        if (null == createdAt) {
             this.setFieldValByName("createdAt", now, metaObject);
         }
         Object updatedAt = this.getFieldValByName("updatedAt", metaObject);
-        if (null == updateTime) {
+        if (null == updatedAt) {
             this.setFieldValByName("updatedAt", now, metaObject);
         }
     }
@@ -46,7 +46,7 @@ public class ModelMetaObjectHandler implements MetaObjectHandler {
         }
 
         Object updatedAt = this.getFieldValByName("updatedAt", metaObject);
-        if (null == updateTime) {
+        if (null == updatedAt) {
             this.setFieldValByName("updatedAt", now, metaObject);
         }
     }
