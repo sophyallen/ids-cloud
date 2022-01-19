@@ -82,6 +82,11 @@
             <version>24.1.1-jre</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.kkb.common</groupId>
+            <artifactId>homer-client</artifactId>
+            <version>1.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

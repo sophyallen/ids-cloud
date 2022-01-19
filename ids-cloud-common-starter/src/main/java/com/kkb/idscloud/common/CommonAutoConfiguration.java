@@ -79,7 +79,6 @@ public class CommonAutoConfiguration {
 
 
     @Bean
-//    @LoadBalanced
     @ConditionalOnMissingBean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();

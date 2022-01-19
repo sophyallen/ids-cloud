@@ -123,7 +123,7 @@ public class JacksonAutoConfiguration {
     @Primary
     @ConditionalOnMissingBean(ObjectMapper.class)
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
         // 排序key
@@ -132,6 +132,12 @@ public class JacksonAutoConfiguration {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         //忽略在json字符串中存在，在java类中不存在字段，防止错误。
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+            @Override
+            public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+                gen.writeNull();
+            }
+        });
         /**
          * 序列换成json时,将所有的long变成string
          * 因为js中得数字类型不能包含所有的java long值
@@ -141,12 +147,12 @@ public class JacksonAutoConfiguration {
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
         // 兼容fastJson 的一些空值处理
-        SerializerFeature[] features = new SerializerFeature[]{
-                WriteNullListAsEmpty,
-                WriteNullStringAsEmpty,
-                WriteNullNumberAsZero,
-                WriteNullBooleanAsFalse,
-                WriteNullMapAsEmpty
+       SerializerFeature[] features = new SerializerFeature[]{
+                WriteNullListAsEmpty
+//                WriteNullStringAsEmpty,
+//                WriteNullNumberAsZero,
+//                WriteNullBooleanAsFalse,
+//                WriteNullMapAsEmpty
         };
         objectMapper.setSerializerFactory(objectMapper.getSerializerFactory().withSerializerModifier(new FastJsonSerializerFeatureCompatibleForJackson(features)));
         log.info("ObjectMapper [{}]", objectMapper);
