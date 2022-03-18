@@ -1,3 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.web.WebMvcConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kaikeba.idscloud.web.WebMvcConfiguration
 
 

@@ -1,2 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kkb.idscloud.mybatis.MybatisAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kaikeba.idscloud.mybatis.MybatisAutoConfiguration
 

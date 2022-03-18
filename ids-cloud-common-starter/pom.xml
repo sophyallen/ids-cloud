@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ids-cloud-parent</artifactId>
-        <groupId>com.kkb.idscloud</groupId>
-        <version>1.0.1-SNAPSHOT</version>
+        <groupId>com.kaikeba.idscloud</groupId>
+        <version>1.2.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
-            <groupId>com.kkb.idscloud</groupId>
+            <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-core</artifactId>
             <version>${idscloud.common.version}</version>
             <scope>provided</scope>
@@ -64,7 +64,7 @@
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
         <!-- 消息总线rabbitMQ -->
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
             <exclusions>
@@ -73,7 +73,7 @@
                     <groupId>org.objenesis</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
+        </dependency>-->
         <!--监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
