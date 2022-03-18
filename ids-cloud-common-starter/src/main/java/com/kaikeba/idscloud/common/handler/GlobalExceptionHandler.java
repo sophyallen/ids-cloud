@@ -119,7 +119,6 @@ public class GlobalExceptionHandler {
             return buildBody(ex, ((IdsException) ex).getErrorCodeEnum(), path);
         }
         ErrorCodeEnum code = ErrorCodeEnum.SERVER_ERROR_B0001;
-//        String superClassName = ex.getClass().getSuperclass().getName();
         String className = ex.getClass().getName();
         if (ex instanceof ResponseStatusException) {
             ResponseStatusException e = (ResponseStatusException) ex;
@@ -133,28 +132,21 @@ public class GlobalExceptionHandler {
                 code = ErrorCodeEnum.CLIENT_ERROR_A0400;
             }
         } else if (className.contains("UsernameNotFoundException")) {
-//            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0201;
         } else if (className.contains("BadCredentialsException")) {
-//            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0300;
         } else if (className.contains("AccountExpiredException")) {
-//            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0203;
         } else if (className.contains("LockedException")) {
-//            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0202;
         } else if (className.contains("DisabledException")) {
-//            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0203;
         } else if (className.contains("CredentialsExpiredException")) {
-//            httpStatus = HttpStatus.UNAUTHORIZED.value();
             code = ErrorCodeEnum.CLIENT_ERROR_A0311;
         } else if (className.contains("UserDeniedAuthorizationException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0303;
         } else if (className.contains("AccessDeniedException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0312;
-//            httpStatus = HttpStatus.FORBIDDEN.value();
         } else if (className.contains("HttpMessageNotReadableException")
                 || className.contains("TypeMismatchException")
                 || className.contains("MissingServletRequestParameterException")) {

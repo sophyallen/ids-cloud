@@ -16,7 +16,6 @@
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-core</artifactId>
-            <version>${idscloud.common.version}</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

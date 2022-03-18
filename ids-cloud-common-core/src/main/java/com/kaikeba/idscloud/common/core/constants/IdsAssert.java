@@ -67,6 +67,7 @@ public interface IdsAssert {
 
     /**
      * null "" 空数组、集合都为true
+     *
      * @param obj
      * @param msg
      */
@@ -82,6 +83,14 @@ public interface IdsAssert {
         assertTrue(getAssertEmptyPredicate().negate(), obj);
     }
 
+    default void assertTrue(boolean isTure) {
+        assertTrue(t -> t, isTure);
+    }
+
+    default void assertTrue(boolean isTure, String msg) {
+        assertTrue(t -> t, isTure, msg);
+    }
+
     default <T> void assertTrue(Predicate<T> predicate, T obj) {
         assertTrue(predicate, obj, null);
     }
@@ -90,6 +99,14 @@ public interface IdsAssert {
         if (predicate.negate().test(obj)) {
             throw newException(msg);
         }
+    }
+
+    default void assertFalse(boolean isFalse) {
+        assertFalse(t -> t, isFalse);
+    }
+
+    default void assertFalse(boolean isFalse, String msg) {
+        assertFalse(t -> t, isFalse, msg);
     }
 
     default <T> void assertFalse(Predicate<T> predicate, T obj) {
