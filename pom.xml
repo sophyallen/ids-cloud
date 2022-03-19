@@ -13,7 +13,6 @@
         <module>ids-cloud-mybatis-starter</module>
         <module>ids-cloud-web-starter</module>
         <module>ids-cloud-rocketmq-starter</module>
-        <module>ids-cloud-rocketmq-starter</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>

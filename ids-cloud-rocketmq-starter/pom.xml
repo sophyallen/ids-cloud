@@ -12,6 +12,8 @@
 
     <artifactId>ids-cloud-rocketmq-starter</artifactId>
     <version>${idscloud.common.version}</version>
+    <packaging>jar</packaging>
+
     <dependencies>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -28,10 +30,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-amqp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
             <version>4.5.2</version>
@@ -42,6 +40,10 @@
             <artifactId>rocketmq-acl</artifactId>
             <version>4.5.2</version>
             <!--更新为最新版本-->
+        </dependency>
+        <dependency>
+            <groupId>com.kaikeba.idscloud</groupId>
+            <artifactId>ids-cloud-common-core</artifactId>
         </dependency>
     </dependencies>
 </project>
