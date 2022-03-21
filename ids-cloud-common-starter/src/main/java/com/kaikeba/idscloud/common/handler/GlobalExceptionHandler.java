@@ -4,6 +4,7 @@ import com.kaikeba.idscloud.common.core.constants.ErrorCodeEnum;
 import com.kaikeba.idscloud.common.core.exception.IdsException;
 import com.kaikeba.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,8 +42,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({IdsException.class})
     public ResultBody openException(IdsException ex, HttpServletRequest request, HttpServletResponse response) {
-        ResultBody resultBody = convertToResultBody(ex);
-//        response.setStatus(resultBody.getHttpStatus());
+        ResultBody resultBody = buildBody(ex, ex.getErrorCodeEnum(), request.getRequestURI());
+        response.setStatus(ex.getErrorCodeEnum().getHttpStatus());
         return resultBody;
     }
 
@@ -55,9 +57,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({Exception.class})
     public ResultBody exception(Exception ex, HttpServletRequest request, HttpServletResponse response) {
-        ResultBody resultBody = resolveException(ex, request.getRequestURI());
-//        response.setStatus(resultBody.getHttpStatus());
-        return resultBody;
+        ErrorCodeEnum code = resolveException(ex);
+        response.setStatus(code.getHttpStatus());
+        return buildBody(ex, code, request.getRequestURI());
     }
 
     /**
@@ -114,22 +116,33 @@ public class GlobalExceptionHandler {
      * @param ex
      * @return
      */
-    public static ResultBody resolveException(Exception ex, String path) {
+    public static ErrorCodeEnum resolveException(Throwable ex) {
         if (ex instanceof IdsException) {
-            return buildBody(ex, ((IdsException) ex).getErrorCodeEnum(), path);
+            return ((IdsException) ex).getErrorCodeEnum();
         }
         ErrorCodeEnum code = ErrorCodeEnum.SERVER_ERROR_B0001;
         String className = ex.getClass().getName();
         if (ex instanceof ResponseStatusException) {
             ResponseStatusException e = (ResponseStatusException) ex;
             if (e.getStatus().value() == HttpStatus.NOT_FOUND.value()) {
-                return buildBody(e, ErrorCodeEnum.CLIENT_ERROR_A0404, path);
+                return ErrorCodeEnum.CLIENT_ERROR_A0404;
             }
             if (e.getStatus().value() == HttpStatus.SERVICE_UNAVAILABLE.value()) {
-                return buildBody(e, ErrorCodeEnum.THIRD_PARTY_ERROR_C0111, path);
+                return ErrorCodeEnum.THIRD_PARTY_ERROR_C0111;
             }
             if (e.getStatus().is4xxClientError()) {
-                code = ErrorCodeEnum.CLIENT_ERROR_A0400;
+                return ErrorCodeEnum.CLIENT_ERROR_A0400;
+            }
+        } else if (ex instanceof HttpClientErrorException) {
+            HttpClientErrorException e = (HttpClientErrorException)ex;
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                return ErrorCodeEnum.CLIENT_ERROR_A0404;
+            }
+            if (e.getStatusCode() == HttpStatus.SERVICE_UNAVAILABLE) {
+                return ErrorCodeEnum.THIRD_PARTY_ERROR_C0111;
+            }
+            if (e.getStatusCode().is4xxClientError()) {
+                return ErrorCodeEnum.CLIENT_ERROR_A0400;
             }
         } else if (className.contains("UsernameNotFoundException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0201;
@@ -158,34 +171,21 @@ public class GlobalExceptionHandler {
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0400;
         }
-        return buildBody(ex, code, path);
+        return code;
     }
 
     /**
      * 构建返回结果对象
      *
-     * @param exception
+     * @param throwable
      * @return
      */
-    private static ResultBody buildBody(Exception exception, ErrorCodeEnum resultCode, String path) {
-        if (resultCode == null) {
-            if (exception instanceof IdsException) {
-                resultCode = ((IdsException) exception).getErrorCodeEnum();
-            } else {
-                resultCode = ErrorCodeEnum.SERVER_ERROR_B0001;
-            }
-        }
-        ResultBody resultBody = ResultBody.failed().code(resultCode.getCode())
+    public static ResultBody<?> buildBody(Throwable throwable, ErrorCodeEnum resultCode, String path) {
+        ResultBody<?> resultBody = ResultBody.failed().code(resultCode.getCode())
                 .message(resultCode.getMessage())
                 .path(path)
                 .traceId(TraceContext.traceId());
-        log.error("GlobalExceptionHandler handle error: {}", resultBody, exception.getMessage(), exception);
-        return resultBody;
-    }
-
-    private static ResultBody convertToResultBody(IdsException e) {
-        ResultBody resultBody = ResultBody.failed(e.getErrorCodeEnum(), e.getMessage()).traceId(TraceContext.traceId());
-        log.error("GlobalExceptionHandler handle error: {}", resultBody, e);
+        log.error("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
         return resultBody;
     }
 

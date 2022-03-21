@@ -57,55 +57,54 @@ public class ResultBody<T> implements Serializable {
         super();
     }
 
-//    @JSONField(serialize = false)
     public boolean isOk() {
-        return this.code == ErrorCodeEnum.OK.getCode();
+        return ErrorCodeEnum.OK.getCode().equals(this.code);
     }
 
 
-    public static ResultBody ok() {
-        return new ResultBody().code(ErrorCodeEnum.OK.getCode()).message(ErrorCodeEnum.OK.getMessage());
+    public static <T> ResultBody<T> ok() {
+        return new ResultBody<T>().code(ErrorCodeEnum.OK.getCode()).message(ErrorCodeEnum.OK.getMessage());
     }
 
-    public static <T> ResultBody ok(T data) {
+    public static <T> ResultBody<T> ok(T data) {
         return new ResultBody<T>()
                 .code(ErrorCodeEnum.OK.getCode()).message(ErrorCodeEnum.OK.getMessage())
                 .data(data);
     }
 
-    public static ResultBody failed() {
-        return new ResultBody().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).message(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage());
+    public static <T> ResultBody<T> failed() {
+        return new ResultBody<T>().code(ErrorCodeEnum.SERVER_ERROR_B0001.getCode()).message(ErrorCodeEnum.SERVER_ERROR_B0001.getMessage());
     }
 
-    public static ResultBody failed(ErrorCodeEnum errorCodeEnum) {
-        return new ResultBody().code(errorCodeEnum.getCode()).message(errorCodeEnum.getMessage());
+    public static <T> ResultBody<T> failed(ErrorCodeEnum errorCodeEnum) {
+        return new ResultBody<T>().code(errorCodeEnum.getCode()).message(errorCodeEnum.getMessage());
     }
 
-    public static ResultBody failed(ErrorCodeEnum errorCodeEnum, String message) {
-        return new ResultBody().code(errorCodeEnum.getCode()).message(message);
+    public static <T> ResultBody<T> failed(ErrorCodeEnum errorCodeEnum, String message) {
+        return new ResultBody<T>().code(errorCodeEnum.getCode()).message(message);
     }
 
-    public ResultBody code(String code) {
+    public ResultBody<T> code(String code) {
         this.code = code;
         return this;
     }
 
-    public ResultBody message(String message) {
+    public ResultBody<T> message(String message) {
         this.message = message;
         return this;
     }
 
-    public ResultBody data(T data) {
+    public ResultBody<T> data(T data) {
         this.data = data;
         return this;
     }
 
-    public ResultBody path(String path) {
+    public ResultBody<T> path(String path) {
         this.path = path;
         return this;
     }
 
-    public ResultBody traceId(String traceId) {
+    public ResultBody<T> traceId(String traceId) {
         this.traceId = traceId;
         return this;
     }

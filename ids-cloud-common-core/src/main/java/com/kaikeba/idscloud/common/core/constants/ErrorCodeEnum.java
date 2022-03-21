@@ -1,10 +1,12 @@
 package com.kaikeba.idscloud.common.core.constants;
 
 import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.http.HttpStatus;
 import com.kaikeba.idscloud.common.core.exception.IdsClientException;
 import com.kaikeba.idscloud.common.core.exception.IdsException;
 import com.kaikeba.idscloud.common.core.exception.IdsServerException;
 import com.kaikeba.idscloud.common.core.exception.ThirdServerException;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author zmc
@@ -202,7 +204,9 @@ public enum ErrorCodeEnum implements IdsAssert {
 
     private final String code;
     private final String message;
-
+    final char CLIENT_START = 'A';
+    final char SERVER_START = 'B';
+    final char THIRD_START = 'C';
     ErrorCodeEnum(String code, String message) {
         this.code = code;
         this.message = message;
@@ -220,9 +224,9 @@ public enum ErrorCodeEnum implements IdsAssert {
     public IdsException newException(String msg) {
         char c = getCode().charAt(0);
         switch (c) {
-            case 'A':
+            case CLIENT_START:
                 return new IdsClientException(this, msg);
-            case 'B':
+            case SERVER_START:
                 return new IdsServerException(this, msg);
             default:
                 return new ThirdServerException(this, msg);
@@ -233,9 +237,9 @@ public enum ErrorCodeEnum implements IdsAssert {
     public IdsException newException(String msg, Throwable cause) {
         char c = getCode().charAt(0);
         switch (c) {
-            case 'A':
+            case CLIENT_START:
                 return new IdsClientException(this, msg, cause);
-            case 'B':
+            case SERVER_START:
                 return new IdsServerException(this, msg, cause);
             default:
                 return new ThirdServerException(this, msg, cause);
@@ -247,5 +251,41 @@ public enum ErrorCodeEnum implements IdsAssert {
         throw ArrayUtil.isEmpty(cause) ? newException(msg) : newException(msg, cause[cause.length - 1]);
     }
 
+    public Integer getHttpStatus() {
+        switch (this) {
+            case CLIENT_ERROR_A0230:
+                return HttpStatus.HTTP_UNAUTHORIZED;
+            case CLIENT_ERROR_A0404:
+                return HttpStatus.HTTP_NOT_FOUND;
+            case CLIENT_ERROR_A0300:
+            case CLIENT_ERROR_A0301:
+            case CLIENT_ERROR_A0302:
+            case CLIENT_ERROR_A0303:
+            case CLIENT_ERROR_A0310:
+            case CLIENT_ERROR_A0311:
+            case CLIENT_ERROR_A0312:
+            case CLIENT_ERROR_A0320:
+            case CLIENT_ERROR_A0321:
+            case CLIENT_ERROR_A0322:
+            case CLIENT_ERROR_A0323:
+            case CLIENT_ERROR_A0324:
+            case CLIENT_ERROR_A0325:
+            case CLIENT_ERROR_A0330:
+                return HttpStatus.HTTP_FORBIDDEN;
+            case CLIENT_ERROR_A0405:
+                return HttpStatus.HTTP_BAD_METHOD;
+            case SERVER_ERROR_B0100:
+                return HttpStatus.HTTP_CLIENT_TIMEOUT;
+        }
 
+        char c = getCode().charAt(0);
+        switch (c) {
+            case CLIENT_START:
+                return HttpStatus.HTTP_BAD_REQUEST;
+            case SERVER_START:
+                return HttpStatus.HTTP_INTERNAL_ERROR;
+            default:
+                return HttpStatus.HTTP_INTERNAL_ERROR;
+        }
+    }
 }
