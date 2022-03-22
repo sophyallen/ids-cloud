@@ -16,14 +16,20 @@
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-core</artifactId>
-            <version>${idscloud.common.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-starter</artifactId>
-            <version>${idscloud.common.version}</version>
-            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--mybatis-plus-->
         <dependency>

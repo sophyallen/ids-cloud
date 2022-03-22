@@ -12,11 +12,14 @@
     <artifactId>ids-cloud-common-starter</artifactId>
     <version>${idscloud.common.version}</version>
     <packaging>jar</packaging>
+
+    <properties>
+        <nacos.client.version>2.0.4</nacos.client.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-core</artifactId>
-            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <artifactId>jsr305</artifactId>
@@ -87,6 +90,11 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.nacos</groupId>
+            <artifactId>nacos-client</artifactId>
+            <version>${nacos.client.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

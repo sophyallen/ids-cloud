@@ -4,7 +4,6 @@ import com.kaikeba.idscloud.common.core.constants.ErrorCodeEnum;
 import com.kaikeba.idscloud.common.core.exception.IdsException;
 import com.kaikeba.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
