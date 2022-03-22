@@ -181,7 +181,7 @@ public class GlobalExceptionHandler {
      */
     public static ResultBody<?> buildBody(Throwable throwable, ErrorCodeEnum resultCode, String path) {
         ResultBody<?> resultBody = ResultBody.failed().code(resultCode.getCode())
-                .message(resultCode.getMessage())
+                .message(throwable.getMessage())
                 .path(path)
                 .traceId(TraceContext.traceId());
         log.error("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
