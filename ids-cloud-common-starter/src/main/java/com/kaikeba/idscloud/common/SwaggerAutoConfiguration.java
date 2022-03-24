@@ -3,13 +3,13 @@ package com.kaikeba.idscloud.common;
 import com.google.common.base.Predicates;
 import com.kaikeba.idscloud.common.swagger.IdsSwaggerProperties;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.i18n.LocaleContextHolder;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -21,7 +21,6 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger2.configuration.Swagger2DocumentationConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,6 @@ import java.util.Locale;
 @Configuration
 @EnableConfigurationProperties({IdsSwaggerProperties.class})
 @ConditionalOnProperty(prefix = "idscloud.swagger2", name = "enabled", havingValue = "true")
-@Import({Swagger2DocumentationConfiguration.class})
 public class SwaggerAutoConfiguration {
     private IdsSwaggerProperties idsSwaggerProperties;
     private static final String SCOPE_PREFIX = "scope.";
@@ -58,7 +56,7 @@ public class SwaggerAutoConfiguration {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(Predicates.not(PathSelectors.regex("/error.*")))
+                .paths(PathSelectors.regex("/error.*").negate())
                 .build()
                 .host(idsSwaggerProperties.getHost())
                 .globalOperationParameters(parameters());
@@ -91,6 +89,7 @@ public class SwaggerAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(UiConfiguration.class)
     UiConfiguration uiConfig() {
         return new UiConfiguration(null, "list", "alpha", "schema",
                 UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS, false, true, 60000L);
