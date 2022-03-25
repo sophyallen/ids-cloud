@@ -169,6 +169,8 @@ public class GlobalExceptionHandler {
             code = ErrorCodeEnum.CLIENT_ERROR_A0405;
         } else if (className.contains("HttpMediaTypeNotAcceptableException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0400;
+        } else if (className.contains("ConnectTimeoutException")) {
+            code = ErrorCodeEnum.THIRD_PARTY_ERROR_C0211;
         }
         return code;
     }

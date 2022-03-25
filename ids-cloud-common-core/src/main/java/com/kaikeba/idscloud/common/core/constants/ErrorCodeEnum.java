@@ -184,6 +184,7 @@ public enum ErrorCodeEnum implements IdsAssert {
     THIRD_PARTY_ERROR_C0154("C0154", "网关服务出错"),
     THIRD_PARTY_ERROR_C0200("C0200", "第三方系统执行超时"),
     THIRD_PARTY_ERROR_C0210("C0210", "RPC执行超时"),
+    THIRD_PARTY_ERROR_C0211("C0211", "服务连接超时"),
     THIRD_PARTY_ERROR_C0220("C0220", "消息投递超时"),
     THIRD_PARTY_ERROR_C0230("C0230", "缓存服务超时"),
     THIRD_PARTY_ERROR_C0240("C0240", "配置服务超时"),
