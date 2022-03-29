@@ -143,8 +143,8 @@ public class JacksonAutoConfiguration {
          * 因为js中得数字类型不能包含所有的java long值
          */
         SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+//        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+//        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
         objectMapper.registerModule(simpleModule);
         // 兼容fastJson 的一些空值处理
        SerializerFeature[] features = new SerializerFeature[]{

@@ -1,17 +1,12 @@
 package com.kaikeba.idscloud.common;
 
-import com.google.common.base.Predicates;
 import com.kaikeba.idscloud.common.swagger.IdsSwaggerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.i18n.LocaleContextHolder;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -27,7 +22,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Swagger文档生成配置
@@ -43,7 +37,7 @@ public class SwaggerAutoConfiguration {
     private IdsSwaggerProperties idsSwaggerProperties;
 
     public SwaggerAutoConfiguration(IdsSwaggerProperties idsSwaggerProperties) {
-            this.idsSwaggerProperties = idsSwaggerProperties;
+        this.idsSwaggerProperties = idsSwaggerProperties;
         log.info("SwaggerProperties [{}]", idsSwaggerProperties);
     }
 
