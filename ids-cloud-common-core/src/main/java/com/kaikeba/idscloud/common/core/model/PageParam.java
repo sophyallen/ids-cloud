@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -26,6 +27,7 @@ public class PageParam<P> implements Serializable {
     @Range(min = 1, max = 500)
     @ApiModelProperty("每页条数")
     private Long size;
+    @Valid
     @ApiModelProperty("查询条件封装类")
     private P condition;
 }

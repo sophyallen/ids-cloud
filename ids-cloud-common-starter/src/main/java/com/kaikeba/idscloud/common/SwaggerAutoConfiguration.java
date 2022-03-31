@@ -18,8 +18,6 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.UiConfiguration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,6 @@ import java.util.List;
  * @author zmc
  */
 @Slf4j
-@EnableSwagger2WebMvc
 @EnableConfigurationProperties({IdsSwaggerProperties.class})
 @ConditionalOnProperty(prefix = "idscloud.swagger2", name = "enabled", havingValue = "true")
 @Import(BeanValidatorPluginsConfiguration.class)
