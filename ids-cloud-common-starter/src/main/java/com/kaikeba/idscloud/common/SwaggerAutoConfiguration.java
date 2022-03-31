@@ -1,16 +1,13 @@
 package com.kaikeba.idscloud.common;
 
-import com.google.common.base.Predicates;
 import com.kaikeba.idscloud.common.swagger.IdsSwaggerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -24,7 +21,6 @@ import springfox.documentation.swagger.web.UiConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Swagger文档生成配置
@@ -32,31 +28,26 @@ import java.util.Locale;
  * @author zmc
  */
 @Slf4j
-@Configuration
 @EnableConfigurationProperties({IdsSwaggerProperties.class})
 @ConditionalOnProperty(prefix = "idscloud.swagger2", name = "enabled", havingValue = "true")
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerAutoConfiguration {
     private IdsSwaggerProperties idsSwaggerProperties;
-    private static final String SCOPE_PREFIX = "scope.";
-    private Locale locale = LocaleContextHolder.getLocale();
-    private MessageSource messageSource;
 
-    public SwaggerAutoConfiguration(IdsSwaggerProperties idsSwaggerProperties, MessageSource messageSource) {
+    public SwaggerAutoConfiguration(IdsSwaggerProperties idsSwaggerProperties) {
         this.idsSwaggerProperties = idsSwaggerProperties;
-        this.messageSource = messageSource;
         log.info("SwaggerProperties [{}]", idsSwaggerProperties);
     }
 
 
     @Bean
-    @RefreshScope
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .enable(idsSwaggerProperties.isEnabled())
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.regex("/error.*").negate())
+                .apis(RequestHandlerSelectors.basePackage("com.kaikeba"))
+                .paths(PathSelectors.any())
                 .build()
                 .host(idsSwaggerProperties.getHost())
                 .globalOperationParameters(parameters());
