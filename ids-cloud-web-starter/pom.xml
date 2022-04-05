@@ -17,6 +17,10 @@
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.kaikeba.idscloud</groupId>
+            <artifactId>ids-cloud-common-starter</artifactId>
+        </dependency>
         <!--使用Undertow 替换内置 Tomcat-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

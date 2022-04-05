@@ -1,4 +1,4 @@
-package com.kaikeba.idscloud.common.handler;
+package com.kaikeba.idscloud.web.handler;
 
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;

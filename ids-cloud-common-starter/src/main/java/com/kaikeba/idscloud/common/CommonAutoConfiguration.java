@@ -4,9 +4,7 @@ import com.kaikeba.idscloud.common.configuration.IdsCommonProperties;
 import com.kaikeba.idscloud.common.configuration.IdsScanProperties;
 import com.kaikeba.idscloud.common.configuration.SnowflakeProperties;
 import com.kaikeba.idscloud.common.filter.XFilter;
-import com.kaikeba.idscloud.common.handler.DefaultRestResponseErrorHandler;
 import com.kaikeba.idscloud.common.core.gen.SnowflakeIdGenerator;
-import com.kaikeba.idscloud.common.handler.GlobalExceptionHandler;
 import com.kaikeba.idscloud.common.utils.SpringContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -80,23 +78,8 @@ public class CommonAutoConfiguration {
     @ConditionalOnMissingBean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();
-        //设置自定义ErrorHandler
-        restTemplate.setErrorHandler(new DefaultRestResponseErrorHandler());
         log.info("RestTemplate [{}]", restTemplate);
         return restTemplate;
-    }
-
-    /**
-     * 统一异常处理配置
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(GlobalExceptionHandler.class)
-    public GlobalExceptionHandler exceptionHandler() {
-        GlobalExceptionHandler exceptionHandler = new GlobalExceptionHandler();
-        log.info("OpenGlobalExceptionHandler [{}]", exceptionHandler);
-        return exceptionHandler;
     }
 
     /**
