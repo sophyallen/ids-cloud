@@ -3,8 +3,6 @@ package com.kaikeba.idscloud.gateway;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.kaikeba.idscloud.common.utils.SpringContextHolder;
 import com.kaikeba.idscloud.gateway.configuration.ApiProperties;
 import com.kaikeba.idscloud.gateway.configuration.AuthCorgiProperties;
@@ -25,7 +23,6 @@ import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
-import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -36,7 +33,6 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.view.ViewResolver;
-import reactor.core.publisher.Mono;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -53,7 +49,7 @@ import java.util.TimeZone;
 @ConditionalOnClass(WebFluxConfigurer.class)
 @AutoConfigureBefore(ErrorWebFluxAutoConfiguration.class)
 @EnableConfigurationProperties(value = {ApiProperties.class, AuthCorgiProperties.class})
-public class GateWayAutoConfiguration {
+public class IdsGateWayAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(SpringContextHolder.class)
     public SpringContextHolder springContextHolder() {
@@ -111,7 +107,7 @@ public class GateWayAutoConfiguration {
         MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
         ObjectMapper objectMapper = new ObjectMapper();
         // 忽略为空的字段
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         objectMapper.getSerializationConfig().withFeatures(
                 SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
@@ -119,10 +115,10 @@ public class GateWayAutoConfiguration {
          * 序列换成json时,将所有的long变成string
          * js中long过长精度丢失
          */
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        objectMapper.registerModule(simpleModule);
+//        SimpleModule simpleModule = new SimpleModule();
+//        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+//        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+//        objectMapper.registerModule(simpleModule);
         jackson2HttpMessageConverter.setObjectMapper(objectMapper);
         log.info("MappingJackson2HttpMessageConverter [{}]", jackson2HttpMessageConverter);
         return new HttpMessageConverters(jackson2HttpMessageConverter);
@@ -154,8 +150,8 @@ public class GateWayAutoConfiguration {
         return exchange -> Mono.just(exchange.getRequest().getRemoteAddress().getHostName());
     }*/
 
-    @Bean
+  /*  @Bean
     public KeyResolver pathKeyResolver() {
         return exchange -> Mono.just(exchange.getRequest().getPath().value());
-    }
+    }*/
 }

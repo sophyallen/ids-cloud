@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @description:
  */
 @Data
-public class CorgiResultDto<T> implements Serializable {
+public class CorgiResultDTO<T> implements Serializable {
     private Integer code;
     private String msg;
     private T data;

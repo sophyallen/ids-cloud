@@ -148,11 +148,11 @@ public class JacksonAutoConfiguration {
         objectMapper.registerModule(simpleModule);
         // 兼容fastJson 的一些空值处理
        SerializerFeature[] features = new SerializerFeature[]{
-                WriteNullListAsEmpty
+                WriteNullListAsEmpty,
 //                WriteNullStringAsEmpty,
 //                WriteNullNumberAsZero,
 //                WriteNullBooleanAsFalse,
-//                WriteNullMapAsEmpty
+                WriteNullMapAsEmpty
         };
         objectMapper.setSerializerFactory(objectMapper.getSerializerFactory().withSerializerModifier(new FastJsonSerializerFeatureCompatibleForJackson(features)));
         log.info("ObjectMapper [{}]", objectMapper);

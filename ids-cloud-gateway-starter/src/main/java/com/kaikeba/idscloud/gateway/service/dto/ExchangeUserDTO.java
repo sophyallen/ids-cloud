@@ -33,6 +33,6 @@ import java.io.Serializable;
  * }
  */
 @Data
-public class ExchangeUserDto implements Serializable {
+public class ExchangeUserDTO implements Serializable {
     private String userId;
 }

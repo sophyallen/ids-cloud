@@ -2,13 +2,15 @@ package com.kaikeba.idscloud.gateway.service.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author: zhangminchao
  * @date: 2022/04/05
  * @description:
  */
 @Data
-public class PassPortUserDTO {
+public class PassPortUserDTO implements Serializable {
     private Long uid;
     private String nickname;
     private String avatar;

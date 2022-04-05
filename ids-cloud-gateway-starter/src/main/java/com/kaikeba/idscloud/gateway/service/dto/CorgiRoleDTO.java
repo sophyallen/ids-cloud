@@ -2,6 +2,7 @@ package com.kaikeba.idscloud.gateway.service.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
  *       },
  */
 @Data
-public class CorgiRoleDto {
+public class CorgiRoleDTO implements Serializable {
     private String appId;
     private String name;
     private List<Role> roleList;

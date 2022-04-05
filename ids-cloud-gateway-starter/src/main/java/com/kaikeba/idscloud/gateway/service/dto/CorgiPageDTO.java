@@ -465,7 +465,7 @@ import java.util.List;
  * }
  */
 @Data
-public class CorgiPageDto<T> implements Serializable {
+public class CorgiPageDTO<T> implements Serializable {
     private List<T> records;
     private Integer total;
     private Integer size;
