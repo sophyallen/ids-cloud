@@ -189,7 +189,7 @@
             </dependency>
             <dependency>
                 <groupId>com.kaikeba.idscloud</groupId>
-                <artifactId>ids-cloud-gray-starter</artifactId>
+                <artifactId>ids-cloud-version-route-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>

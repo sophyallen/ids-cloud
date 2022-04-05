@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @date 2020/12/26
  */
 @ConfigurationProperties(prefix = "auth.corgi")
-@Component
 @Data
 public class AuthCorgiProperties {
     private String tenantId;
