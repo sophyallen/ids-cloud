@@ -1,6 +1,8 @@
 package com.kaikeba.idscloud.common;
 
 import com.kaikeba.idscloud.common.interceptor.FeignRequestInterceptor;
+import com.kaikeba.idscloud.common.utils.FeignLogger;
+import feign.Logger;
 import feign.Request;
 import feign.RequestInterceptor;
 import feign.Retryer;
@@ -21,8 +23,8 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 public class FeignAutoConfiguration {
-    public static int connectTimeOutMillis = 12000;
-    public static int readTimeOutMillis = 12000;
+    public static int connectTimeOutMillis = 200;
+    public static int readTimeOutMillis = 500;
 
     @Bean
     public Encoder feignFormEncoder(ObjectFactory<HttpMessageConverters> messageConverters) {

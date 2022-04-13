@@ -16,4 +16,5 @@ public class PassPortUserDTO implements Serializable {
     private String avatar;
     private String realname;
     private Integer gender;
+    private String mobile;
 }

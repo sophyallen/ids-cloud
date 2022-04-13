@@ -1,23 +1,27 @@
 package com.kaikeba.idscloud.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
+import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import static com.kaikeba.idscloud.common.JacksonAutoConfiguration.SerializerFeature.*;
+import static com.kaikeba.idscloud.common.IdsJacksonAutoConfiguration.SerializerFeature.*;
 
 
 /**
@@ -26,7 +30,8 @@ import static com.kaikeba.idscloud.common.JacksonAutoConfiguration.SerializerFea
  * @description:
  */
 @Slf4j
-public class JacksonAutoConfiguration {
+@AutoConfigureBefore(JacksonAutoConfiguration.class)
+public class IdsJacksonAutoConfiguration {
 
     public enum SerializerFeature {
         WriteNullListAsEmpty,
@@ -118,33 +123,51 @@ public class JacksonAutoConfiguration {
         }
     }
 
+    /**
+     * Jackson全局配置
+     *
+     * @param properties
+     * @return
+     */
     @Bean
     @Primary
-    @ConditionalOnMissingBean(ObjectMapper.class)
-    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
-        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        // 排序key
-        objectMapper.configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
-        //忽略空bean转json错误
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        //忽略在json字符串中存在，在java类中不存在字段，防止错误。
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        objectMapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
-            @Override
-            public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                gen.writeNull();
-            }
-        });
-        /**
-         * 序列换成json时,将所有的long变成string
-         * 因为js中得数字类型不能包含所有的java long值
-         */
-        SimpleModule simpleModule = new SimpleModule();
-//        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-//        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        objectMapper.registerModule(simpleModule);
+    public JacksonProperties jacksonProperties(JacksonProperties properties) {
+        properties.setDefaultPropertyInclusion(JsonInclude.Include.ALWAYS);
+        properties.getSerialization().put(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
+        properties.getSerialization().put(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        properties.getSerialization().put(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
+        properties.getDeserialization().put(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        properties.setDateFormat("yyyy-MM-dd HH:mm:ss");
+        properties.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+        log.info("JacksonProperties [{}]", properties);
+        return properties;
+    }
+
+    /**
+     * 转换器全局配置
+     *
+     * @param converters
+     * @return
+     */
+    @Bean
+    public HttpMessageConverters httpMessageConverters(List<HttpMessageConverter<?>> converters) {
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+        log.info("MappingJackson2HttpMessageConverter [{}]", jackson2HttpMessageConverter);
+        return new HttpMessageConverters(jackson2HttpMessageConverter);
+    }
+
+    @Bean
+    public ObjectMapper jacksonObjectMapper() {
+        ObjectMapper objectMapper = new Jackson2ObjectMapperBuilder()
+                .createXmlMapper(false)
+//                .serializationInclusion(JsonInclude.Include.ALWAYS)
+//                .featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS,
+//                        DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+//                .simpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//                .timeZone("GMT+8")
+//                .featuresToEnable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
+                .build();
+
         // 兼容fastJson 的一些空值处理
        SerializerFeature[] features = new SerializerFeature[]{
                 WriteNullListAsEmpty,

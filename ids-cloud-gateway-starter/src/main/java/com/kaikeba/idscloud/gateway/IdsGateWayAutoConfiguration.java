@@ -1,11 +1,9 @@
 package com.kaikeba.idscloud.gateway;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.kaikeba.idscloud.common.utils.SpringContextHolder;
 import com.kaikeba.idscloud.gateway.configuration.ApiProperties;
 import com.kaikeba.idscloud.gateway.configuration.AuthCorgiProperties;
+import com.kaikeba.idscloud.gateway.configuration.AuthPassportProperties;
 import com.kaikeba.idscloud.gateway.configuration.SwaggerProvider;
 import com.kaikeba.idscloud.gateway.exception.JsonExceptionHandler;
 import com.kaikeba.idscloud.gateway.filter.GatewayContextFilter;
@@ -18,8 +16,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
@@ -29,15 +25,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.codec.ServerCodecConfigurer;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.view.ViewResolver;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * @author: zhangminchao
@@ -48,7 +40,7 @@ import java.util.TimeZone;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass(WebFluxConfigurer.class)
 @AutoConfigureBefore(ErrorWebFluxAutoConfiguration.class)
-@EnableConfigurationProperties(value = {ApiProperties.class, AuthCorgiProperties.class})
+@EnableConfigurationProperties(value = {ApiProperties.class, AuthCorgiProperties.class, AuthPassportProperties.class})
 public class IdsGateWayAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(SpringContextHolder.class)
@@ -77,51 +69,6 @@ public class IdsGateWayAutoConfiguration {
         jsonExceptionHandler.setMessageReaders(serverCodecConfigurer.getReaders());
         log.info("ErrorWebExceptionHandler [{}]", jsonExceptionHandler);
         return jsonExceptionHandler;
-    }
-
-    /**
-     * Jackson全局配置
-     *
-     * @param properties
-     * @return
-     */
-    @Bean
-    @Primary
-    public JacksonProperties jacksonProperties(JacksonProperties properties) {
-        properties.setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL);
-        properties.getSerialization().put(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true);
-        properties.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        properties.setTimeZone(TimeZone.getTimeZone("GMT+8"));
-        log.info("JacksonProperties [{}]", properties);
-        return properties;
-    }
-
-    /**
-     * 转换器全局配置
-     *
-     * @param converters
-     * @return
-     */
-    @Bean
-    public HttpMessageConverters httpMessageConverters(List<HttpMessageConverter<?>> converters) {
-        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
-        ObjectMapper objectMapper = new ObjectMapper();
-        // 忽略为空的字段
-        objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
-        objectMapper.getSerializationConfig().withFeatures(
-                SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-        /**
-         * 序列换成json时,将所有的long变成string
-         * js中long过长精度丢失
-         */
-//        SimpleModule simpleModule = new SimpleModule();
-//        simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
-//        simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-//        objectMapper.registerModule(simpleModule);
-        jackson2HttpMessageConverter.setObjectMapper(objectMapper);
-        log.info("MappingJackson2HttpMessageConverter [{}]", jackson2HttpMessageConverter);
-        return new HttpMessageConverters(jackson2HttpMessageConverter);
     }
 
     @Bean

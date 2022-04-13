@@ -3,6 +3,7 @@ package com.kaikeba.idscloud.common.core.model;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kaikeba.idscloud.common.core.constants.ErrorCodeEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
  */
 @ApiModel(description = "响应结果")
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResultBody<T> implements Serializable {
     private static final long serialVersionUID = -6190689122701100762L;
 

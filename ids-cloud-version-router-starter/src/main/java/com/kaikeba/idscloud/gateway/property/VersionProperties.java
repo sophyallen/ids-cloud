@@ -14,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
 public class VersionProperties {
     @Value("${spring.application.name}")
     private String registerServerName;
-    @Value("${spring.cloud.nacos.discovery.metadata.version}")
+    @Value("${spring.cloud.nacos.discovery.metadata.version:v0}")
     private String registerServerVersion;
+    @Value("${spring.cloud.nacos.discovery.metadata.server-type:SERVER_TOB}")
+    private String serverType;
+
 }
