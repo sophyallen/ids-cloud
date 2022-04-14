@@ -7,15 +7,11 @@ package com.kaikeba.idscloud.common.core.constants;
  * @description:
  */
 public interface AppConstants {
-    String LOGIN_PLATFORM_KEY = "loginPlatform";
     String VERSION_KEY = "version";
-    String LOGIN_USER_NAME = "loginUserName";
-    String PASSPORT_USER_ID_KEY = "passportUserId";
-    String CORGI_USER_ID_KEY = "corgiUserId";
+    String AUTH_INFO_KEY = "authInfo";
+    String VERSION_INFO_KEY = "corgiUserId";
     String SERVER_TYPE_KEY = "serverType";
-    String GRAY_NAMESPACE_KEY = "grayNameSpace";
-    String IS_GRAY_KEY = "isGray";
-    enum LoginPlatformEnum {
+    enum AuthPlatformEnum {
         // C端登录平台
         PASSPORT,
         // B端登录平台

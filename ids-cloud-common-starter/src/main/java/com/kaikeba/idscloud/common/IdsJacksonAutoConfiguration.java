@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
@@ -146,12 +145,11 @@ public class IdsJacksonAutoConfiguration {
     /**
      * 转换器全局配置
      *
-     * @param converters
      * @return
      */
     @Bean
-    public HttpMessageConverters httpMessageConverters(List<HttpMessageConverter<?>> converters) {
-        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+    public HttpMessageConverters httpMessageConverters(ObjectMapper objectMapper) {
+        MappingJackson2HttpMessageConverter jackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter(objectMapper);
         log.info("MappingJackson2HttpMessageConverter [{}]", jackson2HttpMessageConverter);
         return new HttpMessageConverters(jackson2HttpMessageConverter);
     }
@@ -163,8 +161,8 @@ public class IdsJacksonAutoConfiguration {
 //                .serializationInclusion(JsonInclude.Include.ALWAYS)
 //                .featuresToDisable(SerializationFeature.FAIL_ON_EMPTY_BEANS,
 //                        DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-//                .simpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//                .timeZone("GMT+8")
+                .simpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                .timeZone("GMT+8")
 //                .featuresToEnable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS)
                 .build();
 
@@ -174,7 +172,7 @@ public class IdsJacksonAutoConfiguration {
 //                WriteNullStringAsEmpty,
 //                WriteNullNumberAsZero,
 //                WriteNullBooleanAsFalse,
-                WriteNullMapAsEmpty
+//                WriteNullMapAsEmpty
         };
         objectMapper.setSerializerFactory(objectMapper.getSerializerFactory().withSerializerModifier(new FastJsonSerializerFeatureCompatibleForJackson(features)));
         log.info("ObjectMapper [{}]", objectMapper);

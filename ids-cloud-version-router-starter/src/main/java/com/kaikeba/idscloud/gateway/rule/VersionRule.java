@@ -8,6 +8,7 @@ import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.kaikeba.idscloud.common.core.constants.AppConstants;
 import com.kaikeba.idscloud.common.core.constants.ErrorCodeEnum;
+import com.kaikeba.idscloud.common.core.model.VersionInfo;
 import com.kaikeba.idscloud.common.utils.IdsTraceContext;
 import com.kaikeba.idscloud.gateway.property.VersionProperties;
 import com.netflix.client.config.IClientConfig;
@@ -17,6 +18,7 @@ import com.netflix.loadbalancer.Server;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 
@@ -37,10 +39,12 @@ public class VersionRule extends AbstractLoadBalancerRule {
     @Autowired
     private NacosServiceManager nacosServiceManager;
 
-    @Autowired
-    private VersionProperties versionProperties;
+    @Value("${spring.application.name}")
+    private String registerServerName;
+
     private static final String CONSOLE_SERVER_NAME_PATTERN = "*console*";
     private static final String GATEWAY_SERVER_NAME_PATTERN = "*gateway*";
+    private static final String DEFAULT_VERSION = "v0";
 
     @Override
     public void initWithNiwsConfig(IClientConfig clientConfig) {
@@ -55,17 +59,18 @@ public class VersionRule extends AbstractLoadBalancerRule {
             String name = loadBalancer.getName();
             ErrorCodeEnum.SERVER_ERROR_B0210.assertFalse(isBlockServer(name), "ToC服务不能调用ToB服务");
 
+            VersionInfo versionInfo = IdsTraceContext.getVersionInfo().get();
             String group;
-            List<Instance> instances = new ArrayList<>();
+            List<Instance> instances;
             NamingService namingService = nacosServiceManager.getNamingService(nacosDiscoveryProperties.getNacosProperties());
             // 判断是否gray流量
-            if (IdsTraceContext.isGray() && IdsTraceContext.getGrayNameSpace().isPresent()) {
-                group = IdsTraceContext.getGrayNameSpace().get();
+            if (versionInfo.isGray()) {
+                group = versionInfo.getGrayNameSpace();
                 instances = namingService.selectInstances(name, group, true);
                 // gray组实例优先处理，不存在gray组则走default_group组
                 if (!CollectionUtils.isEmpty(instances)) {
                     List<Instance> grayInstanceToChoose = instances.stream()
-                            .filter(in -> StringUtils.equalsIgnoreCase(IdsTraceContext.getVersion().orElse(null),
+                            .filter(in -> StringUtils.equalsIgnoreCase(versionInfo.getVersion(),
                                     in.getMetadata().get(AppConstants.VERSION_KEY)))
                             .collect(Collectors.toList());
                     if (!CollectionUtils.isEmpty(grayInstanceToChoose)) {
@@ -94,8 +99,8 @@ public class VersionRule extends AbstractLoadBalancerRule {
                             name, clusterName, instances);
                 }
             }
-            if (IdsTraceContext.getVersion().isPresent()) {
-                String appVersion = IdsTraceContext.getVersion().get();
+            if (StringUtils.isNotBlank(versionInfo.getVersion())) {
+                String appVersion = versionInfo.getVersion();
                 List<Instance> versionMatchInstances = instancesToChoose.parallelStream()
                         .filter(instance -> appVersion.equals(instance.getMetadata().get(AppConstants.VERSION_KEY)))
                         .collect(Collectors.toList());
@@ -103,14 +108,16 @@ public class VersionRule extends AbstractLoadBalancerRule {
                     instancesToChoose = versionMatchInstances;
                 } else {
                     Map<String, List<Instance>> instanceMap = instancesToChoose.parallelStream()
-                            .collect(Collectors.groupingBy(t -> t.getMetadata().get(AppConstants.VERSION_KEY)));
-                    if (IdsTraceContext.isGray()) {
+                            .collect(Collectors.groupingBy(t -> t.getMetadata().getOrDefault(AppConstants.VERSION_KEY
+                                    , DEFAULT_VERSION)));
+                    // gray 环境优先选取版本高的
+                    if (versionInfo.isGray()) {
                         instancesToChoose = instanceMap.entrySet().parallelStream()
                                 .max((o1, o2) -> compare(o1.getKey(), o2.getKey()))
                                 .map(Map.Entry::getValue)
                                 .get();
                     } else {
-                        // 非gray，去保险的小版本
+                        // 非gray，优先选取版本低的
                         instancesToChoose = instanceMap.entrySet().parallelStream()
                                 .min((o1, o2) -> compare(o1.getKey(), o2.getKey()))
                                 .map(Map.Entry::getValue)
@@ -136,8 +143,8 @@ public class VersionRule extends AbstractLoadBalancerRule {
         // 判断目标服务是否为console服务
         if (antPathMatcher.match(CONSOLE_SERVER_NAME_PATTERN, targetServerName)) {
             // 判断当前服务是否为console 或 gateway 服务，都不是则进制调用
-            if (antPathMatcher.match(CONSOLE_SERVER_NAME_PATTERN, versionProperties.getRegisterServerName())
-                    || antPathMatcher.match(GATEWAY_SERVER_NAME_PATTERN, versionProperties.getRegisterServerName())) {
+            if (antPathMatcher.match(CONSOLE_SERVER_NAME_PATTERN, registerServerName)
+                    || antPathMatcher.match(GATEWAY_SERVER_NAME_PATTERN, registerServerName)) {
                 return true;
             }
         }
@@ -147,8 +154,10 @@ public class VersionRule extends AbstractLoadBalancerRule {
     private int compare(String v1, String v2) {
         String[] v1Splits = v1.subSequence(1, v1.length()).toString().split(".");
         String[] v2Splits = v2.subSequence(1, v1.length()).toString().split(".");
+        // 按最小的长度从左到右比较
+        int validLength = Integer.min(v1Splits.length, v2Splits.length);
         int result = 0;
-        for (int index = 0; index < v1.length(); index++) {
+        for (int index = 0; index < validLength; index++) {
             int v1int = Integer.parseInt(v1Splits[index]);
             int v2int = Integer.parseInt(v2Splits[index]);
             result = v1int - v2int;
