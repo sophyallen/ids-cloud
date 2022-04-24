@@ -13,19 +13,21 @@ import com.kaikeba.idscloud.common.core.constants.ErrorCodeEnum;
 import com.kaikeba.idscloud.common.core.model.VersionInfo;
 import com.kaikeba.idscloud.common.utils.IdsTraceContext;
 import com.kaikeba.idscloud.gateway.property.VersionProperties;
+import com.netflix.client.IClientConfigAware;
 import com.netflix.client.config.IClientConfig;
-import com.netflix.loadbalancer.AbstractLoadBalancerRule;
 import com.netflix.loadbalancer.DynamicServerListLoadBalancer;
+import com.netflix.loadbalancer.ILoadBalancer;
+import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.Server;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 
-import javax.management.remote.rmi.RMIServer;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -34,7 +36,9 @@ import java.util.stream.Collectors;
  * @description: 优先版本匹配
  */
 @Slf4j
-public class VersionRule extends AbstractLoadBalancerRule {
+public class VersionRule implements IRule, IClientConfigAware {
+
+    private ILoadBalancer lb;
 
     @Autowired
     private NacosDiscoveryProperties nacosDiscoveryProperties;
@@ -57,7 +61,7 @@ public class VersionRule extends AbstractLoadBalancerRule {
     public Server choose(Object key) {
         try {
             String clusterName = this.nacosDiscoveryProperties.getClusterName();
-            DynamicServerListLoadBalancer loadBalancer = (DynamicServerListLoadBalancer) getLoadBalancer();
+            DynamicServerListLoadBalancer loadBalancer = (DynamicServerListLoadBalancer) this.lb;
             String name = loadBalancer.getName();
             // 检查下游服务是否可以被本服务调用
             ErrorCodeEnum.SERVER_ERROR_B0210.assertFalse(isBlockServer(name), "ToC服务不能调用ToB服务");
@@ -129,6 +133,16 @@ public class VersionRule extends AbstractLoadBalancerRule {
             log.warn("NacosRule error", e);
             return null;
         }
+    }
+
+    @Override
+    public void setLoadBalancer(ILoadBalancer lb){
+        this.lb = lb;
+    }
+
+    @Override
+    public ILoadBalancer getLoadBalancer(){
+        return lb;
     }
 
     /**
