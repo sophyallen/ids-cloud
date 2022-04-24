@@ -4,6 +4,8 @@ import com.alibaba.cloud.nacos.ConditionalOnNacosDiscoveryEnabled;
 import com.kaikeba.idscloud.gateway.property.VersionProperties;
 import com.kaikeba.idscloud.gateway.rule.VersionRule;
 import com.netflix.loadbalancer.IRule;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
@@ -13,11 +15,13 @@ import org.springframework.context.annotation.Import;
  * @description:
  */
 @ConditionalOnNacosDiscoveryEnabled
-@Import(VersionProperties.class)
+@EnableConfigurationProperties(VersionProperties.class)
 public class VersionRuleAutoConfiguration {
 
     @Bean
-    IRule getVersionRule() {
+    @ConditionalOnProperty(prefix = "ids.cloud.version", name = "enable",
+            havingValue = "true", matchIfMissing = false)
+    public IRule getVersionRule() {
         return new VersionRule();
     }
 }

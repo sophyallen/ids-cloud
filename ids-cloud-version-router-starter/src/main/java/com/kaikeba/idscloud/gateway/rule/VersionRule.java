@@ -1,9 +1,11 @@
 package com.kaikeba.idscloud.gateway.rule;
 
+import cn.hutool.core.comparator.VersionComparator;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.NacosServiceManager;
 import com.alibaba.cloud.nacos.ribbon.ExtendBalancer;
 import com.alibaba.cloud.nacos.ribbon.NacosServer;
+import com.alibaba.nacos.api.exception.NacosException;
 import com.alibaba.nacos.api.naming.NamingService;
 import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.kaikeba.idscloud.common.core.constants.AppConstants;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.CollectionUtils;
 
+import javax.management.remote.rmi.RMIServer;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,12 +42,11 @@ public class VersionRule extends AbstractLoadBalancerRule {
     @Autowired
     private NacosServiceManager nacosServiceManager;
 
-    @Value("${spring.application.name}")
-    private String registerServerName;
+    @Autowired
+    private VersionProperties versionProperties;
 
     private static final String CONSOLE_SERVER_NAME_PATTERN = "*console*";
     private static final String GATEWAY_SERVER_NAME_PATTERN = "*gateway*";
-    private static final String DEFAULT_VERSION = "v0";
 
     @Override
     public void initWithNiwsConfig(IClientConfig clientConfig) {
@@ -57,27 +59,20 @@ public class VersionRule extends AbstractLoadBalancerRule {
             String clusterName = this.nacosDiscoveryProperties.getClusterName();
             DynamicServerListLoadBalancer loadBalancer = (DynamicServerListLoadBalancer) getLoadBalancer();
             String name = loadBalancer.getName();
+            // 检查下游服务是否可以被本服务调用
             ErrorCodeEnum.SERVER_ERROR_B0210.assertFalse(isBlockServer(name), "ToC服务不能调用ToB服务");
 
-            VersionInfo versionInfo = IdsTraceContext.getVersionInfo().get();
+            VersionInfo versionInfo = IdsTraceContext.getVersionInfo().orElse(new VersionInfo());
             String group;
             List<Instance> instances;
-            NamingService namingService = nacosServiceManager.getNamingService(nacosDiscoveryProperties.getNacosProperties());
             // 判断是否gray流量
-            if (versionInfo.isGray()) {
-                group = versionInfo.getGrayNameSpace();
-                instances = namingService.selectInstances(name, group, true);
-                // gray组实例优先处理，不存在gray组则走default_group组
+            boolean isGray = versionInfo.isGray();
+            NamingService namingService = nacosServiceManager.getNamingService(nacosDiscoveryProperties.getNacosProperties());
+            // gray 流量并且配置了gray组
+            if (isGray && versionInfo.getGrayGroup() != null) {
+                instances = getFromGrayGroup(versionInfo, name, namingService);
                 if (!CollectionUtils.isEmpty(instances)) {
-                    List<Instance> grayInstanceToChoose = instances.stream()
-                            .filter(in -> StringUtils.equalsIgnoreCase(versionInfo.getVersion(),
-                                    in.getMetadata().get(AppConstants.VERSION_KEY)))
-                            .collect(Collectors.toList());
-                    if (!CollectionUtils.isEmpty(grayInstanceToChoose)) {
-                        return chooseInstance(grayInstanceToChoose);
-                    } else {
-                        return chooseInstance(instances);
-                    }
+                    return chooseInstance(instances);
                 }
             }
 
@@ -87,7 +82,9 @@ public class VersionRule extends AbstractLoadBalancerRule {
                 log.warn("no instance in service {}", name);
                 return null;
             }
+
             List<Instance> instancesToChoose = instances;
+            // nacos 原有逻辑，取出集群同名的实例列表
             if (StringUtils.isNotBlank(clusterName)) {
                 List<Instance> sameClusterInstances = instances.stream()
                         .filter(instance -> Objects.equals(clusterName, instance.getClusterName()))
@@ -99,38 +96,64 @@ public class VersionRule extends AbstractLoadBalancerRule {
                             name, clusterName, instances);
                 }
             }
-            if (StringUtils.isNotBlank(versionInfo.getVersion())) {
+
+            // 按版本号分组服务实例
+            Map<String, List<Instance>> instanceMap = instancesToChoose.parallelStream()
+                    .collect(Collectors.groupingBy(t -> t.getMetadata().getOrDefault(AppConstants.VERSION_KEY,
+                            AppConstants.DEFAULT_SERVER_VERSION)));
+            // 灰度场景，获取最高版本服务实例
+            if (versionInfo.isGray()) {
+                instancesToChoose = instanceMap.entrySet().parallelStream()
+                        .max((o1, o2) -> VersionComparator.INSTANCE.compare(o1.getKey(), o2.getKey()))
+                        .map(Map.Entry::getValue)
+                        .get();
+                return chooseInstance(instancesToChoose);
+            }
+            // 请求版本不为空，优先获取同版本号的实例
+            if (StringUtils.isNotBlank(versionInfo.getVersion())
+                    && instanceMap.containsKey(versionInfo.getVersion())) {
                 String appVersion = versionInfo.getVersion();
                 List<Instance> versionMatchInstances = instancesToChoose.parallelStream()
                         .filter(instance -> appVersion.equals(instance.getMetadata().get(AppConstants.VERSION_KEY)))
                         .collect(Collectors.toList());
-                if (!CollectionUtils.isEmpty(versionMatchInstances)) {
-                    instancesToChoose = versionMatchInstances;
-                } else {
-                    Map<String, List<Instance>> instanceMap = instancesToChoose.parallelStream()
-                            .collect(Collectors.groupingBy(t -> t.getMetadata().getOrDefault(AppConstants.VERSION_KEY
-                                    , DEFAULT_VERSION)));
-                    // gray 环境优先选取版本高的
-                    if (versionInfo.isGray()) {
-                        instancesToChoose = instanceMap.entrySet().parallelStream()
-                                .max((o1, o2) -> compare(o1.getKey(), o2.getKey()))
-                                .map(Map.Entry::getValue)
-                                .get();
-                    } else {
-                        // 非gray，优先选取版本低的
-                        instancesToChoose = instanceMap.entrySet().parallelStream()
-                                .min((o1, o2) -> compare(o1.getKey(), o2.getKey()))
-                                .map(Map.Entry::getValue)
-                                .get();
-                    }
-                    log.warn("Can not find version={} match server", appVersion);
-                }
+                return chooseInstance(versionMatchInstances);
             }
+
+            // 非gray，优先选取版本低的,避免正常流量进入gray
+            instancesToChoose = instanceMap.entrySet().parallelStream()
+                    .min((o1, o2) -> VersionComparator.INSTANCE.compare(o1.getKey(), o2.getKey()))
+                    .map(Map.Entry::getValue)
+                    .get();
             return chooseInstance(instancesToChoose);
         } catch (Exception e) {
             log.warn("NacosRule error", e);
             return null;
         }
+    }
+
+    /**
+     * 从 gray group 获取服务实例，优先获取版本匹配
+     *
+     * @param versionInfo
+     * @param name
+     * @param namingService
+     * @return
+     * @throws NacosException
+     */
+    private List<Instance> getFromGrayGroup(VersionInfo versionInfo, String name, NamingService namingService) throws NacosException {
+        String group = versionInfo.getGrayGroup();
+        List<Instance> instances = namingService.selectInstances(name, group, true);
+        if (!CollectionUtils.isEmpty(instances)) {
+            List<Instance> grayInstanceToChoose = instances.stream()
+                    .filter(in -> StringUtils.equals(versionInfo.getVersion(),
+                            in.getMetadata().get(AppConstants.VERSION_KEY)))
+                    .collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(grayInstanceToChoose)) {
+                return grayInstanceToChoose;
+            }
+
+        }
+        return instances;
     }
 
     private NacosServer chooseInstance(List<Instance> instances) {
@@ -139,32 +162,19 @@ public class VersionRule extends AbstractLoadBalancerRule {
     }
 
     private boolean isBlockServer(String targetServerName) {
+        if (!versionProperties.isCheckCallable()) {
+            return true;
+        }
         AntPathMatcher antPathMatcher = new AntPathMatcher();
         // 判断目标服务是否为console服务
         if (antPathMatcher.match(CONSOLE_SERVER_NAME_PATTERN, targetServerName)) {
             // 判断当前服务是否为console 或 gateway 服务，都不是则进制调用
-            if (antPathMatcher.match(CONSOLE_SERVER_NAME_PATTERN, registerServerName)
-                    || antPathMatcher.match(GATEWAY_SERVER_NAME_PATTERN, registerServerName)) {
+            if (antPathMatcher.match(CONSOLE_SERVER_NAME_PATTERN, versionProperties.getServerName())
+                    || antPathMatcher.match(GATEWAY_SERVER_NAME_PATTERN, versionProperties.getServerName())) {
                 return true;
             }
         }
         return false;
     }
 
-    private int compare(String v1, String v2) {
-        String[] v1Splits = v1.subSequence(1, v1.length()).toString().split(".");
-        String[] v2Splits = v2.subSequence(1, v1.length()).toString().split(".");
-        // 按最小的长度从左到右比较
-        int validLength = Integer.min(v1Splits.length, v2Splits.length);
-        int result = 0;
-        for (int index = 0; index < validLength; index++) {
-            int v1int = Integer.parseInt(v1Splits[index]);
-            int v2int = Integer.parseInt(v2Splits[index]);
-            result = v1int - v2int;
-            if (result != 0) {
-                return result;
-            }
-        }
-        return result;
-    }
 }

@@ -1,13 +1,9 @@
 package com.kaikeba.idscloud.common.utils;
 
-import cn.hutool.core.util.ZipUtil;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.nacos.shaded.com.google.gson.JsonObject;
 import com.kaikeba.idscloud.common.core.constants.AppConstants;
 import com.kaikeba.idscloud.common.core.model.AuthInfo;
 import com.kaikeba.idscloud.common.core.model.VersionInfo;
-import org.apache.commons.lang.StringUtils;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 
 import java.util.Optional;

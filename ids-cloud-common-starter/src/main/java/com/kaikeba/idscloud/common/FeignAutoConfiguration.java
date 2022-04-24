@@ -23,8 +23,6 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 public class FeignAutoConfiguration {
-    public static int connectTimeOutMillis = 200;
-    public static int readTimeOutMillis = 500;
 
     @Bean
     public Encoder feignFormEncoder(ObjectFactory<HttpMessageConverters> messageConverters) {
@@ -33,22 +31,12 @@ public class FeignAutoConfiguration {
         return encoder;
     }
 
-    @Bean
-    @ConditionalOnMissingBean(FeignRequestInterceptor.class)
+//    @Bean
+//    @ConditionalOnMissingBean(FeignRequestInterceptor.class)
     public RequestInterceptor feignRequestInterceptor() {
         FeignRequestInterceptor interceptor = new FeignRequestInterceptor();
         log.info("FeignRequestInterceptor [{}]", interceptor);
         return interceptor;
-    }
-
-    @Bean
-    public Request.Options options() {
-        return new Request.Options(connectTimeOutMillis, readTimeOutMillis);
-    }
-
-    @Bean
-    public Retryer feignRetryer() {
-        return new Retryer.Default();
     }
 
 }

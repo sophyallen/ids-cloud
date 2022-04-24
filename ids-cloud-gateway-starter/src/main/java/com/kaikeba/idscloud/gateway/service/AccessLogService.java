@@ -36,9 +36,10 @@ public class AccessLogService {
     private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @JsonIgnore
-    private Set<String> ignores = new HashSet<>(Arrays.asList("/**/oauth/check_token/**",
-            "/**/gateway/access/logs/**",
-            "/webjars/**"));
+    private Set<String> ignores = new HashSet<>(Arrays.asList(
+            "/manage/**",
+            "/webjars/**"
+    ));
 
     /**
      * 不记录日志
@@ -47,14 +48,8 @@ public class AccessLogService {
      * @return
      */
     public boolean ignore(String requestPath) {
-        Iterator<String> iterator = ignores.iterator();
-        while (iterator.hasNext()) {
-            String path = iterator.next();
-            if (antPathMatcher.match(path, requestPath)) {
-                return true;
-            }
-        }
-        return false;
+        return ignores.parallelStream()
+                .anyMatch(p -> antPathMatcher.match(p, requestPath));
     }
 
     public void sendLog(ServerWebExchange exchange, Exception ex) {
@@ -71,7 +66,7 @@ public class AccessLogService {
             Map<String, String> headers = request.getHeaders().toSingleValueMap();
             Map data = Maps.newHashMap();
             GatewayContext gatewayContext = exchange.getAttribute(GatewayContext.CACHE_GATEWAY_CONTEXT);
-            if(gatewayContext!=null){
+            if (gatewayContext != null) {
                 data = gatewayContext.getAllRequestData().toSingleValueMap();
             }
             String serviceId = null;
@@ -86,7 +81,7 @@ public class AccessLogService {
                 error = ex.getMessage();
             }
             Date responseTime = new Date();
-            Long duringMS = responseTime.getTime() - ((Date)requestTime).getTime();
+            Long duringMS = responseTime.getTime() - ((Date) requestTime).getTime();
             Map<String, Object> map = Maps.newHashMap();
             map.put("requestTime", requestTime);
             map.put("serviceId", serviceId == null ? defaultServiceId : serviceId);

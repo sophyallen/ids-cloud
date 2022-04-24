@@ -1,5 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.kaikeba.idscloud.common.CommonAutoConfiguration,\
-   com.kaikeba.idscloud.common.IdsJacksonAutoConfiguration,\
+  com.kaikeba.idscloud.common.IdsJacksonAutoConfiguration,\
   com.kaikeba.idscloud.common.FeignAutoConfiguration,\
   com.kaikeba.idscloud.common.SwaggerAutoConfiguration,\
   com.kaikeba.idscloud.common.RedisCacheAutoConfiguration

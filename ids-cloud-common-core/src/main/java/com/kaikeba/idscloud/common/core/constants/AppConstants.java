@@ -9,8 +9,11 @@ package com.kaikeba.idscloud.common.core.constants;
 public interface AppConstants {
     String VERSION_KEY = "version";
     String AUTH_INFO_KEY = "authInfo";
-    String VERSION_INFO_KEY = "corgiUserId";
+    String VERSION_INFO_KEY = "versionInfo";
     String SERVER_TYPE_KEY = "serverType";
+    String DEFAULT_SERVER_VERSION = "v0";
+    String SERVER_NAME_PROPERTITY_KEY = "spring.application.name";
+    String DEFAULT_SERVER_NAME = "UNKNOWN_SERVER";
     enum AuthPlatformEnum {
         // C端登录平台
         PASSPORT,

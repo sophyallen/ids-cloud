@@ -17,7 +17,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class VersionInfo implements Serializable {
+    /**
+     * 请求的版本信息
+     */
     private String version;
-    private boolean isGray;
-    private String grayNameSpace;
+    private String grayGroup;
+    private boolean isGray = false;
 }
