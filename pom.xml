@@ -43,6 +43,8 @@
         <com.google.zxing.version>3.1.0</com.google.zxing.version>
         <knife.version>2.0.8</knife.version>
         <swagger.version>1.5.21</swagger.version>
+        <mapstruct.version>1.4.1.Final</mapstruct.version>
+        <lombok.version>1.18.12</lombok.version>
         <oracle.version>10.2.0.4.0</oracle.version>
         <skywalking.amp.version>8.3.0</skywalking.amp.version>
         <!--自定义版本-->
@@ -201,6 +203,26 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct-processor</artifactId>
+                <version>${mapstruct.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kaikeba.idscloud</groupId>
+                <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
+                <version>${alibaba.cloud.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

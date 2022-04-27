@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
+            <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
         </dependency>
         <dependency>

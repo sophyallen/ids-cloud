@@ -1,9 +1,11 @@
 package com.kaikeba.idscloud.common.interceptor;
 
+import com.google.common.collect.ImmutableSet;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -20,28 +22,16 @@ public class FeignRequestInterceptor implements RequestInterceptor {
     /**
      * 微服务之间传递的唯一标识
      */
-    public static final String X_REQUEST_ID = "X-Request-Id";
-
+    private final Set<String> headersNameSet = ImmutableSet.of(HttpHeaders.AUTHORIZATION);
     @Override
     public void apply(RequestTemplate template) {
         HttpServletRequest httpServletRequest = getHttpServletRequest();
         if (httpServletRequest != null) {
             Map<String, String> headers = getHeaders(httpServletRequest);
-            // 传递所有请求头,防止部分丢失
-            Iterator<Map.Entry<String, String>> iterator = headers.entrySet().iterator();
-            while (iterator.hasNext()) {
-                Map.Entry<String, String> entry = iterator.next();
-                // 防止添加重复
-                if(!template.headers().containsKey(entry.getKey())){
-                    template.header(entry.getKey(), entry.getValue());
-                }
-            }
-            // 微服务之间传递的唯一标识,区分大小写所以通过httpServletRequest查询
-            if (headers.containsKey(X_REQUEST_ID)) {
-                String traceId = headers.get(X_REQUEST_ID);
-                MDC.put("traceId", traceId);
-                log.info("FeignRequestInterceptor:{}", traceId);
-            }
+            headers.entrySet().parallelStream()
+                    // 过滤出来可以透传的 header
+                    .filter(e -> headersNameSet.parallelStream().anyMatch(h -> h.equalsIgnoreCase(e.getKey())))
+                    .forEach(e -> template.header(e.getKey(), e.getValue()));
             if (log.isDebugEnabled()) {
                 log.debug("FeignRequestInterceptor:{}", template.toString());
             }

@@ -3,13 +3,12 @@ package com.kaikeba.idscloud.common;
 import com.kaikeba.idscloud.common.interceptor.FeignRequestInterceptor;
 import com.kaikeba.idscloud.common.utils.FeignLogger;
 import feign.Logger;
-import feign.Request;
 import feign.RequestInterceptor;
-import feign.Retryer;
 import feign.codec.Encoder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
 import org.springframework.context.annotation.Bean;
@@ -31,12 +30,27 @@ public class FeignAutoConfiguration {
         return encoder;
     }
 
-//    @Bean
-//    @ConditionalOnMissingBean(FeignRequestInterceptor.class)
+    @Bean
+    @ConditionalOnMissingBean(FeignRequestInterceptor.class)
     public RequestInterceptor feignRequestInterceptor() {
         FeignRequestInterceptor interceptor = new FeignRequestInterceptor();
         log.info("FeignRequestInterceptor [{}]", interceptor);
         return interceptor;
+    }
+
+
+    @Bean
+    @ConditionalOnMissingClass("com.kaikeba.vlc.adaptor.common.config.openfeign.log.FeignLoggerConfig")
+    @ConditionalOnMissingBean
+    Logger.Level getLoggerLevel() {
+        return Logger.Level.BASIC;
+    }
+
+    @Bean
+    @ConditionalOnMissingClass("com.kaikeba.vlc.adaptor.common.config.openfeign.log.FeignLoggerConfig")
+    @ConditionalOnMissingBean
+    FeignLogger getFeignLogger() {
+        return new FeignLogger();
     }
 
 }
