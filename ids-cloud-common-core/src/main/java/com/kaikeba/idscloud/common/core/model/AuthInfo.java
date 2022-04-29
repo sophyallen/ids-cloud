@@ -18,10 +18,28 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthInfo implements Serializable {
+    /**
+     * 授权平台： PASSPORT、CORGI
+      */
     private AppConstants.AuthPlatformEnum platform;
+    /**
+     * C端用户ID, corgi登录可能为空
+     */
     private Long userId;
+    /**
+     * corgi用户ID
+     */
     private Long corgiUserId;
+    /**
+     * Authorization toekn
+     */
     private String token;
+    /**
+     * 用户昵称
+     */
     private String nickname;
+    /**
+     * 用户真实姓名
+     */
     private String name;
 }

@@ -21,6 +21,13 @@ public class VersionInfo implements Serializable {
      * 请求的版本信息
      */
     private String version;
+    /**
+     * 灰度服务注册的服务组
+     * 默认：GRAY_GROUP
+     */
     private String grayGroup;
+    /**
+     * 是否为灰度流量
+     */
     private boolean isGray = false;
 }

@@ -54,8 +54,9 @@ public class ExceptionResolverUtil {
             code = ErrorCodeEnum.CLIENT_ERROR_A0201;
         } else if (className.contains("BadCredentialsException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0300;
-        } else if (className.contains("AccountExpiredException")) {
-            code = ErrorCodeEnum.CLIENT_ERROR_A0203;
+        } else if (className.contains("AccountExpiredException") ||
+                className.contains("Unauthorized")) {
+            code = ErrorCodeEnum.CLIENT_ERROR_A0230;
         } else if (className.contains("LockedException")) {
             code = ErrorCodeEnum.CLIENT_ERROR_A0202;
         } else if (className.contains("DisabledException")) {
