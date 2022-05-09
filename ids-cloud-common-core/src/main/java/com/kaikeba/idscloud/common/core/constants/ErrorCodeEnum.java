@@ -289,4 +289,8 @@ public enum ErrorCodeEnum implements IdsAssert {
                 return HttpStatus.HTTP_INTERNAL_ERROR;
         }
     }
+
+    public boolean isClientCode() {
+        return this.getCode().startsWith(String.valueOf(CLIENT_START));
+    }
 }

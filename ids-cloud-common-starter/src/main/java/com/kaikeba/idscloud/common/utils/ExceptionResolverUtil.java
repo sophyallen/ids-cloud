@@ -94,7 +94,13 @@ public class ExceptionResolverUtil {
                 .message(throwable instanceof IdsException ? throwable.getMessage() : resultCode.getMessage())
                 .path(path)
                 .traceId(TraceContext.traceId());
-        log.error("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
+        // 修改client 错误日志等级
+        if (resultCode.isClientCode()) {
+            log.warn("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
+        } else {
+            log.error("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
+        }
+
         return resultBody;
     }
 }
