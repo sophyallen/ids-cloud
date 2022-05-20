@@ -14,6 +14,7 @@
         <module>ids-cloud-web-starter</module>
         <module>ids-cloud-rocketmq-starter</module>
         <module>ids-cloud-version-router-starter</module>
+        <module>ids-cloud-flux-starter</module>
         <module>ids-cloud-gateway-starter</module>
     </modules>
     <properties>
@@ -173,6 +174,9 @@
                 <groupId>com.kaikeba.idscloud</groupId>
                 <artifactId>ids-cloud-common-starter</artifactId>
                 <version>${idscloud.common.version}</version>
+                <exclusions>
+
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>com.kaikeba.idscloud</groupId>
@@ -197,6 +201,11 @@
             <dependency>
                 <groupId>com.kaikeba.idscloud</groupId>
                 <artifactId>ids-cloud-gateway-starter</artifactId>
+                <version>${idscloud.common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.kaikeba.idscloud</groupId>
+                <artifactId>ids-cloud-flux-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>

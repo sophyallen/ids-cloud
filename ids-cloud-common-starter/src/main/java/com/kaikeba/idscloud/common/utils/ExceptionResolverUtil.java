@@ -6,6 +6,9 @@ import com.kaikeba.idscloud.common.core.model.ResultBody;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,6 +31,9 @@ public class ExceptionResolverUtil {
         }
         ErrorCodeEnum code = ErrorCodeEnum.SERVER_ERROR_B0001;
         String className = ex.getClass().getName();
+        if (ex instanceof BindingResult) {
+            return ErrorCodeEnum.CLIENT_ERROR_A0400;
+        }
         if (ex instanceof ResponseStatusException) {
             ResponseStatusException e = (ResponseStatusException) ex;
             if (e.getStatus().value() == HttpStatus.NOT_FOUND.value()) {
@@ -90,17 +96,41 @@ public class ExceptionResolverUtil {
      * @return
      */
     public static ResultBody<?> buildBody(Throwable throwable, ErrorCodeEnum resultCode, String path) {
-        ResultBody<?> resultBody = ResultBody.failed().code(resultCode.getCode())
-                .message(throwable instanceof IdsException ? throwable.getMessage() : resultCode.getMessage())
-                .path(path)
-                .traceId(TraceContext.traceId());
+        String message = resultCode.getMessage();
+        if (throwable instanceof IdsException) {
+            message = throwable.getMessage();
+        }
+        if (throwable instanceof BindingResult) {
+            message = bindingResultMsg((BindingResult)throwable);
+        }
         // 修改client 错误日志等级
         if (resultCode.isClientCode()) {
-            log.warn("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
+            log.warn("GlobalExceptionHandler handle error: {}", throwable.getMessage(), throwable);
         } else {
-            log.error("GlobalExceptionHandler handle error: {}", resultBody, throwable.getMessage(), throwable);
+            log.error("GlobalExceptionHandler handle error: {}", throwable.getMessage(), throwable);
         }
 
-        return resultBody;
+        return ResultBody.failed().code(resultCode.getCode())
+                .message(message)
+                .path(path)
+                .traceId(TraceContext.traceId());
+    }
+
+    /**
+     * 包装绑定异常结果
+     *
+     * @param bindingResult 绑定结果
+     * @return 异常结果
+     */
+    public static String bindingResultMsg(BindingResult bindingResult) {
+        StringBuilder msg = new StringBuilder();
+        for (ObjectError error : bindingResult.getAllErrors()) {
+            msg.append(", ");
+            if (error instanceof FieldError) {
+                msg.append(((FieldError) error).getField()).append(": ");
+            }
+            msg.append(error.getDefaultMessage() == null ? "" : error.getDefaultMessage());
+        }
+        return msg.substring(2);
     }
 }

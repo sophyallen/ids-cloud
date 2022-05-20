@@ -1,11 +1,7 @@
 package com.kaikeba.idscloud.gateway.controller;
 
+
 import com.kaikeba.idscloud.common.core.model.ResultBody;
-import com.kaikeba.idscloud.common.swagger.IdsSwaggerProperties;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;

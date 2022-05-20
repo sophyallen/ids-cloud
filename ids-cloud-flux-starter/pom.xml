@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>ids-cloud-gateway-starter</artifactId>
+    <artifactId>ids-cloud-flux-starter</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -21,14 +21,11 @@
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>ids-cloud-common-starter</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.kaikeba.idscloud</groupId>
-            <artifactId>ids-cloud-flux-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
     </dependencies>
 </project>
