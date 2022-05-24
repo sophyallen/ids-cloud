@@ -18,6 +18,12 @@
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>fastjson</artifactId>
+                    <groupId>com.alibaba</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.kaikeba.idscloud</groupId>

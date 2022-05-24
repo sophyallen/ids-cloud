@@ -33,7 +33,7 @@
         <spring-boot-admin.version>2.1.6</spring-boot-admin.version>
         <spring-cloud.version>Hoxton.SR12</spring-cloud.version>
         <alibaba.cloud.version>2.2.7.RELEASE</alibaba.cloud.version>
-        <alibaba.fastjson.version>1.2.60</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
 
         <apache.commons-lang3.version>3.8.1</apache.commons-lang3.version>
         <apache.commons-io.version>2.2</apache.commons-io.version>

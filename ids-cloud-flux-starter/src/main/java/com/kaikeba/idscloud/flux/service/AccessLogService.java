@@ -23,8 +23,6 @@ import java.util.*;
  * @description:
  */
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class AccessLogService {
 
     @Value("${spring.application.name}")

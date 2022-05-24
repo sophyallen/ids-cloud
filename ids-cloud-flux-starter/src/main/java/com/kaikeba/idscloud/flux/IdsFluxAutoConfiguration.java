@@ -47,6 +47,11 @@ public class IdsFluxAutoConfiguration {
         return holder;
     }
 
+    @Bean
+    public AccessLogService accessLogService() {
+        return new AccessLogService();
+    }
+
     /**
      * 自定义异常处理[@@]注册Bean时依赖的Bean，会从容器中直接获取，所以直接注入即可
      *
