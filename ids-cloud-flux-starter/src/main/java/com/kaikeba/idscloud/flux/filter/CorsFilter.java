@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
  * @description:
  */
 @Slf4j
-@Component
 public class CorsFilter implements WebFilter, Ordered {
     /**
      * x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN,token,username,client,Origin,No-Cache,X-Requested-With,If-Modified-Since,Pragma,Last-Modified,Cache-Control,Expires,Access-Control-Allow-Credentials,request-account-domain

@@ -1,10 +1,12 @@
 package com.kaikeba.idscloud.flux;
 
+import com.kaikeba.idscloud.common.core.annotation.Condition;
 import com.kaikeba.idscloud.common.utils.SpringContextHolder;
 import com.kaikeba.idscloud.flux.configuration.ApiProperties;
 import com.kaikeba.idscloud.flux.configuration.AuthCorgiProperties;
 import com.kaikeba.idscloud.flux.configuration.AuthPassportProperties;
 import com.kaikeba.idscloud.flux.exception.JsonExceptionHandler;
+import com.kaikeba.idscloud.flux.filter.AccessLogFilter;
 import com.kaikeba.idscloud.flux.filter.GatewayContextFilter;
 import com.kaikeba.idscloud.flux.filter.RemoveGatewayContextFilter;
 import com.kaikeba.idscloud.flux.service.AccessLogService;
@@ -48,10 +50,16 @@ public class IdsFluxAutoConfiguration {
     }
 
     @Bean
+    @ConditionalOnMissingBean(AccessLogService.class)
     public AccessLogService accessLogService() {
         return new AccessLogService();
     }
 
+    @Bean
+    @ConditionalOnMissingBean(AccessLogFilter.class)
+    public AccessLogFilter accessLogFilter(AccessLogService accessLogService) {
+        return new AccessLogFilter(accessLogService);
+    }
     /**
      * 自定义异常处理[@@]注册Bean时依赖的Bean，会从容器中直接获取，所以直接注入即可
      *

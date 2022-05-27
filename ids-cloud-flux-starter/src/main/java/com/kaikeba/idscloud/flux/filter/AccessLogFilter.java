@@ -23,7 +23,6 @@ import java.util.Date;
  *
  * @author zmc
  */
-@Component
 @Slf4j
 public class AccessLogFilter implements WebFilter, Ordered {
 
