@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>ids-cloud-parent</artifactId>
-        <groupId>com.kaikeba.idscloud</groupId>
+        <groupId>com.ids.cloud</groupId>
         <version>2.0.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
@@ -16,7 +16,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.kaikeba.idscloud</groupId>
+            <groupId>com.ids.cloud</groupId>
             <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
             <exclusions>
                 <exclusion>
@@ -26,7 +26,7 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.kaikeba.idscloud</groupId>
+            <groupId>com.ids.cloud</groupId>
             <artifactId>ids-cloud-common-core</artifactId>
         </dependency>
     </dependencies>

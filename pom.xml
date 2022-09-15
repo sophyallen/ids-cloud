@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.kaikeba.idscloud</groupId>
+    <groupId>com.ids.cloud</groupId>
     <artifactId>ids-cloud-parent</artifactId>
     <packaging>pom</packaging>
     <version>2.0.0-SNAPSHOT</version>
@@ -55,42 +55,18 @@
         <docker.image.prefix>ids.cloud</docker.image.prefix>
     </properties>
 
-    <!--nexus 私有仓库发布地址-->
-    <distributionManagement>
-        <!--maven的settings.xml文件中设置<server>标签-->
-        <repository>
-            <id>ids-cloud-releases</id>
-            <url>https://nexus.kaikeba.com/repository/ceg-xk-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>ids-cloud-snapshots</id>
-            <url>https://nexus.kaikeba.com/repository/ceg-xk-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <repositories>
-        <repository>
-            <id>ceg-xk</id>
-            <url>https://nexus.kaikeba.com/repository/ceg-xk/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-
     <!-- 环境 -->
     <profiles>
         <!-- 本地 -->
         <profile>
             <id>local</id>
+            <activation>
+                <!--默认激活配置-->
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <!--当前环境-->
                 <profile.name>local</profile.name>
-                <nacos-addr>test-nacos.kaikeba.com</nacos-addr>
-                <namespace>0ce51bfc-a1d6-4e7b-82c7-c6d944dbd6e7</namespace>
             </properties>
         </profile>
         <!-- 开发 -->
@@ -112,10 +88,6 @@
         <!-- 生产 -->
         <profile>
             <id>prod</id>
-            <activation>
-                <!--默认激活配置-->
-                <activeByDefault>true</activeByDefault>
-            </activation>
             <properties>
                 <!--当前环境,生产环境为空-->
                 <profile.name>prod</profile.name>
@@ -166,12 +138,12 @@
                 <version>${knife.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-common-core</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-common-starter</artifactId>
                 <version>${idscloud.common.version}</version>
                 <exclusions>
@@ -179,32 +151,32 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-web-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-mybatis-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-rocketmq-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-version-router-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-gateway-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>ids-cloud-flux-starter</artifactId>
                 <version>${idscloud.common.version}</version>
             </dependency>
@@ -229,7 +201,7 @@
                 <version>${lombok.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.kaikeba.idscloud</groupId>
+                <groupId>com.ids.cloud</groupId>
                 <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
                 <version>${alibaba.cloud.version}</version>
             </dependency>
